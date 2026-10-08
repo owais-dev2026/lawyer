@@ -332,7 +332,13 @@ function micBtn(forId){
 const WH_VER='2.17.2';
 const WH_BASE='https://cdn.jsdelivr.net/npm/@xenova/transformers@'+WH_VER+'/dist/';
 const WH_LIB=WH_BASE+'transformers.min.js';
-const WH_MODEL='Xenova/whisper-base';
+const WH_BASEM='Xenova/whisper-base',WH_TINY='Xenova/whisper-tiny';
+function whModel(){
+  try{const m=localStorage.getItem('lawyerWhisperModel');if(m)return m}catch(e){}
+  const mobile=/Android|iPhone|iPad|Mobile/i.test(navigator.userAgent)||(navigator.deviceMemory&&navigator.deviceMemory<=4);
+  return mobile?WH_TINY:WH_BASEM; // الجوالات: نموذج أخف يتجنب نفاد الذاكرة
+}
+function whReset(){whReady=false;whLoading=null;try{whWorker&&whWorker.terminate()}catch(e){}whWorker=null;whAsr=null;whPending.clear()}
 let whWorker=null,whReady=false,whLoading=null,whRec=null,whSeq=0,whLastMsg='';
 const whPending=new Map();
 function whInstalled(){try{return localStorage.getItem('lawyerWhisperOK')==='1'}catch(e){return false}}
@@ -361,7 +367,7 @@ self.onmessage=async e=>{
       self.postMessage({type:'ready'});
     }else if(m.type==='run'){
       if(!asr)throw new Error('المحرك غير جاهز');
-      const out=await asr(m.audio,{language:'arabic',task:'transcribe',chunk_length_s:30,stride_length_s:5});
+      const out=await asr(m.audio,{language:'arabic',task:'transcribe',chunk_length_s:30,stride_length_s:5,max_new_tokens:128});
       self.postMessage({type:'result',id:m.id,text:((out&&out.text)||'').trim()});
     }
   }catch(err){self.postMessage({type:'error',id:m.id,message:String((err&&err.message)||err)})}
@@ -381,13 +387,13 @@ async function whResolve(){
   const root=new URL('whisper/',location.href).href;
   const has=async u=>{try{const r=await fetch(u,{cache:'no-cache'});return r.ok&&!/html/i.test(r.headers.get('content-type')||'')}catch(e){return false}};
   const localLib=await has(root+'lib/transformers.min.js');
-  const localModel=await has(root+'models/'+WH_MODEL+'/config.json');
+  const localModel=await has(root+'models/'+whModel()+'/config.json');
   return{lib:localLib?root+'lib/transformers.min.js':WH_LIB,wasm:localLib?root+'lib/':WH_BASE,localModel,modelPath:root+'models/',localLib};
 }
 async function whDiag(cfg){
   const t=async u=>{try{const c=new AbortController();const id=setTimeout(()=>c.abort(),8000);const r=await fetch(u,{mode:'cors',cache:'no-store',signal:c.signal});clearTimeout(id);return r.ok?'✓':'✗ ('+r.status+')'}catch(e){return '✗ لا يصل'}};
   const a=cfg.localLib?'محلية ✓':await t(WH_BASE+'ort-wasm-simd.wasm');
-  const b=cfg.localModel?'محلي ✓':await t('https://huggingface.co/'+WH_MODEL+'/resolve/main/config.json');
+  const b=cfg.localModel?'محلي ✓':await t('https://huggingface.co/'+whModel()+'/resolve/main/config.json');
   return 'المكتبة (jsdelivr): '+a+' | النموذج (huggingface): '+b;
 }
 function whOnProgress(files){
@@ -418,7 +424,7 @@ function whLoadWorker(cfg){
       }
     };
     w.onerror=ev=>{const er=new Error('تعذّر تشغيل العامل'+(ev&&ev.message?': '+ev.message:''));er.boot=true;reject(er)};
-    w.postMessage({type:'load',lib:cfg.lib,wasm:cfg.wasm,model:WH_MODEL,localModel:cfg.localModel,modelPath:cfg.modelPath});
+    w.postMessage({type:'load',lib:cfg.lib,wasm:cfg.wasm,model:whModel(),localModel:cfg.localModel,modelPath:cfg.modelPath});
   });
 }
 async function whLoadMain(cfg){ // بديل: تشغيل المحرك في الصفحة نفسها (قد يجمّد الواجهة لثوانٍ أثناء التحويل)
@@ -429,7 +435,7 @@ async function whLoadMain(cfg){ // بديل: تشغيل المحرك في الص
   else{env.allowLocalModels=false;env.allowRemoteModels=true}
   env.backends.onnx.wasm.wasmPaths=cfg.wasm;
   env.backends.onnx.wasm.numThreads=1;
-  whAsr=await T.pipeline('automatic-speech-recognition',WH_MODEL,{quantized:true,progress_callback:whOnProgress({})});
+  whAsr=await T.pipeline('automatic-speech-recognition',whModel(),{quantized:true,progress_callback:whOnProgress({})});
 }
 function whEnsure(){
   if(whReady)return Promise.resolve();
@@ -464,7 +470,7 @@ async function whInstall(){
 }
 async function whRun(audio){
   if(whMode==='main'){
-    const out=await whAsr(audio,{language:'arabic',task:'transcribe',chunk_length_s:30,stride_length_s:5});
+    const out=await whAsr(audio,{language:'arabic',task:'transcribe',chunk_length_s:30,stride_length_s:5,max_new_tokens:128});
     return ((out&&out.text)||'').trim();
   }
   return new Promise((res,rej)=>{
@@ -529,7 +535,16 @@ async function finishWhisper(){
   try{
     const a16=await whResample(merged,r.sr);
     await whEnsure();
-    const text=await whRun(a16);
+    let text;
+    try{text=await whRun(a16.slice())}
+    catch(e){
+      if(/OrtRun|memory|alloc|abort|error code/i.test(String(e&&e.message))&&whModel()!==WH_TINY){
+        toast('الذاكرة لا تكفي للنموذج الحالي — جاري التحويل للنموذج الأخف (تنزيل ~40 ميجا، يلزم إنترنت)…');
+        try{localStorage.setItem('lawyerWhisperModel',WH_TINY)}catch(x){}
+        whReset();await whEnsure();
+        text=await whRun(a16.slice());
+      }else throw e;
+    }
     if(text){
       const cur=r.inputEl.value||'';
       r.inputEl.value=(cur?cur+' ':'')+text;
