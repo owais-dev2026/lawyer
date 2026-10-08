@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#3d2e1f">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline' 'wasm-unsafe-eval' 'self' blob:; style-src 'unsafe-inline'; img-src 'self' data: blob:; media-src 'self' blob:; connect-src 'self' blob: data: https://alphacephei.com https://*.alphacephei.com https://cdn.jsdelivr.net; manifest-src 'self'; worker-src 'self' blob:; child-src 'self' blob:; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline' 'wasm-unsafe-eval' 'self' blob: https://cdn.jsdelivr.net; style-src 'unsafe-inline'; img-src 'self' data: blob:; media-src 'self' blob:; connect-src 'self' blob: data: https://alphacephei.com https://*.alphacephei.com https://cdn.jsdelivr.net https://huggingface.co https://*.huggingface.co https://*.hf.co; manifest-src 'self'; worker-src 'self' blob:; child-src 'self' blob:; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="no-referrer">
 <link rel="manifest" href="manifest.webmanifest">
 <title>أجندة المحامي</title>
@@ -308,6 +308,7 @@ function detachVoice(){
   document.querySelectorAll('.btn.mic.rec').forEach(b=>b.classList.remove('rec'));
 }
 function killVoice(){
+  try{whCleanup()}catch(e){}
   const r=recognition;recognition=null;
   if(r){
     try{r.onresult=r.onerror=r.onend=r.onstart=null}catch(e){}
@@ -325,6 +326,171 @@ function stopVoice(){detachVoice();killVoice()}
 
 function micBtn(forId){
   return`<button type="button" class="btn s mic" data-a="mic" data-for="${forId}" title="تحدث فيتحول الكلام إلى نص">${I('mic',18)}</button>`;
+}
+
+/* ===== Whisper (Transformers.js): تعرف عربي بدون نت — تنزيل مرة واحدة ثم يُحفظ في المتصفح ===== */
+const WH_VER='2.17.2';
+const WH_BASE='https://cdn.jsdelivr.net/npm/@xenova/transformers@'+WH_VER+'/dist/';
+const WH_LIB=WH_BASE+'transformers.min.js';
+const WH_MODEL='Xenova/whisper-base';
+let whWorker=null,whReady=false,whLoading=null,whRec=null,whSeq=0,whLastMsg='';
+const whPending=new Map();
+function whInstalled(){try{return localStorage.getItem('lawyerWhisperOK')==='1'}catch(e){return false}}
+function whMsg(t){whLastMsg=t;const el=document.getElementById('whStatus');if(el)el.textContent=t}
+function whStatusRefresh(){
+  if(whLoading&&whLastMsg){whMsg(whLastMsg);return}
+  if(whReady)whMsg('✓ جاهز — التعرف العربي يعمل بدون إنترنت. اضغط الميكروفون وتكلم ثم اضغطه مرة أخرى للإيقاف');
+  else if(whInstalled())whMsg('✓ مثبت على هذا الجهاز — يُجهَّز تلقائياً عند أول استخدام (حتى بدون نت)');
+  else whMsg('✗ غير مثبت — اضغط «تنزيل وتفعيل» وأنت متصل بالإنترنت (مرة واحدة، ~80 ميجا)');
+}
+const WH_WORKER_SRC=`
+import {pipeline,env} from '${WH_LIB}';
+env.allowLocalModels=false;env.allowRemoteModels=true;env.useBrowserCache=true;
+env.backends.onnx.wasm.wasmPaths='${WH_BASE}';
+env.backends.onnx.wasm.numThreads=1;
+let asr=null;
+self.onmessage=async e=>{
+  const m=e.data;
+  try{
+    if(m.type==='load'){
+      asr=await pipeline('automatic-speech-recognition','${WH_MODEL}',{quantized:true,progress_callback:p=>self.postMessage({type:'progress',p})});
+      self.postMessage({type:'ready'});
+    }else if(m.type==='run'){
+      if(!asr)throw new Error('المحرك غير جاهز');
+      const out=await asr(m.audio,{language:'arabic',task:'transcribe',chunk_length_s:30,stride_length_s:5});
+      self.postMessage({type:'result',id:m.id,text:((out&&out.text)||'').trim()});
+    }
+  }catch(err){self.postMessage({type:'error',id:m.id,message:String((err&&err.message)||err)})}
+};`;
+async function whPrefetch(){ // يحفظ المكتبة وملفات wasm ليعمل المحرك بدون نت
+  if(!window.caches)return;
+  const c=await caches.open('lawyer-whisper-v1');
+  await Promise.allSettled([WH_LIB,WH_BASE+'ort-wasm-simd.wasm',WH_BASE+'ort-wasm.wasm'].map(async u=>{
+    if(await c.match(u))return;
+    const r=await fetch(u,{mode:'cors'});
+    if(r.ok)await c.put(u,r);
+  }));
+}
+function whEnsure(){
+  if(whReady)return Promise.resolve();
+  if(whLoading)return whLoading;
+  whLoading=new Promise((resolve,reject)=>{
+    const url=URL.createObjectURL(new Blob([WH_WORKER_SRC],{type:'text/javascript'}));
+    const w=new Worker(url,{type:'module'});
+    whWorker=w;
+    const files={};
+    w.onmessage=e=>{
+      const m=e.data;
+      if(m.type==='progress'){
+        const p=m.p||{};
+        if(p.status==='progress'&&p.file){
+          files[p.file]={l:p.loaded||0,t:p.total||0};
+          let L=0,T=0;for(const k in files){L+=files[k].l;T+=files[k].t}
+          if(T)whMsg('جاري تنزيل النموذج… '+Math.round(L/T*100)+'% ('+Math.round(L/1048576)+' / '+Math.round(T/1048576)+' ميجا)');
+        }else if(p.status==='ready'||p.status==='done'){whMsg('جاري تهيئة المحرك…')}
+      }else if(m.type==='ready'){
+        whReady=true;try{localStorage.setItem('lawyerWhisperOK','1')}catch(e){}
+        whMsg('✓ جاهز — التعرف العربي يعمل بدون إنترنت. اضغط الميكروفون وتكلم ثم اضغطه مرة أخرى للإيقاف');
+        resolve();
+      }else if(m.type==='result'||m.type==='error'){
+        const p=whPending.get(m.id);
+        if(p){whPending.delete(m.id);m.type==='result'?p.res(m.text):p.rej(new Error(m.message))}
+        else if(m.type==='error')reject(new Error(m.message));
+      }
+    };
+    w.onerror=ev=>reject(new Error('تعذّر تشغيل المحرك'+(ev&&ev.message?': '+ev.message:'')));
+    whMsg('جاري تجهيز المحرك…');
+    w.postMessage({type:'load'});
+  }).catch(err=>{
+    whLoading=null;try{whWorker&&whWorker.terminate()}catch(e){}whWorker=null;
+    whMsg('✗ فشل: '+(err&&err.message||err)+(navigator.onLine?'':' — لا يوجد إنترنت'));
+    throw err;
+  });
+  return whLoading;
+}
+async function whInstall(){
+  if(whReady){whStatusRefresh();toast('Whisper جاهز');return}
+  if(!navigator.onLine&&!whInstalled()){whMsg('✗ يلزم اتصال بالإنترنت لمرة واحدة لتنزيل النموذج');return}
+  try{navigator.storage&&navigator.storage.persist&&navigator.storage.persist()}catch(e){}
+  whMsg('جاري تجهيز المكتبة…');
+  try{await whPrefetch();await whEnsure();toast('جاهز — جرّب الميكروفون، وبعدها افصل النت وجرّب')}catch(e){}
+}
+function whRun(audio){
+  return new Promise((res,rej)=>{
+    const id=++whSeq;whPending.set(id,{res,rej});
+    whWorker.postMessage({type:'run',id,audio},[audio.buffer]);
+  });
+}
+async function whResample(data,sr){
+  if(sr===16000)return data;
+  const len=Math.ceil(data.length*16000/sr);
+  const oc=new OfflineAudioContext(1,len,16000);
+  const buf=oc.createBuffer(1,data.length,sr);buf.copyToChannel(data,0);
+  const src=oc.createBufferSource();src.buffer=buf;src.connect(oc.destination);src.start();
+  const out=await oc.startRendering();
+  return out.getChannelData(0).slice();
+}
+function whStopCapture(r){
+  try{r.node.onaudioprocess=null;r.node.disconnect()}catch(e){}
+  try{r.src.disconnect()}catch(e){}
+  try{r.stream.getTracks().forEach(t=>t.stop())}catch(e){}
+  try{if(r.ctx.state!=='closed')r.ctx.close()}catch(e){}
+}
+function whCleanup(){if(whRec){const r=whRec;whRec=null;whStopCapture(r)}}
+async function startWhisperVoice(inputEl,btn){
+  stopVoice();
+  recTarget=inputEl;recActive=true;
+  if(btn)btn.classList.add('rec');
+  try{
+    const stream=await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:false,noiseSuppression:true,autoGainControl:true,channelCount:1},video:false});
+    if(!(recActive&&recTarget===inputEl)){stream.getTracks().forEach(t=>t.stop());return true}
+    const ctx=new (window.AudioContext||window.webkitAudioContext)();
+    if(ctx.state==='suspended')await ctx.resume();
+    const src=ctx.createMediaStreamSource(stream);
+    const node=ctx.createScriptProcessor(4096,1,1);
+    const chunks=[];
+    node.onaudioprocess=e=>{chunks.push(new Float32Array(e.inputBuffer.getChannelData(0)))};
+    const gain=ctx.createGain();gain.gain.value=0;
+    src.connect(node);node.connect(gain);gain.connect(ctx.destination);
+    whRec={stream,ctx,src,node,chunks,sr:ctx.sampleRate,inputEl,btn};
+    whEnsure().catch(()=>{}); // جهّز المحرك أثناء كلامك
+    clearTimeout(recSilence);
+    recSilence=setTimeout(()=>{if(whRec)finishWhisper()},90000);
+    toast('سجّل كلامك ثم اضغط الميكروفون مرة أخرى للإيقاف والتحويل');
+    return true;
+  }catch(e){
+    stopVoice();
+    toast((e&&e.name)==='NotAllowedError'?'الميكروفون محظور: اضغط القفل بجانب العنوان ← الميكروفون ← سماح':'تعذّر تشغيل الميكروفون: '+(e&&e.message||e));
+    return true;
+  }
+}
+async function finishWhisper(){
+  const r=whRec;if(!r)return;
+  whRec=null;clearTimeout(recSilence);
+  whStopCapture(r);
+  detachVoice();
+  const total=r.chunks.reduce((a,c)=>a+c.length,0);
+  if(total<r.sr*0.6){toast('التسجيل قصير جداً');return}
+  const merged=new Float32Array(total);let o=0;
+  for(const c of r.chunks){merged.set(c,o);o+=c.length}
+  if(r.btn)r.btn.disabled=true;
+  toast('جاري تحويل الكلام إلى نص…');
+  try{
+    const a16=await whResample(merged,r.sr);
+    await whEnsure();
+    const text=await whRun(a16);
+    if(text){
+      const cur=r.inputEl.value||'';
+      r.inputEl.value=(cur?cur+' ':'')+text;
+      r.inputEl.dispatchEvent(new Event('input',{bubbles:true}));
+    }else toast('لم أتبيّن كلاماً، حاول مرة أخرى بصوت أوضح');
+  }catch(e){
+    toast('فشل التحويل: '+(e&&e.message||e)+(whInstalled()?'':' — ثبّت Whisper من الإعدادات'));
+  }finally{if(r.btn)r.btn.disabled=false}
+}
+function preloadWhisper(){
+  if(whReady||whLoading||!whInstalled())return;
+  setTimeout(()=>{whEnsure().catch(()=>{})},1200);
 }
 
 /* ---- التعرف المدمج بالمتصفح (On-device) — بدون ملفات، خفيف ولحظي ---- */
@@ -594,6 +760,7 @@ async function startVoskVoice(inputEl,btn){
 }
 
 async function startVoice(inputEl,btn){
+  if(whRec&&whRec.inputEl===inputEl){finishWhisper();return}
   if(recActive&&recTarget===inputEl){
     stopVoice();
     toast('تم إيقاف الإدخال الصوتي');
@@ -601,6 +768,10 @@ async function startVoice(inputEl,btn){
   }
 
   // أولوية: Vosk المحلي (فحص فوري بدون تحميل)
+  if(whInstalled()||whReady){
+    const okW=await startWhisperVoice(inputEl,btn);
+    if(okW)return;
+  }
   let od={state:'unsupported'};
   try{od=await odStatus()}catch(e){}
   const useLocal=od.state==='available';
@@ -615,7 +786,7 @@ async function startVoice(inputEl,btn){
     return;
   }
   if(navigator.onLine===false&&!useLocal){
-    toast('لا يوجد إنترنت. من الإعدادات اضغط «تفعيل» في بطاقة التعرف بدون نت (مرة واحدة وأنت متصل).');
+    toast('لا يوجد إنترنت. من الإعدادات اضغط «تنزيل وتفعيل» في بطاقة Whisper (مرة واحدة وأنت متصل).');
     return;
   }
 
@@ -640,7 +811,7 @@ async function startVoice(inputEl,btn){
     clearTimeout(recSilence);
     recSilence=setTimeout(()=>{if(recognition===r){stopVoice();toast('تم إيقاف الإدخال بعد توقفك عن الكلام')}},8000);
   };
-  r.onstart=()=>{arm();toast(useLocal?'تكلم الآن… (بدون إنترنت)':'تكلم الآن… (وضع الإنترنت — فعّل التعرف بدون نت من الإعدادات)')};
+  r.onstart=()=>{arm();toast(useLocal?'تكلم الآن… (بدون إنترنت)':'تكلم الآن… (وضع الإنترنت — ثبّت Whisper من الإعدادات)')};
   r.onresult=e=>{
     arm();
     let interim='';
@@ -664,7 +835,7 @@ async function startVoice(inputEl,btn){
     }else if(e.error==='language-not-supported'&&li<tried.length-1){
       li++;try{r.lang=tried[li];r.start();return}catch(err){}
     }else if(e.error==='network'){
-      toast('انقطع الإنترنت. فعّل التعرف بدون نت من الإعدادات (مرة واحدة).');
+      toast('انقطع الإنترنت. ثبّت Whisper من الإعدادات للعمل بدون نت.');
     }else toast('تعذّر التعرف: '+e.error);
     if(recognition===r)stopVoice();
   };
@@ -1350,24 +1521,20 @@ const V={
   ${L.map(x=>{const due=!x.done&&evt(x)-x.before*6e4<=Date.now();return`<div class="card ${x.done?'ok':due?'red':'acc'}"><div class="row sp"><h3>${esc(x.title)}</h3>${due?'<span class="tag red">حان وقته</span>':''}</div>${line(fd(x.date)+(x.time?' · '+ft(x.time):''))}${line('التنبيه: '+(BEFORE.find(b=>b[0]===x.before)||[0,''])[1])}${line(esc(x.notes))}${act('reminders',x)}</div>`}).join('')}`},
  backup(){
   return`<h1>الإعدادات والنسخ الاحتياطي</h1><p class="sub">بياناتك مشفّرة محلياً بـ AES-256 مشتقة من كلمة مرورك، ولا تُرسل لأي خادم.</p>
-  <div class="card acc" id="odCard">
-    <h3>التعرف الصوتي بدون إنترنت (مدمج بالمتصفح) — موصى به</h3>
-    <p class="m">خفيف جداً: بدون ملفات ولا نماذج ثقيلة. يعمل بـ Chrome أو Edge ويُنزّل المتصفح حزمة اللغة العربية بنفسه مرة واحدة.</p>
-    <p class="m" id="odStatus">جاري الفحص…</p>
+  <div class="card acc" id="whCard">
+    <h3>التعرف الصوتي بدون إنترنت (Whisper) — موصى به</h3>
+    <p class="m">نموذج عربي خفيف (~80 ميجا) يُنزَّل مرة واحدة ويُحفظ داخل المتصفح، ثم يعمل بدون نت. اضغط الميكروفون وتكلم، ثم اضغطه مرة أخرى للإيقاف فيتحول الكلام إلى نص خلال ثوانٍ.</p>
+    <p class="m" id="whStatus">${esc(whLastMsg||'جاري الفحص…')}</p>
     <div class="row wrap" style="margin-top:8px;gap:8px">
-      <button type="button" class="btn p" data-a="odenable">تفعيل / فحص</button>
+      <button type="button" class="btn p" data-a="whinstall">تنزيل وتفعيل (مرة واحدة)</button>
     </div>
   </div>
-  <div class="card acc" id="voskCard">
-    <h3>بديل ثقيل اختياري: Vosk (~300 ميجا)</h3>
-    <p class="m">لتحويل كلامك إلى نص بدون نت يلزم نموذج العربية مرة واحدة (~300 ميجا). يُحفظ داخل المتصفح ولا يُرفع لأي خادم.</p>
-    <p class="m" id="voskStatus">${esc(voskLastMsg||'جاري الفحص…')}</p>
+  <div class="card acc" id="odCard">
+    <h3>بديل: التعرف المدمج بالمتصفح (إن توفرت العربية)</h3>
+    <p class="m" id="odStatus">جاري الفحص…</p>
     <div class="row wrap" style="margin-top:8px;gap:8px">
-      <button type="button" class="btn p" data-a="voskcheck">فحص النموذج</button>
-      <button type="button" class="btn" data-a="voskpick">اختيار ملف النموذج</button>
-      <button type="button" class="btn" data-a="voskhelp">تعليمات التثبيت</button>
+      <button type="button" class="btn" data-a="odenable">فحص / تفعيل</button>
     </div>
-    <p class="m" style="margin-top:8px;font-size:12px">أول مرة فقط: اضغط «اختيار ملف النموذج» وحدد <b>models/vosk-ar.tar.gz</b> (المتصفح يمنع قراءته تلقائياً عند فتح الصفحة من القرص). بعدها يُحفظ ويعمل دائماً. يجب أن يبقى <b>vosk.js</b> بجانب index.html.</p>
   </div>
   <div class="card acc"><h3>تغيير كلمة المرور</h3>
     <label>الحالية</label><input type="password" id="cpw">
@@ -1421,10 +1588,10 @@ function draw(){
  if(tab!=='reminders')b+=dr.slice(0,3).map(r=>`<div class="alert amb" role="alert"><div class="row sp"><span>🔔 ${esc(r.title)} · ${ft(r.time)}</span><button class="btn s" data-a="tg" data-t="reminders" data-id="${r.id}">تم</button></div></div>`).join('');
  const keep=document.activeElement&&document.activeElement.id==='qt'?$('#qt').value:null;
  $('#app').innerHTML=b+V[tab]();
- preloadVosk();
+ preloadVosk();preloadWhisper();
  if(keep!==null)$('#qt').value=keep;
  if(tab==='backup'){
-   voskStatusRefresh();odRefresh();
+   whStatusRefresh();odRefresh();
  }
 }
 
@@ -1457,6 +1624,7 @@ document.addEventListener('click',async e=>{
    D.scans=(D.scans||[]).filter(s=>s.id!==id);await save();
    const th=el.closest('.th');if(th)th.remove();else draw();
  }
+ else if(a==='whinstall'){whInstall()}
  else if(a==='odenable'){odEnable()}
  else if(a==='voskcheck'){voskCheck(false)}
  else if(a==='voskpick'){voskCheck(true)}
