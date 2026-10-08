@@ -1,0 +1,1545 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#3d2e1f">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline' 'wasm-unsafe-eval' 'self' blob:; style-src 'unsafe-inline'; img-src 'self' data: blob:; media-src 'self' blob:; connect-src 'self' blob: data: https://alphacephei.com https://*.alphacephei.com https://cdn.jsdelivr.net; manifest-src 'self'; worker-src 'self' blob:; child-src 'self' blob:; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer">
+<link rel="manifest" href="manifest.webmanifest">
+<title>أجندة المحامي</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20512%20512%22%3E%3Crect%20width%3D%22512%22%20height%3D%22512%22%20rx%3D%22108%22%20fill%3D%22%233d2e1f%22/%3E%3Cg%20fill%3D%22none%22%20stroke%3D%22%23e8c98a%22%20stroke-width%3D%2228%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M256%2096v320M176%20416h160%22/%3E%3Cpath%20d%3D%22M256%20128c48%2024%20120%2032%20160%2032M256%20128c-48%2024-120%2032-160%2032%22/%3E%3Cpath%20d%3D%22M96%20160l48%2096c-14%2010-30%2016-48%2016s-34-6-48-16l48-96M416%20160l48%2096c-14%2010-30%2016-48%2016s-34-6-48-16l48-96%22/%3E%3C/g%3E%3Ccircle%20cx%3D%22256%22%20cy%3D%22112%22%20r%3D%2220%22%20fill%3D%22%23e8c98a%22/%3E%3C/svg%3E">
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20512%20512%22%3E%3Crect%20width%3D%22512%22%20height%3D%22512%22%20rx%3D%22108%22%20fill%3D%22%233d2e1f%22/%3E%3Cg%20fill%3D%22none%22%20stroke%3D%22%23e8c98a%22%20stroke-width%3D%2228%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M256%2096v320M176%20416h160%22/%3E%3Cpath%20d%3D%22M256%20128c48%2024%20120%2032%20160%2032M256%20128c-48%2024-120%2032-160%2032%22/%3E%3Cpath%20d%3D%22M96%20160l48%2096c-14%2010-30%2016-48%2016s-34-6-48-16l48-96M416%20160l48%2096c-14%2010-30%2016-48%2016s-34-6-48-16l48-96%22/%3E%3C/g%3E%3Ccircle%20cx%3D%22256%22%20cy%3D%22112%22%20r%3D%2220%22%20fill%3D%22%23e8c98a%22/%3E%3C/svg%3E">
+<meta name="application-name" content="أجندة المحامي">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="أجندة المحامي">
+<style>
+:root{color-scheme:light;--bg:oklch(.955 .018 80);--card:oklch(.99 .008 85);--ink:oklch(.25 .035 50);--mut:oklch(.5 .035 55);--line:oklch(.88 .025 75);--pri:oklch(.38 .06 50);--prifg:oklch(.97 .015 85);--acc:oklch(.8 .07 75);--accfg:oklch(.3 .05 50);--accbg:oklch(.8 .07 75/.22);--sec:oklch(.92 .025 75);--red:oklch(.52 .18 28);--redbg:oklch(.52 .18 28/.1);--ok:oklch(.52 .1 150);--side:oklch(.29 .045 48);--sidefg:oklch(.95 .02 80);--sidepri:oklch(.83 .07 78);--sideacc:oklch(.36 .05 50);box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.6 "Segoe UI",Tahoma,"Noto Naskh Arabic","Arabic Typesetting",Arial,sans-serif;-webkit-tap-highlight-color:transparent}
+h1,h2,.sf{font-family:Georgia,"Times New Roman","Amiri",serif}h1{font-size:26px;color:var(--pri);margin:0 0 2px;line-height:1.3}h2{font-size:17px;font-family:inherit;color:var(--pri);margin:22px 0 10px;padding-inline-start:10px;border-inline-start:4px solid var(--acc);line-height:1.2}
+#shell{max-width:520px;margin:0 auto;min-height:100dvh;background:var(--bg)}.mc{min-width:0}body{background:oklch(.9 .02 78)}
+main{padding:16px 14px 96px}
+#top{position:sticky;top:0;z-index:4;height:56px;background:var(--side);color:var(--sidefg);display:flex;align-items:center;justify-content:space-between;padding:0 14px;box-shadow:0 2px 6px #0004}#top button{color:var(--sidepri)}
+.brand{display:flex;gap:12px;align-items:center}.brand b{display:block;font:700 19px Georgia,"Times New Roman",serif;line-height:1.2}
+.ic{width:38px;height:38px;border-radius:11px;background:var(--sideacc);box-shadow:0 0 0 1px oklch(.8 .07 75/.5);display:grid;place-items:center;color:var(--sidepri)}
+.sub{color:var(--mut);font-size:14px;margin:0 0 14px}
+button,input,select,textarea{font:inherit;color:inherit}
+.btn{min-height:44px;padding:0 16px;border-radius:10px;border:1px solid var(--line);background:var(--bg);cursor:pointer;font-weight:500}
+.btn.p{background:var(--pri);border-color:var(--pri);color:var(--prifg)}.btn.a{background:var(--acc);border-color:var(--acc);color:var(--accfg)}
+.btn.s{min-height:34px;padding:0 12px;font-size:14px;border-radius:8px}.btn.d{color:var(--red)}.btn.ok{background:var(--ok);border-color:var(--ok);color:#fff}
+.btn.mic{min-width:44px;padding:0 10px;display:inline-flex;align-items:center;justify-content:center;gap:4px}
+.btn.mic.rec{background:var(--red);border-color:var(--red);color:#fff;animation:pulse 1s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.7}}
+:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
+.row{display:flex;gap:8px;align-items:center}.sp{justify-content:space-between}.wrap{flex-wrap:wrap}
+input,select,textarea{width:100%;min-height:44px;padding:8px 12px;border:1px solid var(--line);border-radius:10px;background:var(--card)}
+label{display:block;font-size:14px;font-weight:500;margin:12px 0 4px}textarea{min-height:90px}
+.card{position:relative;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 18px 14px 14px;margin-bottom:10px;box-shadow:0 1px 2px #0001;overflow:hidden}
+.card:before{content:"";position:absolute;inset-block:0;right:0;width:4px;background:var(--acc)}
+.card.red:before{background:var(--red)}.card.ok:before{background:var(--ok)}.card.ok{background:oklch(.935 .02 78)}.card.ok h3{text-decoration:line-through;color:var(--mut)}.card.amb:before{background:var(--acc)}
+.card h3{font-size:16px;margin:0}.m{color:var(--mut);font-size:14px}
+.tb{flex:none;width:68px;text-align:center;background:var(--sec);border-radius:8px;padding:8px 2px;font-weight:700;font-size:13px;color:var(--pri)}.tb small{display:block;font-weight:400;font-size:11px;color:var(--mut)}
+.tag{display:inline-block;font-size:12px;font-weight:600;padding:1px 9px;border-radius:99px;background:var(--accbg);color:var(--accfg);white-space:nowrap}.tag.red{background:var(--redbg);color:var(--red)}.tag.amb{background:var(--accbg);color:var(--accfg)}
+.chk{flex:none;width:30px;height:30px;border-radius:8px;border:2px solid oklch(.38 .06 50/.4);background:var(--bg);color:#fff;font-size:18px;cursor:pointer;line-height:1}.chk.on{background:var(--ok);border-color:var(--ok)}
+.bar{height:8px;border-radius:9px;background:var(--sec);overflow:hidden;margin:6px 0 14px}.bar i{display:block;height:100%;background:var(--ok)}
+.alert{border-radius:12px;padding:10px 14px;margin-bottom:10px;font-weight:500;border:1px solid}.alert.red{background:var(--redbg);color:var(--red);border-color:oklch(.52 .18 28/.35)}.alert.amb{background:var(--accbg);color:var(--accfg);border-color:var(--acc)}
+.hero{background:var(--pri);color:var(--prifg);border-radius:18px;padding:22px;margin-bottom:16px;box-shadow:0 8px 20px #0003;position:relative;overflow:hidden}.hero:before{content:"";position:absolute;left:-40px;top:-40px;width:160px;height:160px;border-radius:50%;border:18px solid oklch(.8 .07 75/.15)}
+.hero h1{color:inherit;font-size:28px;font-weight:700;letter-spacing:-0.02em;line-height:1.35;font-family:Georgia,"Times New Roman",serif}.hero p{margin:0;opacity:.7;font-size:14px}
+.st{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:6px}
+.st div{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 14px}.st b{display:block;font-size:30px;color:var(--pri);line-height:1.2}.st span{font-size:13px;color:var(--mut)}
+.scan-box{background:var(--card);border:1px dashed var(--line);border-radius:12px;padding:14px;margin-top:18px;margin-bottom:10px}
+.scan-box h3{margin:0 0 8px;font-size:15px;color:var(--pri)}
+.scan-thumbs{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.scan-thumbs .th{position:relative;width:72px;height:72px;border-radius:8px;overflow:hidden;border:1px solid var(--line);background:#eee}
+.scan-thumbs .th img{width:100%;height:100%;object-fit:cover}
+.scan-thumbs .th button{position:absolute;top:2px;left:2px;width:22px;height:22px;border:0;border-radius:50%;background:var(--red);color:#fff;font-size:12px;cursor:pointer;line-height:1;padding:0}
+.toast{position:fixed;bottom:80px;inset-inline:14px;max-width:492px;margin:0 auto;z-index:15;background:var(--side);color:var(--sidefg);padding:12px 16px;border-radius:12px;box-shadow:0 8px 24px #0005;font-size:14px;display:none}
+.toast.show{display:block;animation:fadein .25s}
+@keyframes fadein{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+nav#nav{position:fixed;inset-inline:0;bottom:0;max-width:520px;margin:0 auto;display:grid;grid-template-columns:repeat(6,1fr);background:var(--side);padding-bottom:env(safe-area-inset-bottom,0px);z-index:5}
+#nav button{min-width:0;border:0;background:none;min-height:60px;font-size:11px;color:var(--sidefg);opacity:.6;cursor:pointer;font-weight:500;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px}#nav button svg{display:block}
+#nav button[aria-current=page]{opacity:1;color:var(--sidepri);box-shadow:inset 0 3px 0 var(--sidepri)}
+
+.ov{position:fixed;inset:0;background:oklch(.38 .06 50/.5);display:flex;align-items:flex-end;justify-content:center;z-index:9}
+.mod{background:var(--card);width:100%;max-width:520px;max-height:92%;overflow:auto;border-radius:24px 24px 0 0;padding:18px}.mn{display:flex;align-items:center;gap:12px;width:100%;min-height:56px;margin-top:8px;padding:0 16px;border:1px solid var(--line);border-radius:12px;background:var(--card);font-weight:500;cursor:pointer}
+#lock{position:fixed;inset:0;z-index:20;background:var(--side);display:flex;align-items:center;justify-content:center;padding:20px}
+#lock .box{background:var(--card);border-radius:20px;padding:28px 22px;width:100%;max-width:380px;box-shadow:0 12px 40px #0005}
+#lock h1{text-align:center;margin-bottom:6px}#lock .sub{text-align:center}
+#lock .err{color:var(--red);font-size:14px;margin-top:8px;text-align:center;min-height:20px}
+.voice-bar{display:flex;gap:8px;align-items:center;margin:10px 0 4px}
+.voice-hint{font-size:12px;color:var(--mut);margin-top:4px}
+
+.scanner-ov{position:fixed;inset:0;z-index:30;background:#111;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.scanner-ov video{width:100%;max-width:520px;max-height:70vh;object-fit:cover;background:#000;border-radius:12px}
+.scanner-ov .sc-bar{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;padding:16px;width:100%;max-width:520px}
+.scanner-ov .sc-hint{color:#ccc;font-size:13px;text-align:center;padding:8px 16px}
+.scanner-ov canvas{display:none}
+.pdfv{position:fixed;inset:0;z-index:14;background:#222;display:flex;flex-direction:column}
+.pdfv .hd{display:flex;gap:8px;align-items:center;justify-content:space-between;padding:10px 12px;background:var(--side);color:var(--sidefg);font-size:14px}
+.pdfv .hd .btn{background:#fff;color:#3d2e1f;border:1px solid #ddd;font-weight:600}
+.pdfv .bd{flex:1;overflow:auto;padding:12px;display:flex;flex-wrap:wrap;align-content:flex-start;justify-content:center;gap:10px}
+.pdfv .pg{position:relative;width:calc(50% - 10px);max-width:200px;background:#fff;border-radius:6px;overflow:hidden;cursor:zoom-in}
+.pdfv .pg img{width:100%;height:230px;object-fit:contain;display:block;background:#fff}
+.pdfv .pg i{position:absolute;bottom:4px;right:6px;font-style:normal;font-size:11px;background:#000a;color:#fff;border-radius:8px;padding:1px 7px}
+.pdfv .big{position:fixed;inset:0;z-index:2;background:#000e;display:flex;align-items:center;justify-content:center;cursor:zoom-out}
+.pdfv .big img{max-width:96%;max-height:94%;object-fit:contain;background:#fff}
+.pdfv .pg button{position:absolute;top:6px;left:6px;width:28px;height:28px;border:0;border-radius:50%;background:var(--red);color:#fff;cursor:pointer}
+html{-webkit-text-size-adjust:100%}html,body{overflow-x:hidden}
+#shell{width:100%}img,video,canvas{max-width:100%}
+input,select,textarea{font-size:16px}
+.pw{position:relative}.pw input{padding-inline-end:48px}
+.pw .eye{position:absolute;inset-inline-end:4px;top:50%;transform:translateY(-50%);width:40px;height:40px;border:0;background:none;color:var(--mut);cursor:pointer;display:grid;place-items:center;padding:0}
+.row.wrap>.btn{flex:1 1 140px}
+@media(max-width:560px){body{background:var(--bg)}#shell,#nav{max-width:none}main{padding:12px 10px 92px}.hero{padding:16px}.hero h1{font-size:23px}.st b{font-size:26px}.mod{border-radius:20px 20px 0 0;padding:16px 14px;max-height:94dvh}.toast{inset-inline:10px}#top{padding:0 10px}.brand b{font-size:17px}.card{padding:12px 16px 12px 12px}.tb{width:60px}}
+@media(max-width:360px){#nav button{font-size:10px}.btn{padding:0 12px}}
+#pr{display:none}
+@media print{body>*:not(#pr){display:none!important}#pr{display:block;color:#000;background:#fff;font-size:12px}#pr table{width:100%;border-collapse:collapse;margin-bottom:14px}#pr td,#pr th{border:1px solid #999;padding:4px 6px;text-align:right;vertical-align:top}#pr th{background:#eee}#pr h2{font-size:15px;margin:14px 0 6px;border:0;padding:0}#pr img{max-width:100%;margin:8px 0}}
+</style>
+</head>
+<body>
+<div id="lock" style="display:none"></div>
+<div id="shell"><div class="mc"><header id="top"></header><main id="app"></main></div></div>
+<nav id="nav" aria-label="التنقل السفلي"></nav>
+<div id="toast" class="toast" role="status"></div>
+<div id="pr"></div>
+<input type="file" id="camInput" accept="image/*" capture="environment" style="display:none">
+<script>
+const K='lawyerAgendaEnc',AUTH='lawyerAuth',$=s=>document.querySelector(s);
+let D={tasks:[],deadlines:[],reminders:[],sessions:[],clients:[],scans:[],casePdfs:{},casePages:{}};
+let Auth={};try{Auth=JSON.parse(localStorage.getItem(AUTH))||{}}catch(e){}
+let cryptoKey=null,unlocked=false,plainPass='',loadOk=false;
+const BLANK=()=>({tasks:[],deadlines:[],reminders:[],sessions:[],clients:[],scans:[],casePdfs:{},casePages:{}});
+const IMGRE=/^data:image\/(jpeg|png);base64,/;
+function normalizeData(d){
+  const o=BLANK();if(!d||typeof d!=='object')return o;
+  ['tasks','deadlines','reminders','sessions','clients'].forEach(k=>{if(Array.isArray(d[k]))o[k]=d[k].filter(x=>x&&typeof x==='object'&&typeof x.id==='string')});
+  if(Array.isArray(d.scans))o.scans=d.scans.filter(x=>x&&typeof x.data==='string'&&IMGRE.test(x.data));
+  if(d.casePages&&typeof d.casePages==='object')Object.keys(d.casePages).forEach(k=>{if(k==='__proto__'||k==='constructor'||k==='prototype')return;const a=d.casePages[k];if(Array.isArray(a))o.casePages[k]=a.filter(x=>typeof x==='string'&&IMGRE.test(x))});
+  return o;
+}
+
+const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,7);
+const iso=d=>d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+const today=()=>iso(new Date());
+const P=s=>{const[a,b,c]=s.split('-').map(Number);return new Date(a,b-1,c)};
+const add=(s,n)=>{const d=P(s);d.setDate(d.getDate()+n);return iso(d)};
+const diff=(a,b)=>Math.round((P(b)-P(a))/864e5);
+const fd=s=>P(s).toLocaleDateString('ar-u-nu-latn',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+const ft=t=>{if(!t)return'';let[h,m]=t.split(':').map(Number);return(h%12||12)+':'+String(m).padStart(2,'0')+(h<12?' ص':' م')};
+const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const KINDS=['استئناف','طعن (نقض)','اعتراض','متابعة','أخرى'];
+const BEFORE=[[0,'عند الموعد'],[15,'قبل 15 دقيقة'],[60,'قبل ساعة'],[180,'قبل 3 ساعات'],[1440,'قبل يوم'],[2880,'قبل يومين']];
+const QUESTIONS=['ما اسم أول مدرسة درست فيها؟','ما اسم مدينتك الأصلية؟','ما لون سيارتك المفضلة؟','ما اسم حيوانك الأليف الأول؟','ما اسم أفضل صديق في الطفولة؟'];
+
+function left(due){const d=diff(today(),due),a=Math.abs(d);
+ if(d===0)return'ينتهي اليوم';if(d===1)return'ينتهي غداً';if(d>1)return'متبقي '+d+' يوم';return'فات منذ '+a+' يوم'}
+const urg=x=>{if(x.done)return'ok';const d=diff(today(),x.due);return d<0?'red':d<=3?'red':d<=10?'amb':'acc'};
+const evt=r=>{const[y,m,d]=r.date.split('-').map(Number),[h,n]=(r.time||'09:00').split(':').map(Number);return new Date(y,m-1,d,h,n)};
+const dueRem=()=>D.reminders.filter(r=>!r.done&&evt(r)-r.before*6e4<=Date.now());
+
+/* ---- أمان: تشفير AES-GCM بكلمة المرور ---- */
+function hash(s){let h=5381;for(let i=0;i<s.length;i++)h=((h<<5)+h)^s.charCodeAt(i);return (h>>>0).toString(36)+s.length}
+function b64(buf){const u=new Uint8Array(buf);let s='';for(let i=0;i<u.length;i++)s+=String.fromCharCode(u[i]);return btoa(s)}
+function fromB64(s){const bin=atob(s);const u=new Uint8Array(bin.length);for(let i=0;i<bin.length;i++)u[i]=bin.charCodeAt(i);return u.buffer}
+const ITER=310000;
+async function deriveKey(pass,saltB64,iter){
+  const it=iter||(saltB64?(Auth.iter||120000):ITER);
+  const enc=new TextEncoder();
+  const base=await crypto.subtle.importKey('raw',enc.encode(pass),{name:'PBKDF2'},false,['deriveKey']);
+  const salt=saltB64?fromB64(saltB64):crypto.getRandomValues(new Uint8Array(16));
+  const key=await crypto.subtle.deriveKey({name:'PBKDF2',salt:salt instanceof ArrayBuffer?new Uint8Array(salt):salt,iterations:it,hash:'SHA-256'},base,{name:'AES-GCM',length:256},false,['encrypt','decrypt']);
+  return{key,saltB64:saltB64||b64(salt)};
+}
+async function encryptData(obj,key){
+  const iv=crypto.getRandomValues(new Uint8Array(12));
+  const enc=new TextEncoder();
+  const ct=await crypto.subtle.encrypt({name:'AES-GCM',iv},key,enc.encode(JSON.stringify(obj)));
+  return{v:1,iv:b64(iv),ct:b64(ct)};
+}
+async function decryptData(pack,key){
+  const dec=new TextDecoder();
+  const pt=await crypto.subtle.decrypt({name:'AES-GCM',iv:new Uint8Array(fromB64(pack.iv))},key,fromB64(pack.ct));
+  return JSON.parse(dec.decode(pt));
+}
+async function save(){
+  try{
+    if(!cryptoKey){if(Auth.pass)return;localStorage.setItem(K,JSON.stringify({plain:1,data:D}));return}
+    if(!loadOk)return; // لا نكتب فوق بيانات لم تُقرأ بنجاح
+    const pack=await encryptData(D,cryptoKey);
+    localStorage.setItem(K,JSON.stringify(pack));
+  }catch(e){toast('تعذّر حفظ البيانات المشفّرة')}
+}
+const saveAuth=()=>{try{localStorage.setItem(AUTH,JSON.stringify(Auth))}catch(e){}};
+const mkChk=key=>encryptData({ok:1},key);
+async function verifyPass(p){
+  try{
+    const{key}=await deriveKey(p,Auth.salt);
+    if(Auth.chk){await decryptData(Auth.chk,key);return key}
+    if(hash(p)!==Auth.pass)return null; // حسابات قديمة: تحقق مرة واحدة ثم نرقّيها
+    Auth.chk=await mkChk(key);Auth.pass='1';saveAuth();return key;
+  }catch(e){return null}
+}
+async function loadData(){
+  loadOk=false;
+  try{
+    const raw=localStorage.getItem(K);if(!raw){D=BLANK();loadOk=true;return}
+    const pack=JSON.parse(raw);
+    if(pack.plain){D=normalizeData(pack.data);loadOk=true;return}
+    if(cryptoKey&&pack.ct){D=normalizeData(await decryptData(pack,cryptoKey));loadOk=true}
+  }catch(e){console.warn(e)}
+}
+async function rekey(p){ // تغيير المفتاح بشكل متزامن: لا نترك البيانات ببيانات مصادقة قديمة
+  const{key,saltB64}=await deriveKey(p,null,ITER);
+  const pack=await encryptData(D,key),chk=await mkChk(key);
+  localStorage.setItem(K,JSON.stringify(pack));
+  Auth.salt=saltB64;Auth.iter=ITER;Auth.pass='1';Auth.chk=chk;saveAuth();
+  cryptoKey=key;plainPass=p;
+}
+
+function notifyUser(title,body){
+  try{
+    if(!window.Notification||Notification.permission!=='granted')return;
+    if(navigator.serviceWorker&&navigator.serviceWorker.getRegistration){
+      navigator.serviceWorker.getRegistration().then(g=>{if(g)g.showNotification(title,{body,icon:'icon-192.png',tag:title});else new Notification(title,{body})}).catch(()=>{try{new Notification(title,{body})}catch(e){}});
+    }else new Notification(title,{body});
+  }catch(e){}
+}
+const EYE='<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></svg>';
+const EYEOFF='<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/><path d="M3 3l18 18"/></svg>';
+function addEyes(){
+  document.querySelectorAll('input[type=password]:not([data-eye])').forEach(inp=>{
+    inp.dataset.eye='1';
+    const w=document.createElement('div');w.className='pw';
+    inp.parentNode.insertBefore(w,inp);w.appendChild(inp);
+    const b=document.createElement('button');b.type='button';b.className='eye';
+    b.setAttribute('aria-label','إظهار كلمة المرور');b.innerHTML=EYE;
+    b.onclick=()=>{const show=inp.type==='password';inp.type=show?'text':'password';b.innerHTML=show?EYEOFF:EYE;b.setAttribute('aria-label',show?'إخفاء كلمة المرور':'إظهار كلمة المرور')};
+    w.appendChild(b);
+  });
+  document.querySelectorAll('input[type=text]:not([autocomplete]),textarea:not([autocomplete])').forEach(e=>e.setAttribute('autocomplete','off'));
+}
+new MutationObserver(addEyes).observe(document.documentElement,{childList:true,subtree:true});
+function askPass(title,msg){
+  return new Promise(res=>{
+    const ov=document.createElement('div');ov.className='ov';ov.style.zIndex='70';
+    ov.innerHTML=`<div class="mod" style="max-width:380px;margin:auto;border-radius:16px"><h2 style="margin-top:0">${esc(title)}</h2><p class="m">${esc(msg)}</p><input type="password" id="apw" autocomplete="off"><div class="row" style="margin-top:12px"><button type="button" class="btn p" style="flex:1" id="apOk">متابعة</button><button type="button" class="btn" id="apNo">إلغاء</button></div></div>`;
+    document.body.appendChild(ov);
+    const fin=v=>{ov.remove();res(v)};
+    ov.querySelector('#apOk').onclick=()=>fin(ov.querySelector('#apw').value);
+    ov.querySelector('#apNo').onclick=()=>fin(null);
+    setTimeout(()=>{const i=ov.querySelector('#apw');i&&i.focus()},60);
+  });
+}
+function dlBlob(blob,name){
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');a.href=url;a.download=name;
+  document.body.appendChild(a);a.click();a.remove();
+  setTimeout(()=>URL.revokeObjectURL(url),2000);
+}
+function toast(msg,ms=3500){
+  const t=$('#toast');t.textContent=msg;t.classList.add('show');
+  clearTimeout(toast._tm);toast._tm=setTimeout(()=>t.classList.remove('show'),ms);
+}
+
+const IC={home:'<rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/>',gavel:'<path d="m14.5 12.5-8 8a2.119 2.119 0 1 1-3-3l8-8"/><path d="m16 16 6-6"/><path d="m8 8 6-6"/><path d="m9 7 8 8"/><path d="m21 11-8-8"/>',clip:'<rect width="8" height="4" x="8" y="2" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M12 11h4M12 16h4M8 11h.01M8 16h.01"/>',hour:'<path d="M5 22h14M5 2h14"/><path d="M17 22v-4.172a2 2 0 0 0-.586-1.414L12 12l-4.414 4.414A2 2 0 0 0 7 17.828V22"/><path d="M7 2v4.172a2 2 0 0 0 .586 1.414L12 12l4.414-4.414A2 2 0 0 0 17 6.172V2"/>',bell:'<path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/>',users:'<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/>',sl:'<path d="M21 4h-7M10 4H3M21 12h-9M8 12H3M21 20h-5M12 20H3M14 2v4M8 10v4M16 18v4"/>',more:'<circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/>',scale:'<path d="m16 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="m2 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="M7 21h10"/><path d="M12 3v18"/><path d="M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2"/>',mic:'<path d="M12 2a3 3 0 0 1 3 3v7a3 3 0 0 1-6 0V5a3 3 0 0 1 3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" x2="12" y1="19" y2="22"/>',cam:'<path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/>'};
+const I=(k,n=22)=>`<svg width="${n}" height="${n}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${IC[k]}</svg>`;
+let tab='dashboard',cur=today(),scanSection='sessions';
+
+const TABS=[['dashboard','الرئيسية','الرئيسية','home'],['sessions','الجلسات','الجلسات','gavel'],['tasks','الأعمال الإدارية','المهام','clip'],['deadlines','مواعيد الطعن والاستئناف','الطعون','hour'],['clients','الموكلون','الموكلون','users'],['reminders','المواعيد والتذكيرات','التذكير','bell']];
+const SETTINGS_TAB=['backup','الإعدادات','الإعدادات','sl'];
+
+const F={
+ tasks:[['title','المهمة *','text'],['date','اليوم','date'],['notes','ملاحظات','area']],
+ deadlines:[['kind','النوع','sel',KINDS],['title','وصف الإجراء','text'],['client','الموكل','text'],['case','رقم القضية','text'],['basis','بداية المدة (صدور الحكم / التبليغ)','date'],['days','عدد الأيام','num'],['due','آخر موعد للإجراء *','date'],['notes','ملاحظات','area']],
+ reminders:[['title','عنوان الموعد *','text'],['date','التاريخ *','date'],['time','الوقت','time'],['before','التنبيه','sel',BEFORE],['notes','ملاحظات','area']],
+ clients:[['name','الاسم *','text'],['phone','رقم الهاتف','text'],['notes','ملاحظات','area']],
+ sessions:[['client','اسم الموكل *','text'],['case','رقم القضية','text'],['court','المحكمة','text'],['date','التاريخ *','date'],['time','الوقت','time'],['notes','ملاحظات','area']]
+};
+const DEF={clients:()=>({}),tasks:()=>({date:cur}),deadlines:()=>({kind:KINDS[0],basis:today(),days:''}),reminders:()=>({date:today(),time:'09:00',before:60}),sessions:()=>({date:today(),time:'09:00'})};
+const REQ={clients:['name'],tasks:['title','date'],deadlines:['due'],reminders:['title','date'],sessions:['client','date']};
+
+/* ---- التعرف الصوتي: يبدأ فوراً عند الضغط ---- */
+let recognition=null,recTarget=null,recActive=false,recBase='',recCommit='',recIdle=null;
+/* ===== Vosk: تعرف صوتي عربي محلي بدون إنترنت ===== */
+const SpeechRec=window.SpeechRecognition||window.webkitSpeechRecognition;
+let mediaPermDone=false;
+try{if(localStorage.getItem('lawyerMediaPerm')==='1')mediaPermDone=true}catch(e){}
+
+const VOSK_MODEL_LOCAL='models/vosk-ar.tar.gz';
+const VOSK_MODEL_ID='vosk-ar-mgb2-0.4';
+const VOSK_SCRIPT='vosk.js';
+let voskReady=false, voskModel=null, voskLoading=null;
+let voskRec=null, voskCtx=null, voskStream=null, voskNode=null, voskSource=null;
+let voskPartial='';
+
+function askMediaPermUI(kind){
+  return new Promise(resolve=>{
+    if(mediaPermDone){resolve(true);return}
+    const ov=document.createElement('div');
+    ov.className='ov';ov.style.zIndex='40';
+    ov.innerHTML=`<div class="mod" style="max-width:360px;margin:auto;border-radius:16px;padding:20px">
+      <h2 style="margin:0 0 8px;font-size:18px">${kind==='mic'?'السماح بالميكروفون':'السماح بالكاميرا'}</h2>
+      <p class="m" style="margin:0 0 12px">مرة واحدة فقط. اختر: <b>السماح أثناء زيارة الموقع</b>.</p>
+      <div class="row" style="gap:8px">
+        <button type="button" class="btn p" style="flex:1" id="mpAllow">سماح</button>
+        <button type="button" class="btn" style="flex:1" id="mpDeny">حظر</button>
+      </div>
+    </div>`;
+    document.body.appendChild(ov);
+    const finish=ok=>{
+      ov.remove();
+      if(ok){mediaPermDone=true;try{localStorage.setItem('lawyerMediaPerm','1')}catch(e){}}
+      resolve(!!ok);
+    };
+    ov.querySelector('#mpAllow').onclick=()=>finish(true);
+    ov.querySelector('#mpDeny').onclick=()=>finish(false);
+    ov.onclick=e=>{if(e.target===ov)finish(false)};
+  });
+}
+
+async function ensureMediaPerm(kind){return true}
+
+let recSilence=null;
+function detachVoice(){
+  recTarget=null;recActive=false;clearTimeout(recSilence);recSilence=null;
+  document.querySelectorAll('.btn.mic.rec').forEach(b=>b.classList.remove('rec'));
+}
+function killVoice(){
+  const r=recognition;recognition=null;
+  if(r){
+    try{r.onresult=r.onerror=r.onend=r.onstart=null}catch(e){}
+    try{r.abort?r.abort():r.stop()}catch(e){}
+  }
+  // إيقاف Vosk
+  try{if(voskNode){voskNode.onaudioprocess=null;voskNode.disconnect()}}catch(e){}
+  try{if(voskSource)voskSource.disconnect()}catch(e){}
+  try{if(voskStream)voskStream.getTracks().forEach(t=>t.stop())}catch(e){}
+  try{if(voskRec){voskRec.remove&&voskRec.remove()}}catch(e){}
+  try{if(voskCtx&&voskCtx.state!=='closed')voskCtx.close()}catch(e){}
+  voskRec=null;voskCtx=null;voskStream=null;voskNode=null;voskSource=null;voskPartial='';
+}
+function stopVoice(){detachVoice();killVoice()}
+
+function micBtn(forId){
+  return`<button type="button" class="btn s mic" data-a="mic" data-for="${forId}" title="تحدث فيتحول الكلام إلى نص">${I('mic',18)}</button>`;
+}
+
+/* ---- التعرف المدمج بالمتصفح (On-device) — بدون ملفات، خفيف ولحظي ---- */
+const OD_LANGS=['ar-SA','ar-EG','ar'];
+function odMsg(t){const el=document.getElementById('odStatus');if(el)el.textContent=t}
+async function odStatus(){
+  if(!SpeechRec||typeof SpeechRec.available!=='function')return{state:'unsupported'};
+  let best={state:'unavailable'};
+  for(const l of OD_LANGS){
+    try{
+      const r=await SpeechRec.available({langs:[l],processLocally:true});
+      if(r==='available')return{state:'available',lang:l};
+      if((r==='downloadable'||r==='downloading')&&best.state==='unavailable')best={state:r,lang:l};
+    }catch(e){}
+  }
+  return best;
+}
+async function odRefresh(){
+  const o=await odStatus();
+  odMsg(({
+    unsupported:'✗ هذا المتصفح لا يدعم التعرف بدون نت. استخدم Chrome أو Edge حديث (وليس Firefox).',
+    unavailable:'✗ العربية بدون نت غير متاحة في هذا المتصفح/الجهاز حالياً.',
+    downloadable:'حزمة اللغة العربية غير منزّلة — اضغط «تفعيل» (يحتاج إنترنت مرة واحدة).',
+    downloading:'جاري تنزيل حزمة اللغة العربية…',
+    available:'✓ جاهز — التعرف العربي يعمل الآن بدون إنترنت'
+  })[o.state]);
+  return o;
+}
+async function odEnable(){
+  let o=await odRefresh();
+  if(o.state==='downloadable'||o.state==='downloading'){
+    odMsg('جاري تنزيل حزمة اللغة العربية من المتصفح… (يلزم إنترنت لمرة واحدة)');
+    try{await SpeechRec.install({langs:[o.lang],processLocally:true})}catch(e){odMsg('✗ فشل التنزيل: '+(e&&e.message||e));return}
+    o=await odRefresh();
+    if(o.state==='available')toast('جاهز — الميكروفون يعمل بدون إنترنت');
+  }
+}
+function voskFailed(){try{return localStorage.getItem('lawyerVoskFail')==='1'}catch(e){return false}}
+function setVoskFailed(v){try{v?localStorage.setItem('lawyerVoskFail','1'):localStorage.removeItem('lawyerVoskFail')}catch(e){}}
+
+/* ---- حالة Vosk تظهر فوراً في بطاقة الإعدادات ---- */
+const IS_HTTP=/^https?:$/.test(location.protocol);
+let voskLastMsg='',voskSrcCache=null,voskPreloadTried=false,voskScriptP=null;
+function voskMsg(t){voskLastMsg=t;const el=document.getElementById('voskStatus');if(el)el.textContent=t}
+
+/* ---- تحميل سكربت Vosk محلياً (يعمل حتى من file://) ---- */
+function loadVoskScript(){
+  if(window.Vosk)return Promise.resolve(window.Vosk);
+  if(voskScriptP)return voskScriptP;
+  voskScriptP=new Promise((resolve,reject)=>{
+    const s=document.createElement('script');
+    s.src=VOSK_SCRIPT;
+    s.onload=()=>{window.Vosk?resolve(window.Vosk):(voskScriptP=null,reject(new Error('vosk.js حُمّل لكن لم يُعرّف Vosk — تأكد أنه ملف vosk-browser الصحيح')))};
+    s.onerror=()=>{voskScriptP=null;reject(new Error('تعذّر تحميل vosk.js — ضعه بجانب index.html'))};
+    document.head.appendChild(s);
+  });
+  return voskScriptP;
+}
+
+/* ---- IndexedDB: النموذج يُحفظ داخل المتصفح مرة واحدة ---- */
+function idbOpen(){
+  return new Promise((res,rej)=>{
+    const r=indexedDB.open('lawyerVosk',1);
+    r.onupgradeneeded=()=>{const db=r.result;if(!db.objectStoreNames.contains('models'))db.createObjectStore('models')};
+    r.onsuccess=()=>res(r.result);
+    r.onerror=()=>rej(r.error);
+  });
+}
+async function idbGetModel(){
+  try{
+    const db=await idbOpen();
+    return await new Promise((res,rej)=>{
+      const q=db.transaction('models','readonly').objectStore('models').get(VOSK_MODEL_ID);
+      q.onsuccess=()=>res(q.result||null);
+      q.onerror=()=>rej(q.error);
+    });
+  }catch(e){return null}
+}
+async function idbPutModel(blob){
+  const db=await idbOpen();
+  return new Promise((res,rej)=>{
+    const tx=db.transaction('models','readwrite');
+    tx.objectStore('models').put(blob,VOSK_MODEL_ID);
+    tx.oncomplete=()=>res();
+    tx.onerror=()=>rej(tx.error);
+    tx.onabort=()=>rej(tx.error||new Error('فشل الحفظ (ربما المساحة ممتلئة)'));
+  });
+}
+async function idbHasModel(){const b=await idbGetModel();return !!(b&&b.size>1e6)}
+
+/* ---- أين النموذج؟ فحص فوري (بدون تحميل) ---- */
+async function modelSource(){
+  if(voskSrcCache)return voskSrcCache;
+  const b=await idbGetModel();
+  if(b&&b.size>1e6)return voskSrcCache={kind:'idb',blob:b};
+  if(IS_HTTP){ // file:// يمنع fetch، لذلك نجرب فقط عند التشغيل عبر http
+    try{const h=await fetch(VOSK_MODEL_LOCAL,{method:'HEAD',cache:'no-cache'});if(h.ok)return voskSrcCache={kind:'http'}}catch(e){}
+  }
+  return null;
+}
+
+/* ---- قراءة أول عنصر من الأرشيف للتأكد من بنيته ---- */
+async function peekTar(blob){
+  const h=new Uint8Array(await blob.slice(0,2).arrayBuffer());
+  if(h[0]!==0x1f||h[1]!==0x8b)return{ok:false,msg:'الملف ليس gzip. يجب أن يكون vosk-ar.tar.gz (وليس .tar أو .zip أو .rar)'};
+  if(typeof DecompressionStream==='undefined')return{ok:true,first:''};
+  try{
+    const rd=blob.slice(0,2*1024*1024).stream().pipeThrough(new DecompressionStream('gzip')).getReader();
+    let buf=new Uint8Array(0);
+    while(buf.length<512){
+      const{value,done}=await rd.read();if(done)break;
+      const n=new Uint8Array(buf.length+value.length);n.set(buf);n.set(value,buf.length);buf=n;
+    }
+    try{rd.cancel()}catch(e){}
+    return{ok:true,first:new TextDecoder().decode(buf.slice(0,100)).replace(/\0[\s\S]*$/,'')};
+  }catch(e){return{ok:true,first:''}}
+}
+
+/* ---- اختيار ملف النموذج مرة واحدة وحفظه في المتصفح ---- */
+function pickModelFile(){
+  return new Promise(res=>{
+    const inp=document.createElement('input');
+    inp.type='file';inp.accept='.gz,.tgz,application/gzip,application/x-gzip';inp.style.display='none';
+    inp.onchange=()=>{const f=inp.files&&inp.files[0];inp.remove();res(f||null)};
+    inp.oncancel=()=>{inp.remove();res(null)};
+    document.body.appendChild(inp);inp.click();
+  });
+}
+async function importModelFile(){
+  voskMsg('اختر الملف models/vosk-ar.tar.gz من النافذة…');
+  const f=await pickModelFile();
+  if(!f){voskMsg('✗ لم يتم اختيار ملف');return false}
+  if(f.size<20*1024*1024){voskMsg('✗ الملف صغير جداً ('+Math.round(f.size/1048576)+' MB) — اختر vosk-ar.tar.gz الكامل');return false}
+  const pk=await peekTar(f);
+  if(!pk.ok){voskMsg('✗ '+pk.msg);return false}
+  voskMsg('جاري حفظ النموذج داخل المتصفح (مرة واحدة)…');
+  try{await idbPutModel(f)}catch(e){voskMsg('✗ فشل الحفظ: '+(e&&e.message||e));return false}
+  voskSrcCache=null;setVoskFailed(false);
+  if(voskModel){try{voskModel.terminate&&voskModel.terminate()}catch(e){}voskModel=null;voskReady=false}
+  voskMsg('✓ تم حفظ النموذج ('+Math.round(f.size/1048576)+' MB)'+(pk.first?' — أول عنصر في الأرشيف: '+pk.first:''));
+  return true;
+}
+
+/* ---- تحميل النموذج في الذاكرة (مرة واحدة لكل تشغيل) ---- */
+async function ensureVoskModel(onStatus){
+  if(voskModel)return voskModel;
+  if(voskLoading)return voskLoading;
+  voskLoading=(async()=>{
+    const src=await modelSource();
+    if(!src)return null;
+    await loadVoskScript();
+    let url=VOSK_MODEL_LOCAL,revoke=null;
+    if(src.kind==='idb'){url=URL.createObjectURL(src.blob);revoke=url}
+    const t0=Date.now();
+    const tick=setInterval(()=>{if(onStatus)onStatus('جاري تهيئة المحرك… '+Math.round((Date.now()-t0)/1000)+' ث (مرة واحدة عند كل تشغيل)')},500);
+    try{
+      const m=await Promise.race([
+        window.Vosk.createModel(url),
+        new Promise((_,rej)=>setTimeout(()=>rej(new Error('انتهت المهلة (5 دقائق) — الجهاز لا يتحمل هذا النموذج الكبير')),300000))
+      ]);
+      voskModel=m;voskReady=true;setVoskFailed(false);
+      voskMsg('✓ التعرف العربي المحلي جاهز — يعمل بدون إنترنت');
+      return m;
+    }catch(err){setVoskFailed(true);throw err}
+    finally{clearInterval(tick);if(revoke)URL.revokeObjectURL(revoke)}
+  })();
+  try{return await voskLoading}finally{voskLoading=null}
+}
+
+/* ---- زر «فحص النموذج»: فحص فوري ثم تهيئة ---- */
+async function voskCheck(forcePick){
+  let src=forcePick?null:await modelSource();
+  if(!src){ // أول مرة: اختر الملف
+    if(!(await importModelFile()))return;
+    src=await modelSource();if(!src)return;
+  }
+  if(voskModel){voskMsg('✓ التعرف العربي المحلي جاهز — يعمل بدون إنترنت');toast('Vosk جاهز');return}
+  try{await loadVoskScript()}catch(e){voskMsg('✗ '+e.message);toast(e.message);return}
+  if(voskLoading){voskMsg('جاري تهيئة المحرك…');return}
+  voskMsg('✓ النموذج موجود — جاري تهيئة المحرك…');
+  try{
+    const m=await ensureVoskModel(voskMsg);
+    if(m)toast('Vosk جاهز — اضغط الميكروفون وتكلم');
+    else voskMsg('✗ النموذج غير موجود');
+  }catch(e){
+    voskMsg('✗ فشل تحميل النموذج: '+(e&&e.message||e)+' — تأكد أن الأرشيف بصيغة tar.gz وبداخله am و conf و graph');
+  }
+}
+/* حالة فورية عند فتح الإعدادات */
+async function voskStatusRefresh(){
+  if(voskModel){voskMsg('✓ التعرف العربي المحلي جاهز — يعمل بدون إنترنت');return}
+  if(voskLoading){voskMsg(voskLastMsg||'جاري تهيئة المحرك…');return}
+  const src=await modelSource();
+  voskMsg(src?'✓ النموذج محفوظ ('+(src.kind==='idb'?'داخل المتصفح':'ملف محلي')+') — اضغط «فحص النموذج» لتهيئته':'✗ النموذج غير مثبت — اضغط «اختيار ملف النموذج» وحدد models/vosk-ar.tar.gz');
+}
+/* تحميل مسبق صامت بعد فتح التطبيق ليكون الميكروفون فورياً */
+function preloadVosk(){
+  if(voskPreloadTried||voskModel||voskLoading||voskFailed())return;
+  voskPreloadTried=true;
+  setTimeout(async()=>{
+    try{if(await modelSource())await ensureVoskModel(voskMsg)}catch(e){voskMsg('✗ فشل التحميل المسبق: '+(e&&e.message||e))}
+  },1500);
+}
+
+async function startVoskVoice(inputEl,btn){
+  stopVoice();
+  recTarget=inputEl;recActive=true;
+  recBase=(inputEl&&inputEl.value)||'';recCommit='';voskPartial='';
+  if(btn)btn.classList.add('rec');
+  const cancelled=()=>!(recActive&&recTarget===inputEl);
+  // اطلب الميكروفون بالتوازي مع تحميل النموذج لتوفير الوقت
+  const streamP=navigator.mediaDevices.getUserMedia({
+    audio:{echoCancellation:false,noiseSuppression:true,autoGainControl:true,channelCount:1},video:false
+  });
+  streamP.catch(()=>{});
+  let model=voskModel;
+  if(!model){
+    toast('جاري تجهيز النموذج… ثوانٍ فقط');
+    try{model=await ensureVoskModel(voskMsg)}
+    catch(e){stopVoice();toast('فشل تحميل النموذج: '+(e&&e.message||e));return true}
+    if(cancelled()){try{(await streamP).getTracks().forEach(t=>t.stop())}catch(e){}return true}
+    if(!model){stopVoice();return false}
+  }
+  try{
+    voskStream=await streamP;
+    if(cancelled()){voskStream.getTracks().forEach(t=>t.stop());voskStream=null;return true}
+    voskCtx=new (window.AudioContext||window.webkitAudioContext)();
+    if(voskCtx.state==='suspended')await voskCtx.resume();
+    voskRec=new model.KaldiRecognizer(voskCtx.sampleRate);
+    voskRec.setWords&&voskRec.setWords(false);
+
+    const arm=()=>{
+      clearTimeout(recSilence);
+      recSilence=setTimeout(()=>{if(recActive){stopVoice();toast('تم إيقاف الإدخال بعد توقفك عن الكلام')}},12000);
+    };
+    const write=()=>{
+      if(!recTarget)return;
+      recTarget.value=(recBase?recBase+' ':'')+recCommit+(voskPartial?(recCommit?' ':'')+voskPartial:'');
+      recTarget.dispatchEvent(new Event('input',{bubbles:true}));
+    };
+    voskRec.on('result',msg=>{
+      const t=(msg&&msg.result&&msg.result.text||'').trim();
+      if(t){recCommit+=(recCommit?' ':'')+t;arm()}
+      voskPartial='';write();
+    });
+    voskRec.on('partialresult',msg=>{
+      const p=(msg&&msg.result&&msg.result.partial||'').trim();
+      if(p!==voskPartial){voskPartial=p;if(p)arm();write()}
+    });
+    voskRec.on('error',msg=>{toast('خطأ في التعرف: '+(msg&&msg.error||''));});
+
+    voskSource=voskCtx.createMediaStreamSource(voskStream);
+    voskNode=voskCtx.createScriptProcessor(4096,1,1);
+    voskNode.onaudioprocess=e=>{try{if(voskRec)voskRec.acceptWaveform(e.inputBuffer)}catch(err){}};
+    const gain=voskCtx.createGain();gain.gain.value=0; // كتم الخرج لمنع الصدى
+    voskSource.connect(voskNode);
+    voskNode.connect(gain);gain.connect(voskCtx.destination);
+    arm();
+    toast('تكلم الآن… (بدون إنترنت)');
+    return true;
+  }catch(e){
+    stopVoice();
+    const n=e&&e.name;
+    toast(n==='NotAllowedError'?'الميكروفون محظور: اضغط أيقونة القفل بجانب العنوان ← الميكروفون ← سماح':'تعذّر تشغيل الميكروفون أو Vosk: '+(e&&e.message||e));
+    return true;
+  }
+}
+
+async function startVoice(inputEl,btn){
+  if(recActive&&recTarget===inputEl){
+    stopVoice();
+    toast('تم إيقاف الإدخال الصوتي');
+    return;
+  }
+
+  // أولوية: Vosk المحلي (فحص فوري بدون تحميل)
+  let od={state:'unsupported'};
+  try{od=await odStatus()}catch(e){}
+  const useLocal=od.state==='available';
+  if(voskModel||(!useLocal&&!voskFailed()&&(voskLoading||await modelSource()))){
+    const ok=await startVoskVoice(inputEl,btn);
+    if(ok)return;
+  }
+
+  // إن لم يتوفر Vosk: استخدم Web Speech عند وجود نت
+  if(!SpeechRec){
+    toast('ثبّت نموذج Vosk من الإعدادات لتعمل بدون نت، أو استخدم Chrome مع إنترنت.');
+    return;
+  }
+  if(navigator.onLine===false&&!useLocal){
+    toast('لا يوجد إنترنت. من الإعدادات اضغط «تفعيل» في بطاقة التعرف بدون نت (مرة واحدة وأنت متصل).');
+    return;
+  }
+
+  stopVoice();
+  recTarget=inputEl;
+  recActive=true;
+  recBase=(inputEl&&inputEl.value)||'';
+  recCommit='';
+  if(btn)btn.classList.add('rec');
+
+  const r=new SpeechRec();
+  recognition=r;
+  try{r.processLocally=useLocal}catch(e){}
+  r.lang=useLocal?od.lang:'ar-SA';
+  r.continuous=true;
+  r.interimResults=true;
+  r.maxAlternatives=1;
+  let lastIdx=0;
+  const tried=['ar-SA','ar-EG','ar'];
+  let li=0;
+  const arm=()=>{
+    clearTimeout(recSilence);
+    recSilence=setTimeout(()=>{if(recognition===r){stopVoice();toast('تم إيقاف الإدخال بعد توقفك عن الكلام')}},8000);
+  };
+  r.onstart=()=>{arm();toast(useLocal?'تكلم الآن… (بدون إنترنت)':'تكلم الآن… (وضع الإنترنت — فعّل التعرف بدون نت من الإعدادات)')};
+  r.onresult=e=>{
+    arm();
+    let interim='';
+    for(let i=lastIdx;i<e.results.length;i++){
+      const x=e.results[i];
+      if(x.isFinal){
+        const t=x[0].transcript.trim();
+        if(t)recCommit+=(recCommit?' ':'')+t;
+        lastIdx=i+1;
+      }else interim+=x[0].transcript;
+    }
+    if(recTarget){
+      recTarget.value=(recBase?recBase+' ':'')+recCommit+(interim?(recCommit?' ':'')+interim:'');
+      recTarget.dispatchEvent(new Event('input',{bubbles:true}));
+    }
+  };
+  r.onerror=e=>{
+    if(e.error==='no-speech'||e.error==='aborted'){if(recognition===r)stopVoice();return}
+    if(e.error==='not-allowed'||e.error==='service-not-allowed'){
+      toast('الميكروفون محظور. من شريط العنوان: القفل ← الميكروفون ← سماح');
+    }else if(e.error==='language-not-supported'&&li<tried.length-1){
+      li++;try{r.lang=tried[li];r.start();return}catch(err){}
+    }else if(e.error==='network'){
+      toast('انقطع الإنترنت. فعّل التعرف بدون نت من الإعدادات (مرة واحدة).');
+    }else toast('تعذّر التعرف: '+e.error);
+    if(recognition===r)stopVoice();
+  };
+  r.onend=()=>{if(recognition===r)stopVoice()};
+  try{r.start()}catch(e){stopVoice();toast('تعذّر تشغيل التعرف الصوتي')}
+}
+
+/* ---- نسخة احتياطية PDF + استعادة ---- */
+const BK_B='%%LAWYERBACKUP-BEGIN%%',BK_E='%%LAWYERBACKUP-END%%';
+function renderReport(readable){
+  const st=x=>x.done?'منجز':'قيد المتابعة';
+  const J=a=>a.filter(Boolean).join(' — ');
+  const B=[{t:'t',x:'أجندة المحامي — نسخة احتياطية'},
+    {t:'l',x:'التاريخ: '+new Date().toLocaleString('ar-u-nu-latn')},
+    {t:'l',x:`الجلسات: ${D.sessions.length} · مواعيد الطعن: ${D.deadlines.length} · التذكيرات: ${D.reminders.length} · المهام: ${D.tasks.length} · الموكلون: ${D.clients.length}`}];
+  if(!readable){
+    B.push({t:'l',x:'بياناتك داخل هذا الملف مشفّرة (AES-256) ولا تُقرأ بدون كلمة المرور.'});
+    B.push({t:'l',x:'للاستعادة: افتح التطبيق ← الإعدادات ← استعادة من ملف، اختر هذا الملف، ثم أدخل كلمة المرور التي كانت مستخدمة وقت أخذ النسخة.'});
+  }else{
+    B.push({t:'l',x:'تنبيه: صفحات التقرير التالية غير مشفّرة. احفظ الملف في مكان آمن.'});
+    const sec=(h,arr,f)=>{if(!arr.length)return;B.push({t:'h',x:h+' ('+arr.length+')'});arr.forEach(r=>{B.push({t:'l',x:'• '+f(r)});if(r.notes)B.push({t:'n',x:'   ملاحظات: '+r.notes})})};
+    sec('مواعيد الطعن والاستئناف',[...D.deadlines].sort((a,b)=>a.due.localeCompare(b.due)),r=>J([r.kind,r.title,r.client&&'الموكل: '+r.client,r.case&&'قضية: '+r.case,'آخر موعد: '+r.due,st(r)]));
+    sec('الجلسات',[...D.sessions].sort((a,b)=>a.date.localeCompare(b.date)),r=>J([r.client,r.case&&'قضية: '+r.case,r.court,r.date+' '+(r.time||''),st(r)]));
+    sec('التذكيرات',[...D.reminders].sort((a,b)=>evt(a)-evt(b)),r=>J([r.title,r.date+' '+(r.time||''),st(r)]));
+    sec('المهام',[...D.tasks].sort((a,b)=>a.date.localeCompare(b.date)),r=>J([r.date,r.title,r.done?'منجزة':'غير منجزة']));
+    sec('الموكلون',D.clients,r=>J([r.name,r.phone]));
+  }
+  const W=1240,H=1754,M=70,pages=[];let c,x,y;
+  const fnt=t=>(t==='t'?'700 42px':t==='h'?'700 30px':t==='n'?'400 21px':'400 25px')+' "Segoe UI",Tahoma,Arial,sans-serif';
+  const np=()=>{c=document.createElement('canvas');c.width=W;c.height=H;x=c.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,W,H);x.fillStyle='#222';x.direction='rtl';x.textAlign='right';y=M;pages.push(c)};
+  np();
+  for(const b of B){
+    x.font=fnt(b.t);const lh=b.t==='t'?64:b.t==='h'?56:b.t==='n'?30:36;
+    if(b.t==='h'){y+=14;x.fillStyle='#4a2f1a'}else x.fillStyle=b.t==='n'?'#666':'#222';
+    const lines=[];let cur='';
+    for(const w of String(b.x).split(' ')){const t=cur?cur+' '+w:w;if(x.measureText(t).width>W-2*M&&cur){lines.push(cur);cur=w}else cur=t}
+    if(cur)lines.push(cur);
+    for(const ln of lines){
+      if(y+lh>H-M){np();x.font=fnt(b.t);x.fillStyle=b.t==='h'?'#4a2f1a':'#222'}
+      x.fillText(ln,W-M,y+lh*0.78);y+=lh;
+    }
+  }
+  return pages.map(cv=>cv.toDataURL('image/jpeg',0.85));
+}
+async function backupPdf(readable){
+  try{
+    if(!cryptoKey||!unlocked){toast('افتح التطبيق أولاً');return}
+    toast('جارٍ إنشاء ملف PDF…');
+    const pack=await encryptData(D,cryptoKey);
+    const payload=JSON.stringify({v:2,app:'lawyer-agenda',salt:Auth.salt,iter:Auth.iter||120000,pack});
+    const blob=buildPdf(renderReport(readable),'نسخة',BK_B+payload+BK_E);
+    const name='نسخة_أجندة_المحامي_'+today()+(readable?'_تقرير':'')+'.pdf';
+    dlBlob(blob,name);
+    const im=$('#im');if(im)im.textContent='تم تنزيل: '+name;
+    toast('تم تنزيل النسخة الاحتياطية: '+name,4500);
+  }catch(e){console.error(e);toast('تعذّر إنشاء ملف PDF (قد تكون الصور كبيرة جداً)')}
+}
+async function restoreFile(f){
+  const im=$('#im');const say=m=>{if(im)im.textContent=m;toast(m,4500)};
+  try{
+    let j;
+    if(/\.pdf$/i.test(f.name)||f.type==='application/pdf'){
+      const txt=new TextDecoder('latin1').decode(await f.arrayBuffer());
+      const a=txt.indexOf(BK_B),b=txt.indexOf(BK_E,a);
+      if(a<0||b<0){say('هذا الملف ليس نسخة احتياطية من التطبيق (أو أُعيد حفظه من برنامج آخر)');return}
+      j=JSON.parse(txt.slice(a+BK_B.length,b));
+    }else j=JSON.parse(await f.text());
+    let data;
+    if(j&&j.v===2&&j.pack&&j.salt){
+      const pw=await askPass('كلمة مرور النسخة','أدخل كلمة المرور التي كانت مستخدمة وقت أخذ هذه النسخة.');
+      if(pw===null)return;
+      const{key}=await deriveKey(pw,j.salt,+j.iter||120000);
+      try{data=await decryptData(j.pack,key)}catch(e){say('كلمة المرور غير صحيحة أو الملف تالف');return}
+    }else if(j&&j.plain&&j.data)data=j.data;
+    else if(j&&j.ct&&j.iv){
+      try{data=await decryptData(j,cryptoKey)}catch(e){say('هذه نسخة JSON قديمة ولا تُفتح إلا على نفس الجهاز بنفس كلمة المرور. أنشئ نسخة PDF جديدة.');return}
+    }else{say('ملف غير صالح');return}
+    const nd=normalizeData(data);
+    if(!confirm('سيتم استبدال البيانات الحالية ببيانات النسخة ('+nd.sessions.length+' جلسة، '+nd.deadlines.length+' موعد طعن، '+nd.tasks.length+' مهمة). متابعة؟'))return;
+    D=nd;loadOk=true;await save();draw();
+    say('تمت الاستعادة بنجاح');
+  }catch(e){console.warn(e);say('ملف غير صالح')}
+}
+/* ---- ماسح الكاميرا + PDF ---- */
+function scansFor(sec){return(D.scans||[]).filter(s=>s.section===sec)}
+function scanUI(sec){
+  const list=scansFor(sec);
+  return`<div class="scan-box" data-sec="${sec}">
+    <h3>${I('cam',18)} مسح / تصوير مستند</h3>
+    <p class="m" style="margin:0 0 10px">التقط صورة بالكاميرا أو اختر من المعرض. تُحفظ ضمن التطبيق ويمكن تصديرها PDF.</p>
+    <div class="row wrap">
+      <button type="button" class="btn p" data-a="scan" data-sec="${sec}">${I('cam',18)} فتح الكاميرا</button>
+      <button type="button" class="btn" data-a="scanpdf" data-sec="${sec}" ${list.length?'':'disabled'}>حفظ كـ PDF (${list.length})</button>
+    </div>
+    <div class="scan-thumbs">${list.map(s=>`<div class="th"><img src="${s.data}" alt=""><button type="button" data-a="scandel" data-id="${s.id}" title="حذف">×</button></div>`).join('')}</div>
+  </div>`;
+}
+async function openCamera(sec,itemId){
+  if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia){fallbackFilePick(sec,itemId);return}
+  const ov=document.createElement('div');
+  ov.className='scanner-ov';
+  ov.innerHTML=`<p class="sc-hint">وجّه الكاميرا نحو المستند ثم اضغط «التقاط»</p>
+    <video id="scVid" autoplay playsinline muted></video>
+    <canvas id="scCan"></canvas>
+    <div class="sc-bar">
+      <button type="button" class="btn a" id="scSnap">التقاط المستند</button>
+      <button type="button" class="btn" id="scFile">من المعرض / الملفات</button>
+      <button type="button" class="btn d" id="scClose">إغلاق</button>
+    </div>`;
+  document.body.appendChild(ov);
+  const vid=$('#scVid');
+  let stream=null,closed=false;
+  const vis=()=>{if(document.hidden)stop()};
+  function stop(){ // يوقف الكاميرا نهائياً مهما كان سبب الإغلاق
+    closed=true;
+    try{stream&&stream.getTracks().forEach(t=>t.stop())}catch(e){}
+    stream=null;try{vid.srcObject=null}catch(e){}
+    document.removeEventListener('visibilitychange',vis);
+    ov.remove();
+  }
+  document.addEventListener('visibilitychange',vis);
+  $('#scClose').onclick=stop;
+  $('#scFile').onclick=()=>{stop();fallbackFilePick(sec,itemId)};
+  navigator.mediaDevices.getUserMedia({
+    audio:false,
+    video:{facingMode:{ideal:'environment'},width:{ideal:1920},height:{ideal:1080}}
+  }).then(st=>{
+    if(closed){st.getTracks().forEach(t=>t.stop());return} // أُغلقت النافذة قبل وصول الكاميرا: أوقفها فوراً
+    stream=st;vid.srcObject=st;
+  }).catch(()=>{
+    if(closed)return;
+    stop();toast('تعذّر فتح الكاميرا — اختر صورة من الملفات');
+    fallbackFilePick(sec,itemId);
+  });
+  $('#scSnap').onclick=async()=>{
+    if(!stream)return;
+    try{
+      const w=vid.videoWidth||1280,h=vid.videoHeight||720;
+      const c=$('#scCan');c.width=w;c.height=h;
+      c.getContext('2d').drawImage(vid,0,0,w,h);
+      let data=c.toDataURL('image/jpeg',0.82);
+      if(w>1600){
+        const c2=document.createElement('canvas');
+        const nw=1600,nh=Math.round(h*1600/w);
+        c2.width=nw;c2.height=nh;
+        c2.getContext('2d').drawImage(c,0,0,nw,nh);
+        data=c2.toDataURL('image/jpeg',0.78);
+      }
+      stop();
+      await addScanImage(sec,itemId,data);
+    }catch(e){stop();toast('تعذّر التقاط الصورة')}
+  };
+}
+function fallbackFilePick(sec,itemId){
+  const inp=$('#camInput');
+  inp.value='';
+  inp.onchange=async()=>{
+    const f=inp.files&&inp.files[0];if(!f)return;
+    try{
+      const data=await compressImage(f,1600,0.78);
+      await addScanImage(sec,itemId,data);
+    }catch(e){toast('تعذّر قراءة الصورة')}
+  };
+  inp.click();
+}
+async function addScanImage(sec,itemId,data){
+  if(!D.scans)D.scans=[];
+  const sid=uid();
+  D.scans.push({id:sid,section:sec,itemId:itemId||sec,data,ts:Date.now(),pending:1});
+  await save();
+  toast('تم التقاط المستند');
+  const th=$('#formThumbs');
+  if(th){
+    const d=document.createElement('div');d.className='th';
+    d.innerHTML=`<img src="${data}" alt=""><button type="button" data-a="scandel" data-id="${sid}" title="حذف">×</button>`;
+    th.appendChild(d);
+  }
+}
+function caseKeyFromForm(itemId){
+  const g=n=>{const el=document.getElementById('f_'+n);return el?el.value.trim():''};
+  const norm=v=>v.toLowerCase().replace(/\s+/g,'');
+  if(g('case'))return 'case:'+norm(g('case'));
+  if(g('client'))return 'client:'+norm(g('client'));
+  return itemId;
+}
+function caseLabelFromForm(itemId){
+  const g=n=>{const el=document.getElementById('f_'+n);return el?el.value.trim():''};
+  return g('case')||g('client')||g('title')||'القضية';
+}
+function casePagesFor(key,itemId){
+  if(!D.casePages)D.casePages={};
+  if(!D.casePages[key])D.casePages[key]=[];
+  if(itemId&&itemId!==key&&D.casePages[itemId]){ // ضم الأرشيف القديم إلى نفس الملف
+    D.casePages[itemId].forEach(x=>D.casePages[key].push(x));
+    delete D.casePages[itemId];
+  }
+  return D.casePages[key];
+}
+async function exportItemScansPdf(sec,itemId){
+  // يضيف الصور الجديدة إلى نفس ملف القضية داخل التطبيق: بدون تنزيل وبدون نوافذ
+  const pending=(D.scans||[]).filter(s=>s.itemId===itemId);
+  if(!pending.length){toast('لا توجد صور جديدة. التقط أو اختر صورة أولاً');return}
+  const pages=casePagesFor(caseKeyFromForm(itemId),itemId);
+  pending.forEach(s=>pages.push(s.data));
+  D.scans=(D.scans||[]).filter(s=>s.itemId!==itemId);
+  const th=$('#formThumbs');if(th)th.innerHTML='';
+  await save();
+  toast('أُضيفت '+pending.length+' صورة إلى ملف القضية (المجموع '+pages.length+' صفحة)');
+}
+async function writeCasePdf(itemId,blob,fileName){
+  // محاولة الكتابة على نفس الملف (Chrome/Edge)
+  if(window.showSaveFilePicker){
+    try{
+      let handle=await getPdfHandle(itemId);
+      if(handle){
+        const perm=await handle.queryPermission({mode:'readwrite'});
+        if(perm!=='granted'){
+          const req=await handle.requestPermission({mode:'readwrite'});
+          if(req!=='granted')handle=null;
+        }
+      }
+      if(!handle){
+        handle=await window.showSaveFilePicker({
+          suggestedName:fileName,
+          types:[{description:'PDF',accept:{'application/pdf':['.pdf']}}]
+        });
+        await setPdfHandle(itemId,handle);
+      }
+      const w=await handle.createWritable();
+      await w.write(blob);
+      await w.close();
+      return true;
+    }catch(e){
+      if(e&&e.name==='AbortError')return false;
+      // سقوط للتنزيل العادي
+    }
+  }
+  // تنزيل باسم ثابت (المستخدم يستبدل يدوياً إن لزم)
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url;a.download=fileName;
+  document.body.appendChild(a);a.click();a.remove();
+  setTimeout(()=>URL.revokeObjectURL(url),2000);
+  return false;
+}
+const pdfHandleDB='lawyerPdfHandles';
+function idb(){return new Promise((res,rej)=>{const r=indexedDB.open(pdfHandleDB,1);r.onupgradeneeded=()=>r.result.createObjectStore('h');r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error)})}
+async function getPdfHandle(itemId){
+  try{
+    const db=await idb();
+    return await new Promise((res,rej)=>{
+      const tx=db.transaction('h','readonly');
+      const q=tx.objectStore('h').get(itemId);
+      q.onsuccess=()=>res(q.result||null);q.onerror=()=>rej(q.error);
+    });
+  }catch(e){return null}
+}
+async function setPdfHandle(itemId,handle){
+  try{
+    const db=await idb();
+    await new Promise((res,rej)=>{
+      const tx=db.transaction('h','readwrite');
+      tx.objectStore('h').put(handle,itemId);
+      tx.oncomplete=()=>res();tx.onerror=()=>rej(tx.error);
+    });
+  }catch(e){}
+}
+function openCasePdf(itemId){
+  const key=caseKeyFromForm(itemId);
+  const pages=casePagesFor(key,itemId);
+  if(!pages.length){toast('لا توجد صفحات في ملف هذه القضية بعد. أضف صوراً ثم اضغط «حفظ في PDF القضية»');return}
+  const label=caseLabelFromForm(itemId);
+  const v=document.createElement('div');v.className='pdfv';
+  const draw=()=>{
+    v.innerHTML=`<div class="hd"><b>ملف القضية: ${esc(label)} (${pages.length} صفحة)</b><span><button type="button" class="btn s" id="pvDl">تنزيل PDF</button> <button type="button" class="btn s" id="pvX">إغلاق</button></span></div><div class="bd">${pages.map((d,i)=>`<div class="pg" data-z="${i}"><img src="${d}" alt=""><i>${i+1}</i><button type="button" data-i="${i}" title="حذف الصفحة">×</button></div>`).join('')||'<p style="color:#ddd">لا توجد صفحات</p>'}</div>`;
+    v.querySelector('#pvX').onclick=()=>v.remove();
+    v.querySelector('#pvDl').onclick=async()=>{
+      try{
+        const blob=buildPdf(pages,'قضية');
+        const fname='قضية_'+label.replace(/[\\/:*?"<>|]+/g,'_').slice(0,40)+'.pdf';
+        // Chrome/Edge على الكمبيوتر: يحدّث نفس الملف في كل مرة؛ بقية المتصفحات تنزّل نسخة
+        const same=await writeCasePdf(key,blob,fname);
+        toast(same?'تم تحديث نفس ملف PDF':'تم تنزيل نسخة PDF (المتصفح لا يسمح بالكتابة فوق ملف قديم)',4500);
+      }catch(e){toast('تعذّر إنشاء PDF')}
+    };
+    v.querySelectorAll('.pg').forEach(g=>g.onclick=e=>{
+      if(e.target.tagName==='BUTTON')return;
+      const z=document.createElement('div');z.className='big';
+      z.innerHTML='<img src="'+pages[+g.dataset.z]+'" alt="">';
+      z.onclick=()=>z.remove();v.appendChild(z);
+    });
+    v.querySelectorAll('.pg button').forEach(b=>b.onclick=async e=>{
+      e.stopPropagation();
+      if(!confirm('حذف هذه الصفحة من ملف القضية؟'))return;
+      pages.splice(+b.dataset.i,1);await save();draw();
+    });
+  };
+  draw();document.body.appendChild(v);
+}
+function compressImage(file,maxW,quality){
+
+
+  return new Promise((res,rej)=>{
+    const r=new FileReader();
+    r.onload=()=>{
+      const img=new Image();
+      img.onload=()=>{
+        let w=img.width,h=img.height;
+        if(w>maxW){h=Math.round(h*maxW/w);w=maxW}
+        const c=document.createElement('canvas');c.width=w;c.height=h;
+        c.getContext('2d').drawImage(img,0,0,w,h);
+        res(c.toDataURL('image/jpeg',quality));
+      };
+      img.onerror=rej;
+      img.src=r.result;
+    };
+    r.onerror=rej;
+    r.readAsDataURL(file);
+  });
+}
+/* توليد PDF بسيط يضم صوراً (بدون مكتبات خارجية) */
+function jpegToPdf(images,title){
+  // كل صورة = صفحة؛ PDF يدوي مبسّط لـ JPEG
+  const pages=[];
+  const encoder=new TextEncoder();
+  function str(s){return s}
+  let objs=[],xref=[],body='',o=1;
+  function addObj(content){
+    const off=body.length;
+    xref.push(off);
+    body+=`${o} 0 obj\n${content}\nendobj\n`;
+    return o++;
+  }
+  // Catalog + Pages later
+  const imgIds=[],pageIds=[];
+  for(const src of images){
+    const b64s=src.replace(/^data:image\/jpeg;base64,/,'').replace(/^data:image\/jpg;base64,/,'');
+    // decode base64 to binary string for length
+    const bin=atob(b64s);
+    // Get dimensions roughly from JPEG SOF — default A4-ish
+    let w=595,h=842;
+    try{
+      const u=new Uint8Array(bin.length);for(let i=0;i<bin.length;i++)u[i]=bin.charCodeAt(i);
+      for(let i=0;i<u.length-9;i++){
+        if(u[i]===0xFF&&(u[i+1]===0xC0||u[i+1]===0xC2)){
+          h=(u[i+5]<<8)|u[i+6];w=(u[i+7]<<8)|u[i+8];break;
+        }
+      }
+    }catch(e){}
+    // scale to fit A4 595x842
+    const maxW=555,maxH=800;
+    let dw=w,dh=h;
+    const sc=Math.min(maxW/w,maxH/h,1);
+    dw=Math.round(w*sc);dh=Math.round(h*sc);
+    const x=Math.round((595-dw)/2),y=Math.round((842-dh)/2);
+    const imgObj=addObj(`<< /Type /XObject /Subtype /Image /Width ${w} /Height ${h} /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length ${bin.length} >>\nstream\n${bin}\nendstream`);
+    imgIds.push(imgObj);
+    const cont=addObj(`<< /Length ${`q ${dw} 0 0 ${dh} ${x} ${y} cm /Im${imgObj} Do Q`.length} >>\nstream\nq ${dw} 0 0 ${dh} ${x} ${y} cm /Im${imgObj} Do Q\nendstream`);
+    const page=addObj(`<< /Type /Page /Parent PAGES /MediaBox [0 0 595 842] /Contents ${cont} 0 R /Resources << /XObject << /Im${imgObj} ${imgObj} 0 R >> >> >>`);
+    pageIds.push(page);
+  }
+  const pagesObj=o;
+  body+=`${o} 0 obj\n<< /Type /Pages /Kids [${pageIds.map(id=>id+' 0 R').join(' ')}] /Count ${pageIds.length} >>\nendobj\n`;
+  xref.push(body.length-(body.split('\n').slice(-3).join('\n').length)); // rough, fix below
+  // rebuild properly
+  return buildPdf(images,title);
+}
+function buildPdf(images,title,extra){
+  // Cleaner single-pass PDF builder for JPEG pages
+  const parts=[];
+  const offsets=[0];
+  let pdf='%PDF-1.4\n';
+  function obj(n,content){
+    offsets[n]=pdf.length;
+    pdf+=`${n} 0 obj\n${content}\nendobj\n`;
+  }
+  const n=images.length;
+  // object 1: catalog
+  obj(1,'<< /Type /Catalog /Pages 2 0 R'+(extra?' /LawyerBackup '+(3+3*n)+' 0 R':'')+' >>');
+  // object 2: pages (kids filled later conceptually — we know ids)
+  // Images start at 3, each image uses 2 objs (image + content), page uses 1
+  // Layout: 1 catalog, 2 pages, then for each image: img, content, page
+  let next=3;
+  const pageRefs=[];
+  const imgBinaries=[];
+  for(let i=0;i<n;i++){
+    const src=images[i];
+    let b64s=src;
+    if(b64s.startsWith('data:'))b64s=b64s.split(',')[1];
+    const bin=atob(b64s);
+    let w=595,h=842;
+    try{
+      const u=new Uint8Array(bin.length);for(let j=0;j<bin.length;j++)u[j]=bin.charCodeAt(j);
+      for(let j=0;j<u.length-9;j++){
+        if(u[j]===0xFF&&(u[j+1]===0xC0||u[j+1]===0xC2)){h=(u[j+5]<<8)|u[j+6];w=(u[j+7]<<8)|u[j+8];break}
+      }
+    }catch(e){}
+    const maxW=555,maxH=800;
+    const sc=Math.min(maxW/w,maxH/h,1);
+    const dw=Math.round(w*sc),dh=Math.round(h*sc);
+    const x=Math.round((595-dw)/2),y=Math.round((842-dh)/2);
+    const imgId=next++,contId=next++,pageId=next++;
+    pageRefs.push(pageId);
+    imgBinaries.push({imgId,contId,pageId,bin,w,h,dw,dh,x,y});
+  }
+  obj(2,`<< /Type /Pages /Kids [${pageRefs.map(id=>id+' 0 R').join(' ')}] /Count ${n} >>`);
+  for(const im of imgBinaries){
+    offsets[im.imgId]=pdf.length;
+    pdf+=`${im.imgId} 0 obj\n<< /Type /XObject /Subtype /Image /Width ${im.w} /Height ${im.h} /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length ${im.bin.length} >>\nstream\n`;
+    pdf+=im.bin;
+    pdf+=`\nendstream\nendobj\n`;
+    const stream=`q ${im.dw} 0 0 ${im.dh} ${im.x} ${im.y} cm /Im0 Do Q`;
+    obj(im.contId,`<< /Length ${stream.length} >>\nstream\n${stream}\nendstream`);
+    obj(im.pageId,`<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Contents ${im.contId} 0 R /Resources << /XObject << /Im0 ${im.imgId} 0 R >> >> >>`);
+  }
+  if(extra){obj(next,`<< /Length ${extra.length} >>\nstream\n${extra}\nendstream`);next++}
+  const xrefStart=pdf.length;
+  pdf+='xref\n';
+  pdf+=`0 ${next}\n`;
+  pdf+='0000000000 65535 f \n';
+  for(let i=1;i<next;i++){
+    const off=String(offsets[i]||0).padStart(10,'0');
+    pdf+=`${off} 00000 n \n`;
+  }
+  pdf+=`trailer\n<< /Size ${next} /Root 1 0 R >>\nstartxref\n${xrefStart}\n%%EOF`;
+  // Convert to Blob — binary string to Uint8Array
+  const len=pdf.length;
+  const u8=new Uint8Array(len);
+  for(let i=0;i<len;i++)u8[i]=pdf.charCodeAt(i)&0xff;
+  return new Blob([u8],{type:'application/pdf'});
+}
+async function exportScansPdf(sec){
+  const list=scansFor(sec);
+  if(!list.length){toast('لا توجد صور للتصدير');return}
+  try{
+    const blob=buildPdf(list.map(s=>s.data),'مسح');
+    const name=`مسح_${sec}_${today()}.pdf`;
+    const url=URL.createObjectURL(blob);
+    const a=document.createElement('a');
+    a.href=url;a.download=name;
+    document.body.appendChild(a);a.click();a.remove();
+    setTimeout(()=>URL.revokeObjectURL(url),2000);
+    toast('اختر مكان حفظ ملف PDF من نافذة التنزيل التي ظهرت: '+name,5000);
+  }catch(e){
+    console.error(e);
+    // fallback: print
+    $('#pr').innerHTML=`<h1>مسح مستندات — ${sec}</h1>`+list.map(s=>`<img src="${s.data}" style="max-width:100%;page-break-after:always">`).join('');
+    toast('سيتم فتح الطباعة — اختر «حفظ كـ PDF» واختر المكان');
+    setTimeout(()=>window.print(),300);
+  }
+}
+
+/* ---- شاشة القفل ---- */
+function showLock(mode){
+  const el=$('#lock');
+  el.style.display='flex';
+  unlocked=false;cryptoKey=null;plainPass='';
+  if(!Auth.pass){
+    el.innerHTML=`<div class="box"><h1>إعداد الحماية</h1><p class="sub">أنشئ كلمة مرور. تُشفَّر بياناتك محلياً (AES-256) وتعمل بدون إنترنت.</p>
+      <label>كلمة المرور *</label><input type="password" id="np" autocomplete="new-password" minlength="8">
+      <label>تأكيد كلمة المرور *</label><input type="password" id="np2" autocomplete="new-password">
+      <label>سؤال الأمان</label>
+      <select id="sq">${QUESTIONS.map((q,i)=>`<option value="${i}">${q}</option>`).join('')}</select>
+      <label>إجابة سؤال الأمان *</label><input type="text" id="sa" autocomplete="off">
+      <p class="err" id="le"></p>
+      <button class="btn p" style="width:100%;margin-top:14px" id="bs">حفظ والدخول</button></div>`;
+    $('#bs').onclick=async()=>{
+      const p=$('#np').value,p2=$('#np2').value,a=$('#sa').value.trim();
+      if(p.length<8){$('#le').textContent='كلمة المرور 8 أحرف على الأقل';return}
+      if(p!==p2){$('#le').textContent='كلمتا المرور غير متطابقتين';return}
+      if(!a){$('#le').textContent='أدخل إجابة سؤال الأمان';return}
+      const{key,saltB64}=await deriveKey(p);
+      cryptoKey=key;plainPass=p;loadOk=true;
+      Auth={pass:'1',chk:await mkChk(key),q:+$('#sq').value,a:hash(a.toLowerCase().replace(/\s+/g,'')),salt:saltB64,iter:ITER,enc:1};
+      saveAuth();
+      await save();
+      enterApp();
+    };
+  }else if(mode==='forgot'){
+    el.innerHTML=`<div class="box"><h1>استعادة كلمة المرور</h1><p class="sub">${QUESTIONS[Auth.q]||QUESTIONS[0]}</p>
+      <label>إجابتك</label><input type="text" id="ans" autocomplete="off">
+      <p class="err" id="le"></p>
+      <button class="btn p" style="width:100%;margin-top:14px" id="bc">تحقق</button>
+      <button class="btn" style="width:100%;margin-top:8px" id="bb">رجوع</button></div>`;
+    $('#bc').onclick=()=>{
+      const a=$('#ans').value.trim().toLowerCase().replace(/\s+/g,'');
+      if(hash(a)!==Auth.a){$('#le').textContent='الإجابة غير صحيحة';return}
+      el.innerHTML=`<div class="box"><h1>كلمة مرور جديدة</h1>
+        <p class="sub" style="color:var(--red)">تنبيه: البيانات المشفّرة لا تُفك بدون كلمة المرور القديمة، لذلك سيمسح هذا الإجراء بيانات هذا الجهاز. بعدها يمكنك الاستعادة من ملف نسخة احتياطية.</p>
+        <label>كلمة المرور الجديدة *</label><input type="password" id="np" minlength="8">
+        <label>تأكيد *</label><input type="password" id="np2">
+        <p class="err" id="le"></p>
+        <button class="btn p" style="width:100%;margin-top:14px" id="bs">حفظ</button></div>`;
+      $('#bs').onclick=async()=>{
+        if(!confirm('سيتم مسح كل البيانات المحفوظة على هذا الجهاز لأنه لا يمكن فك تشفيرها بدون كلمة المرور. متابعة؟'))return;
+        const p=$('#np').value,p2=$('#np2').value;
+        if(p.length<8){$('#le').textContent='8 أحرف على الأقل';return}
+        if(p!==p2){$('#le').textContent='غير متطابقتين';return}
+        // try decrypt with old impossible — reset data store salt
+        const{key,saltB64}=await deriveKey(p);
+        cryptoKey=key;plainPass=p;loadOk=true;
+        Auth.iter=ITER;Auth.pass='1';Auth.chk=await mkChk(key);Auth.salt=saltB64;Auth.enc=1;saveAuth();
+        D={tasks:[],deadlines:[],reminders:[],sessions:[],clients:[],scans:[],casePdfs:{},casePages:{}};
+        await save();
+        enterApp();
+      };
+    };
+    $('#bb').onclick=()=>showLock();
+  }else{
+    el.innerHTML=`<div class="box"><h1>أجندة المحامي</h1><p class="sub">أدخل كلمة المرور — البيانات مشفّرة محلياً</p>
+      <label>كلمة المرور</label><input type="password" id="pw" autocomplete="current-password">
+      <p class="err" id="le"></p>
+      <button class="btn p" style="width:100%;margin-top:14px" id="bl">دخول</button>
+      <button class="btn" style="width:100%;margin-top:8px" id="bf">نسيت كلمة المرور؟</button></div>`;
+    const tryLogin=async()=>{
+      const wait=Math.ceil(((+localStorage.getItem('lawyerLockUntil')||0)-Date.now())/1000);
+      if(wait>0){$('#le').textContent='محاولات خاطئة كثيرة. انتظر '+wait+' ثانية';return}
+      const p=$('#pw').value;
+      const key=await verifyPass(p);
+      if(!key){
+        const f=(+localStorage.getItem('lawyerFails')||0)+1;
+        localStorage.setItem('lawyerFails',f);
+        if(f>=5)localStorage.setItem('lawyerLockUntil',Date.now()+Math.min(30*2**(f-5),900)*1000);
+        $('#le').textContent='كلمة المرور غير صحيحة'+(f>=5?' — تم تأخير المحاولات':'');$('#pw').value='';return;
+      }
+      localStorage.setItem('lawyerFails','0');
+      cryptoKey=key;plainPass=p;
+      await loadData();
+      if(!loadOk){cryptoKey=null;$('#le').textContent='تعذّر قراءة البيانات المحفوظة (قد تكون تالفة). يمكنك الاستعادة من نسخة PDF عبر «نسيت كلمة المرور».';return}
+      try{const raw=localStorage.getItem(K);if(raw&&JSON.parse(raw).plain)await save()}catch(e){}
+      if((Auth.iter||120000)<ITER){try{await rekey(p)}catch(e){}}
+      enterApp();
+    };
+    $('#bl').onclick=tryLogin;
+    $('#pw').onkeydown=e=>{if(e.key==='Enter')tryLogin()};
+    $('#bf').onclick=()=>showLock('forgot');
+    setTimeout(()=>$('#pw')?.focus(),100);
+  }
+}
+function setupPerms(){
+  let done=false;try{done=localStorage.getItem('lawyerSetup')==='1'}catch(e){}
+  if(done)return;
+  const file=location.protocol==='file:';
+  const ov=document.createElement('div');ov.className='ov';ov.style.zIndex='60';
+  ov.innerHTML=`<div class="mod" style="max-width:400px;margin:auto;border-radius:16px;padding:20px">
+    <h2 style="margin:0 0 8px">إعداد الصلاحيات (مرة واحدة فقط)</h2>
+    <p class="m">اضغط «السماح الآن» ثم وافق على كل طلب يظهر من المتصفح:</p>
+    <ul class="m" style="margin:8px 0 12px;padding-inline-start:20px;line-height:1.8">
+      <li>الميكروفون — للإدخال الصوتي</li>
+      <li>الكاميرا — لماسح المستندات</li>
+      <li>الإشعارات — لتذكير المواعيد</li>
+      <li>التخزين الدائم — لحفظ بياناتك</li>
+    </ul>
+    <p class="m">بعد الموافقة لن يُطلب منك مرة أخرى في هذا المتصفح.</p>
+    ${file?'<p class="m" style="color:var(--red)">تنبيه: أنت تفتح الملف مباشرة (file://). كروم قد يعيد السؤال كل مرة. الأفضل: انشره على رابط https أو ثبّته كتطبيق من الشاشة الرئيسية بعد فتحه عبر خادم محلي.</p>':''}
+    <p class="m" id="spr"></p>
+    <div class="row" style="gap:8px">
+      <button type="button" class="btn p" style="flex:1" id="spGo">السماح الآن</button>
+      <button type="button" class="btn" id="spSk">لاحقاً</button>
+    </div>
+  </div>`;
+  document.body.appendChild(ov);
+  const fin=()=>{try{localStorage.setItem('lawyerSetup','1')}catch(e){}ov.remove()};
+  ov.querySelector('#spSk').onclick=()=>ov.remove();
+  ov.querySelector('#spGo').onclick=async()=>{
+    const r=[];
+    const tm=async(c,l)=>{try{const st=await navigator.mediaDevices.getUserMedia(c);st.getTracks().forEach(t=>t.stop());r.push('✓ '+l)}catch(e){r.push('✗ '+l)}};
+    if(navigator.mediaDevices&&navigator.mediaDevices.getUserMedia){
+      await tm({audio:true},'الميكروفون');
+      await tm({video:true},'الكاميرا');
+    }
+    try{const p=await Notification.requestPermission();r.push((p==='granted'?'✓ ':'✗ ')+'الإشعارات');if(p==='granted')localStorage.setItem('lawyerNotif','1')}catch(e){}
+    try{if(navigator.storage&&navigator.storage.persist){const ok=await navigator.storage.persist();r.push((ok?'✓ ':'✗ ')+'تخزين دائم')}}catch(e){}
+    try{mediaPermDone=true;localStorage.setItem('lawyerMediaPerm','1')}catch(e){}
+    ov.querySelector('#spr').textContent=r.join('  ·  ');
+    const g=ov.querySelector('#spGo');g.textContent='تم — ادخل';g.onclick=fin;
+  };
+}
+function enterApp(){
+  unlocked=true;
+  $('#lock').style.display='none';
+  try{if(D.casePdfs){let ch=0;Object.keys(D.casePdfs).forEach(k=>{if(D.casePages&&D.casePages[k]){delete D.casePdfs[k];ch=1}});if(ch)save()}}catch(e){}
+  tick();draw();setTimeout(setupPerms,400);
+}
+
+function openForm(t,id){
+ const o=id?D[t].find(x=>x.id===id):Object.assign({},DEF[t]());
+ const formScanId=id||('tmp_'+uid());
+ const allowCam=['sessions','tasks','deadlines'].includes(t);
+ const html=F[t].map(([k,l,ty,op])=>{
+  const v=o[k]??'';
+  let c;
+  const fid='f_'+k;
+  if(ty==='area'){
+    c=`<div class="voice-bar"><textarea name="${k}" id="${fid}">${esc(v)}</textarea>${micBtn(fid)}</div>`;
+    if(allowCam&&k==='notes'){
+      const existing=(D.scans||[]).filter(s=>s.itemId===formScanId||(id&&s.itemId===id));
+      c+=`<div class="notes-cam" style="margin-top:10px">
+        <div class="row wrap" style="gap:8px">
+          <button type="button" class="btn s" data-a="formscan" data-item="${formScanId}" data-sec="${t}">${I('cam',16)} ماسح المستند</button>
+          <button type="button" class="btn s" data-a="formscanpdf" data-item="${formScanId}" data-sec="${t}">حفظ في PDF القضية</button>
+          <button type="button" class="btn s" data-a="opencasepdf" data-item="${formScanId}">فتح PDF القضية</button>
+        </div>
+        <div class="scan-thumbs" id="formThumbs">${existing.map(s=>`<div class="th"><img src="${s.data}" alt=""><button type="button" data-a="scandel" data-id="${s.id}" title="حذف">×</button></div>`).join('')}</div>
+        <p class="m" style="margin:6px 0 0;font-size:12px">ماسح حي للمستند. الصور الجديدة تُضاف لنفس PDF القضية. بعد الحفظ تختفي من الشاشة.</p>
+      </div>`;
+    }
+  }
+  else if(ty==='sel')c=`<select name="${k}" id="${fid}">${op.map(x=>{const val=Array.isArray(x)?x[0]:x,lb=Array.isArray(x)?x[1]:x;return`<option value="${val}"${String(val)===String(v)?' selected':''}>${lb}</option>`}).join('')}</select>`;
+  else if(ty==='text')c=`<div class="voice-bar"><input name="${k}" id="${fid}"${k==='client'?' list="cl"':''} type="text" value="${esc(v)}">${micBtn(fid)}</div>`;
+  else c=`<input name="${k}" id="${fid}" type="${ty==='num'?'number':ty}" value="${esc(v)}"${ty==='num'?' min="0" inputmode="numeric"':''}>`;
+  return`<div><label>${l}</label>${c}</div>`}).join('');
+ const ov=document.createElement('div');ov.className='ov';
+ ov.innerHTML=`<form class="mod" novalidate><h2 style="margin-top:0">${id?'تعديل':'إضافة'}</h2>${html}<datalist id="cl">${D.clients.map(c=>`<option value="${esc(c.name)}">`).join('')}</datalist><p class="m" id="er" role="alert" style="color:var(--red)"></p>${t==='deadlines'?'<p class="m">يُحسب آخر موعد من بداية المدة + عدد الأيام.</p>':''}<p class="voice-hint">🎤 اضغط الميكروفون وتكلم — يتحول الكلام فوراً إلى نص. (بعد تثبيت نموذج Vosk يعمل بدون نت). اضغط مرة أخرى للإيقاف.</p><div class="row" style="margin-top:12px"><button class="btn p" style="flex:1">حفظ</button><button type="button" class="btn" data-x>إلغاء</button></div></form>`;
+ document.body.appendChild(ov);
+ const fm=ov.firstChild,close=()=>{stopVoice();ov.remove()};
+ ov.onclick=e=>{if(e.target===ov||e.target.dataset.x!==undefined)close()};
+ if(t==='deadlines'){
+   const calc=()=>{const b=fm.basis&&fm.basis.value,n=+(fm.days&&fm.days.value||0);if(b&&n>0&&fm.due)fm.due.value=add(b,n)};
+   if(fm.basis)fm.basis.oninput=calc;if(fm.days)fm.days.oninput=calc;calc();
+ }
+ fm.onsubmit=async e=>{e.preventDefault();
+  if(t==='deadlines'){const b=fm.basis&&fm.basis.value,n=+(fm.days&&fm.days.value||0);if(b&&n>0&&fm.due&&!fm.due.value)fm.due.value=add(b,n)}
+  const r={};F[t].forEach(([k,,ty])=>{
+    const el=fm.elements[k]||fm.querySelector('[name="'+k+'"]');
+    let v=el?el.value:'';
+    r[k]=ty==='num'||k==='before'?(+v||0):(v||'').trim();
+  });
+  if(REQ[t].some(k=>!r[k])){$('#er').textContent='أكمل الحقول المطلوبة (*)';return}
+  let savedId=id;
+  if(id)Object.assign(o,r,t==='reminders'?{n:0}:{});
+  else{Object.assign(o,r,{id:uid(),done:false,n:0});D[t].push(o);savedId=o.id}
+  // ربط الصور المؤقتة بالسجل النهائي
+  if(allowCam){
+    if(D.scans)D.scans.forEach(s=>{if(s.itemId===formScanId){s.itemId=savedId;s.section=t}});
+    if(formScanId!==savedId){
+      if(D.casePages&&D.casePages[formScanId]){D.casePages[savedId]=(D.casePages[savedId]||[]).concat(D.casePages[formScanId]);delete D.casePages[formScanId]}
+      if(D.casePdfs&&D.casePdfs[formScanId]){D.casePdfs[savedId]=D.casePdfs[formScanId];delete D.casePdfs[formScanId]}
+    }
+  }
+  if(t==='sessions'&&!D.clients.some(c=>c.name===r.client))D.clients.push({id:uid(),name:r.client,phone:'',notes:''});
+  await save();close();draw()};
+ setTimeout(()=>fm.querySelector('input,select,textarea')?.focus(),50);
+}
+
+const act=(t,x)=>`<div class="row wrap" style="margin-top:8px">${t==='clients'?'':`<button class="btn s ${x.done?'':'ok'}" data-a="tg" data-t="${t}" data-id="${x.id}">${x.done?'إعادة فتح':t==='sessions'?'إنهاء':'تم'}</button>`}<button class="btn s" data-a="ed" data-t="${t}" data-id="${x.id}">تعديل</button><button class="btn s d" data-a="dl" data-t="${t}" data-id="${x.id}" style="margin-inline-start:auto">حذف</button></div>`;
+const line=s=>s?`<div class="m">${s}</div>`:'';
+
+const V={
+ tasks(){
+  const tdy=today();
+  // ترحيل فوري عند العرض: أي مهمة غير منجزة تاريخها قبل اليوم → اليوم
+  let _rolled=0;D.tasks.forEach(k=>{if(!k.done&&k.date<tdy){k.date=tdy;k.roll=(k.roll||0)+1;_rolled=1}});
+  if(_rolled)save();
+  // عرض: مهام هذا اليوم + غير المنجزة تظهر في كل يوم لاحق حتى تُنجز
+  const L=D.tasks.filter(x=>{
+    if(x.done)return x.date===cur;
+    if(x.date===cur)return true;
+    if(cur>=tdy&&x.date<=cur)return true; // تبقى ظاهرة كل الأيام القادمة
+    return false;
+  }).sort((a,b)=>a.done-b.done||a.date.localeCompare(b.date));
+  const pend=D.tasks.filter(x=>!x.done&&x.date<=tdy);
+  const dn=L.filter(x=>x.done).length,pc=L.length?Math.round(dn/L.length*100):0;
+  return`<h1>الأعمال الإدارية</h1><p class="sub">✓ عند الإنجاز. غير المنجز يُرحَّل لليوم التالي. ميكروفون للإدخال الصوتي.</p>
+  <div class="row sp"><button class="btn" data-a="day" data-n="-1" aria-label="اليوم السابق">›</button><div style="text-align:center"><b>${cur===today()?'اليوم · ':''}${fd(cur)}</b>${cur!==today()?'<br><a href="#" data-a="day" data-n="0">العودة إلى اليوم</a>':''}</div><button class="btn" data-a="day" data-n="1" aria-label="اليوم التالي">‹</button></div>
+  <form id="qa" class="row" style="margin:14px 0 8px"><input id="qt" placeholder="أضف مهمة... أو اضغط الميكروفون" aria-label="مهمة جديدة" style="flex:1"><button type="button" class="btn s mic" data-a="mic" data-for="qt" title="تحدث وسيظهر الكلام كنص مباشرة">${I('mic',18)}</button><button class="btn p">إضافة</button></form>
+  ${L.length?`<div class="m">أُنجز ${dn} من ${L.length}</div><div class="bar"><i style="width:${pc}%"></i></div>`:'<p class="m">لا توجد مهام في هذا اليوم.</p>'}
+  ${L.map(x=>`<div class="card ${x.done?'ok':'acc'}"><div class="row"><button class="chk${x.done?' on':''}" role="checkbox" aria-checked="${x.done}" aria-label="${esc(x.title)}" data-a="tg" data-t="tasks" data-id="${x.id}">${x.done?'✓':''}</button><div style="flex:1"><h3>${esc(x.title)}</h3>${x.roll?`<span class="tag amb">مرحّلة ${x.roll} ${x.roll>1?'مرات':'مرة'}</span>`:''}${line(esc(x.notes))}</div><button class="btn s" data-a="ed" data-t="tasks" data-id="${x.id}">تعديل</button><button class="btn s d" data-a="dl" data-t="tasks" data-id="${x.id}">حذف</button></div></div>`).join('')}
+  ${!L.length&&cur>tdy&&pend.length?`<p class="m">المهام غير المنجزة تظهر تلقائياً في كل يوم حتى تُنجَز.</p>`:''}
+  `},
+ deadlines(){
+  const L=[...D.deadlines].sort((a,b)=>a.done-b.done||a.due.localeCompare(b.due));
+  return`<div class="row sp"><div><h1>مواعيد الطعن والاستئناف</h1><p class="sub">المدد التي يجب ألا تفوتنا</p></div><button class="btn p" data-a="new" data-t="deadlines">+ موعد</button></div>
+  ${L.length?'':'<p class="m">لا توجد مواعيد.</p>'}
+  ${L.map(x=>{const u=urg(x);return`<div class="card ${u}"><div class="row sp"><span class="tag">${esc(x.kind)}</span><span class="tag ${u==='ok'?'':u}">${x.done?'تم الإجراء':left(x.due)}</span></div><h3 style="margin-top:6px">${esc(x.title||x.client)}</h3>${line('آخر موعد: <b>'+fd(x.due)+'</b>')}${x.title?line(esc(x.client)):''}${line(x.case?'قضية رقم '+esc(x.case):'')}${line(esc(x.notes))}${act('deadlines',x)}</div>`}).join('')}
+  `},
+ reminders(){
+  const L=[...D.reminders].sort((a,b)=>a.done-b.done||evt(a)-evt(b));
+  const np=window.Notification?Notification.permission:'x';
+  return`<div class="row sp"><div><h1>المواعيد والتذكيرات</h1><p class="sub">اجتماعات ومراجعات</p></div><button class="btn p" data-a="new" data-t="reminders">+ موعد</button></div>
+  ${np==='granted'?'<p class="m" style="margin-bottom:12px">الإشعارات مفعّلة ✓</p>':'<button class="btn p" data-a="notif" style="margin-bottom:12px">تفعيل إشعارات الجهاز</button>'}
+  ${L.length?'':'<p class="m">لا توجد مواعيد بعد.</p>'}
+  ${L.map(x=>{const due=!x.done&&evt(x)-x.before*6e4<=Date.now();return`<div class="card ${x.done?'ok':due?'red':'acc'}"><div class="row sp"><h3>${esc(x.title)}</h3>${due?'<span class="tag red">حان وقته</span>':''}</div>${line(fd(x.date)+(x.time?' · '+ft(x.time):''))}${line('التنبيه: '+(BEFORE.find(b=>b[0]===x.before)||[0,''])[1])}${line(esc(x.notes))}${act('reminders',x)}</div>`}).join('')}`},
+ backup(){
+  return`<h1>الإعدادات والنسخ الاحتياطي</h1><p class="sub">بياناتك مشفّرة محلياً بـ AES-256 مشتقة من كلمة مرورك، ولا تُرسل لأي خادم.</p>
+  <div class="card acc" id="odCard">
+    <h3>التعرف الصوتي بدون إنترنت (مدمج بالمتصفح) — موصى به</h3>
+    <p class="m">خفيف جداً: بدون ملفات ولا نماذج ثقيلة. يعمل بـ Chrome أو Edge ويُنزّل المتصفح حزمة اللغة العربية بنفسه مرة واحدة.</p>
+    <p class="m" id="odStatus">جاري الفحص…</p>
+    <div class="row wrap" style="margin-top:8px;gap:8px">
+      <button type="button" class="btn p" data-a="odenable">تفعيل / فحص</button>
+    </div>
+  </div>
+  <div class="card acc" id="voskCard">
+    <h3>بديل ثقيل اختياري: Vosk (~300 ميجا)</h3>
+    <p class="m">لتحويل كلامك إلى نص بدون نت يلزم نموذج العربية مرة واحدة (~300 ميجا). يُحفظ داخل المتصفح ولا يُرفع لأي خادم.</p>
+    <p class="m" id="voskStatus">${esc(voskLastMsg||'جاري الفحص…')}</p>
+    <div class="row wrap" style="margin-top:8px;gap:8px">
+      <button type="button" class="btn p" data-a="voskcheck">فحص النموذج</button>
+      <button type="button" class="btn" data-a="voskpick">اختيار ملف النموذج</button>
+      <button type="button" class="btn" data-a="voskhelp">تعليمات التثبيت</button>
+    </div>
+    <p class="m" style="margin-top:8px;font-size:12px">أول مرة فقط: اضغط «اختيار ملف النموذج» وحدد <b>models/vosk-ar.tar.gz</b> (المتصفح يمنع قراءته تلقائياً عند فتح الصفحة من القرص). بعدها يُحفظ ويعمل دائماً. يجب أن يبقى <b>vosk.js</b> بجانب index.html.</p>
+  </div>
+  <div class="card acc"><h3>تغيير كلمة المرور</h3>
+    <label>الحالية</label><input type="password" id="cpw">
+    <label>الجديدة (8 أحرف على الأقل)</label><input type="password" id="npw">
+    <label>تأكيد</label><input type="password" id="npw2">
+    <p class="m" id="cpe" style="color:var(--red)"></p>
+    <button class="btn p" data-a="chpass" style="margin-top:8px">تغيير وإعادة التشفير</button>
+  </div>
+  <div class="card"><h3>نسخة احتياطية PDF</h3>
+    <p class="m">ملف PDF واحد يُنزَّل عند طلبك فقط. «مشفّرة»: صفحة غلاف وبياناتك مشفّرة داخل الملف (لا تُقرأ بدون كلمة المرور). «مع تقرير مقروء»: يضيف جداول غير مشفّرة، فاحفظه في مكان آمن. كلاهما يمكن استعادته من التطبيق.</p>
+    <div class="row wrap" style="margin-top:8px"><button class="btn p" data-a="bkpdf">نسخة PDF مشفّرة</button><button class="btn" data-a="bkpdfr">PDF مع تقرير مقروء</button></div>
+    <div class="row wrap" style="margin-top:8px"><button class="btn" data-a="impfile">استعادة من ملف (PDF أو JSON)</button></div>
+    <input type="file" id="impFile" accept=".pdf,.json,.txt,application/pdf,application/json,text/plain" style="display:none">
+    <p class="m" id="im" role="status"></p>
+  </div>
+`}
+};
+
+const byT=(a,b)=>(a.date+(a.time||'99:99')).localeCompare(b.date+(b.time||'99:99'));
+const sesCard=(x,sd)=>{const t=today(),late=!x.done&&x.date<t;return`<div class="card ${x.done?'ok':late?'red':'acc'}"><div class="row" style="align-items:flex-start"><div class="tb">${x.time?ft(x.time):'بدون وقت'}${sd?`<small>${x.date===t?'اليوم':x.date.slice(5)}</small>`:''}</div><div style="flex:1;min-width:0"><div class="row sp"><h3>${esc(x.client)}</h3><span class="tag ${late?'red':''}">${x.done?'منتهية':late?'تحتاج تحديث':'قيد الانتظار'}</span></div>${line([x.case&&'قضية رقم '+esc(x.case),esc(x.court)].filter(Boolean).join(' · '))}${line(esc(x.notes))}${act('sessions',x)}</div></div></div>`};
+const dlMini=x=>{const u=urg(x);return`<div class="card ${u}"><div class="row sp"><span class="tag">${esc(x.kind)}</span><span class="tag ${u==='red'?'red':''}">${left(x.due)}</span></div><h3 style="margin-top:6px">${esc(x.title||x.client)}</h3>${line('آخر موعد: '+fd(x.due))}</div>`};
+V.dashboard=()=>{const t=today(),we=add(t,7),S=D.sessions,ts=S.filter(x=>x.date===t).sort(byT),up=S.filter(x=>x.date>t&&x.date<=we&&!x.done).sort(byT),od=S.filter(x=>x.date<t&&!x.done),tk=D.tasks.filter(x=>x.date===t).sort((a,b)=>a.done-b.done),nd=D.deadlines.filter(x=>!x.done&&diff(t,x.due)<=10).sort((a,b)=>a.due.localeCompare(b.due)),nr=D.reminders.filter(x=>!x.done&&x.date>=t&&x.date<=we).length;
+ const st=[['جلسات اليوم',ts.length,ts.filter(x=>!x.done).length+' متبقية'],['القضايا النشطة',new Set(S.filter(x=>!x.done).map(x=>x.case||x.client)).size,'قيد المتابعة'],['هذا الأسبوع',up.length,'جلسات قادمة'],['مهام اليوم',tk.length,tk.filter(x=>x.done).length+' منجزة'],['مدد الطعن القريبة',nd.length,'خلال 10 أيام أو فائتة'],['تذكيرات الأسبوع',nr,'مواعيد قادمة']];
+ const heroSub=(()=>{
+   const parts=[];
+   if(up.length)parts.push(up.length+' جلسات قادمة هذا الأسبوع');
+   if(nr)parts.push(nr+' تذكير خلال الأسبوع');
+   if(nd.length)parts.push(nd.length+' موعد طعن قريب');
+   if(tk.filter(x=>!x.done).length)parts.push(tk.filter(x=>!x.done).length+' مهام متبقية اليوم');
+   if(!parts.length&&!ts.length)return'لا توجد التزامات قريبة — استغل الوقت للتحضير';
+   if(!parts.length)return'';
+   return parts.join(' · ');
+ })();
+ return`<section class="hero"><p>${fd(t)}</p><h1>${ts.length?'لديك '+ts.length+(ts.length===1?' جلسة':' جلسات')+' اليوم':'لا توجد جلسات اليوم'}</h1><p>${heroSub}</p><button class="btn a" style="margin-top:14px" data-a="new" data-t="sessions">+ إضافة جلسة</button></section>
+ <div class="st">${st.map(a=>`<div><span>${a[0]}</span><b>${a[1]}</b><span>${a[2]}</span></div>`).join('')}</div>
+ ${od.length?`<div class="alert red" style="margin-top:14px" role="alert">${od.length} جلسة سابقة تحتاج تحديث <button class="btn s" data-tab="sessions">عرض</button></div>`:''}
+ <div class="g"><div><h2>مواعيد الطعن</h2>${nd.length?nd.slice(0,3).map(dlMini).join(''):'<p class="m">لا توجد مدد قريبة.</p>'}</div>
+ <div><h2>مهام اليوم</h2>${tk.length?tk.slice(0,6).map(x=>`<div class="card ${x.done?'ok':'acc'}"><div class="row"><button class="chk${x.done?' on':''}" role="checkbox" aria-checked="${x.done}" aria-label="${esc(x.title)}" data-a="tg" data-t="tasks" data-id="${x.id}">${x.done?'✓':''}</button><h3>${esc(x.title)}</h3></div></div>`).join(''):'<p class="m">لا توجد مهام اليوم.</p>'}</div>
+ <div><h2>جلسات اليوم</h2>${ts.length?ts.map(x=>sesCard(x)).join(''):'<p class="m">لا توجد جلسات اليوم.</p>'}</div>
+ <div><h2>المواعيد القادمة</h2>${up.length?up.slice(0,5).map(x=>sesCard(x,1)).join(''):'<p class="m">لا مواعيد خلال 7 أيام.</p>'}</div></div>`};
+V.sessions=()=>{const L=[...D.sessions].sort((a,b)=>a.done-b.done||byT(a,b));return`<div class="row sp"><div><h1>أجندة الجلسات</h1><p class="sub">${D.sessions.length} جلسة مسجلة</p></div><button class="btn p" data-a="new" data-t="sessions">+ جلسة جديدة</button></div>${L.length?'':'<p class="m">لم تتم إضافة أي جلسة بعد.</p>'}${L.map(x=>sesCard(x,1)).join('')}`};
+V.clients=()=>{const L=[...D.clients].sort((a,b)=>a.name.localeCompare(b.name,'ar'));return`<div class="row sp"><div><h1>الموكلون</h1><p class="sub">${L.length} موكل</p></div><button class="btn p" data-a="new" data-t="clients">+ موكل جديد</button></div>${L.length?'':'<p class="m">لا يوجد موكلون.</p>'}${L.map(x=>`<div class="card"><h3>${esc(x.name)}</h3>${line(x.phone?'<span dir="ltr">'+esc(x.phone)+'</span> · '+D.sessions.filter(s=>s.client===x.name).length+' جلسة':D.sessions.filter(s=>s.client===x.name).length+' جلسة')}${line(esc(x.notes))}${act('clients',x)}</div>`).join('')}`};
+
+function draw(){
+ if(!unlocked)return;
+ $('#top').innerHTML=`<div class="brand"><span class="ic">${I('scale',22)}</span><b>أجندة المحامي</b></div><button type="button" class="btn s" data-tab="backup" title="الإعدادات" style="background:transparent;border-color:transparent;color:var(--sidepri);min-height:40px;padding:0 8px">${I('sl',22)}</button>`;
+ $('#nav').innerHTML=TABS.map(([k,,l,i])=>`<button data-tab="${k}"${k===tab?' aria-current="page"':''}>${I(i)}${l}</button>`).join('');
+ const dl=D.deadlines.filter(x=>!x.done&&diff(today(),x.due)<=3),dr=dueRem();
+ let b='';
+ if(dl.length&&tab!=='deadlines'&&tab!=='dashboard'){const o=dl.filter(x=>x.due<today()).length;b+=`<div class="alert red" role="alert">${dl.length} موعد طعن قريب${o?' — منها '+o+' فات':' خلال 3 أيام'} <button class="btn s" data-tab="deadlines">عرض</button></div>`}
+ if(tab!=='reminders')b+=dr.slice(0,3).map(r=>`<div class="alert amb" role="alert"><div class="row sp"><span>🔔 ${esc(r.title)} · ${ft(r.time)}</span><button class="btn s" data-a="tg" data-t="reminders" data-id="${r.id}">تم</button></div></div>`).join('');
+ const keep=document.activeElement&&document.activeElement.id==='qt'?$('#qt').value:null;
+ $('#app').innerHTML=b+V[tab]();
+ preloadVosk();
+ if(keep!==null)$('#qt').value=keep;
+ if(tab==='backup'){
+   voskStatusRefresh();odRefresh();
+ }
+}
+
+document.addEventListener('click',async e=>{
+ const el=e.target.closest('[data-a],[data-tab]');if(!el)return;
+ if(el.dataset.tab){e.preventDefault();document.querySelector('.ov')?.remove();stopVoice();tab=el.dataset.tab;draw();scrollTo(0,0);return}
+ const{a,t,id}=el.dataset;e.preventDefault();
+ if(a==='more'){const ov=document.createElement('div');ov.className='ov';ov.innerHTML=`<div class="mod"><h2 style="margin-top:0">المزيد</h2>${TABS.slice(5).map(([k,l,,i])=>`<button class="mn" data-tab="${k}">${I(i)}${l}</button>`).join('')}</div>`;ov.onclick=e=>{if(e.target===ov)ov.remove()};document.body.appendChild(ov)}
+ else if(a==='new')openForm(t);
+ else if(a==='ed')openForm(t,id);
+ else if(a==='tg'){const x=D[t].find(i=>i.id===id);x.done=!x.done;await save();draw()}
+ else if(a==='dl'){if(!el.dataset.s){el.dataset.s=1;el.textContent='تأكيد الحذف؟';setTimeout(()=>{el.dataset.s='';el.textContent='حذف'},3000);return}D[t]=D[t].filter(i=>i.id!==id);await save();draw()}
+ else if(a==='day'){cur=+el.dataset.n?add(cur,+el.dataset.n):today();draw()}
+ else if(a==='notif'){Notification.requestPermission().then(p=>{try{if(p==='granted')localStorage.setItem('lawyerNotif','1')}catch(e){}draw()})}
+ else if(a==='pdf')printAll();
+ else if(a==='bkpdf'||a==='bkpdfr')await backupPdf(a==='bkpdfr');
+ else if(a==='imp'||a==='impfile'){
+   const inp=$('#impFile');if(!inp){toast('أعد فتح الإعدادات');return}
+   inp.value='';
+   inp.onchange=async()=>{const f=inp.files&&inp.files[0];if(f)await restoreFile(f)};
+   inp.click();
+ }
+ else if(a==='mic'){const inp=document.getElementById(el.dataset.for);if(inp)startVoice(inp,el)}
+ else if(a==='scan')openCamera(el.dataset.sec);
+ else if(a==='scanpdf')exportScansPdf(el.dataset.sec);
+ else if(a==='formscan')openCamera(el.dataset.sec,el.dataset.item);
+ else if(a==='formscanpdf')exportItemScansPdf(el.dataset.sec,el.dataset.item);
+ else if(a==='opencasepdf')openCasePdf(el.dataset.item);
+ else if(a==='scandel'){
+   D.scans=(D.scans||[]).filter(s=>s.id!==id);await save();
+   const th=el.closest('.th');if(th)th.remove();else draw();
+ }
+ else if(a==='odenable'){odEnable()}
+ else if(a==='voskcheck'){voskCheck(false)}
+ else if(a==='voskpick'){voskCheck(true)}
+ else if(a==='voskhelp'){
+   const ov=document.createElement('div');ov.className='ov';
+   ov.innerHTML=`<div class="mod" style="max-height:90%;overflow:auto"><h2 style="margin-top:0">تثبيت التعرف العربي بدون نت</h2>
+   <ol class="m" style="line-height:1.9;padding-inline-start:22px">
+     <li>حمّل النموذج من:<br><span dir="ltr" style="font-size:12px;word-break:break-all">https://alphacephei.com/vosk/models/vosk-model-ar-mgb2-0.4.zip</span></li>
+     <li>فُك الضغط عن الملف zip.</li>
+     <li>ادخل المجلد <b>vosk-model-ar-mgb2-0.4</b> وتأكد أنه يحتوي مجلدات: am و conf و graph.</li>
+     <li>من داخل هذا المجلد أنشئ أرشيفاً بالأمر (على ويندوز استخدم 7-Zip):<br>
+       <code dir="ltr" style="display:block;background:#eee;padding:8px;border-radius:8px;margin:6px 0;font-size:12px">tar -czf vosk-ar.tar.gz am conf graph ivector</code>
+       أو بـ 7-Zip: حدد المجلدات am conf graph (و ivector إن وُجد) ← إضافة إلى أرشيف ← صيغة tar ثم اضغط gzip، أو استخدم أداة تحول zip إلى tar.gz.
+     </li>
+     <li>احتفظ بالملف الناتج باسم <b>vosk-ar.tar.gz</b> (يُفضّل داخل مجلد <b>models</b>) وبجانب index.html ملف <b>vosk.js</b>.</li>
+     <li>افتح التطبيق ← الإعدادات ← <b>اختيار ملف النموذج</b> وحدد vosk-ar.tar.gz (مرة واحدة فقط، يُحفظ في المتصفح).</li>
+     <li>بعدها كل ما فتحت التطبيق يُجهَّز النموذج تلقائياً في الخلفية، فيعمل الميكروفون فوراً.</li>
+   </ol>
+   <p class="m">بعد نجاح الفحص يعمل الميكروفون بدون إنترنت ويحوّل كلامك إلى نص مباشرة.</p>
+   <p class="m" style="color:var(--red)">ملاحظة: حجم النموذج حوالي 300 ميجا. يُنزَّل مرة واحدة فقط على جهازك ولا يُرفع لأي خادم.</p>
+   <button type="button" class="btn p" style="width:100%;margin-top:10px" data-x>حسناً</button>
+   </div>`;
+   ov.onclick=e=>{if(e.target===ov||e.target.dataset.x!==undefined)ov.remove()};
+   document.body.appendChild(ov);
+ }
+ else if(a==='chpass'){
+   const cur=$('#cpw').value,n=$('#npw').value,n2=$('#npw2').value;
+   if(!(await verifyPass(cur))){$('#cpe').textContent='كلمة المرور الحالية خاطئة';return}
+   if(n.length<8){$('#cpe').textContent='الجديدة 8 أحرف على الأقل';return}
+   if(n!==n2){$('#cpe').textContent='غير متطابقتين';return}
+   try{
+     await rekey(n);
+     $('#cpe').style.color='var(--ok)';$('#cpe').textContent='تم التغيير وإعادة التشفير.';
+     $('#cpw').value=$('#npw').value=$('#npw2').value='';
+   }catch(err){$('#cpe').textContent='فشل إعادة التشفير'}
+ }
+});
+document.addEventListener('submit',async e=>{if(e.target.id==='qa'){e.preventDefault();const v=$('#qt').value.trim();if(!v)return;D.tasks.push({id:uid(),title:v,notes:'',date:cur,done:false,roll:0});await save();draw();$('#qt').focus()}});
+
+function printAll(){
+ const T=(h,rows,f)=>rows.length?`<h2>${h}</h2><table><tr>${f.map(x=>'<th>'+x[0]+'</th>').join('')}</tr>${rows.map(r=>'<tr>'+f.map(x=>'<td>'+esc(x[1](r))+'</td>').join('')+'</tr>').join('')}</table>`:'';
+ const st=r=>r.done?'منجز':'قيد المتابعة';
+ $('#pr').innerHTML=`<h1>أجندة المحامي — نسخة احتياطية</h1><p>${new Date().toLocaleString('ar-u-nu-latn')}</p>`
+ +T('مواعيد الطعن',[...D.deadlines].sort((a,b)=>a.due.localeCompare(b.due)),[['النوع',r=>r.kind],['الإجراء',r=>r.title],['الموكل',r=>r.client],['القضية',r=>r.case],['آخر موعد',r=>r.due],['الحالة',st],['ملاحظات',r=>r.notes]])
+ +T('الجلسات',[...D.sessions].sort((a,b)=>a.date.localeCompare(b.date)),[['الموكل',r=>r.client],['القضية',r=>r.case],['المحكمة',r=>r.court],['التاريخ',r=>r.date],['الوقت',r=>r.time],['الحالة',st],['ملاحظات',r=>r.notes]])
+ +T('التذكيرات',[...D.reminders].sort((a,b)=>evt(a)-evt(b)),[['الموعد',r=>r.title],['التاريخ',r=>r.date],['الوقت',r=>r.time],['الحالة',st]])
+ +T('المهام',[...D.tasks].sort((a,b)=>a.date.localeCompare(b.date)),[['اليوم',r=>r.date],['المهمة',r=>r.title],['الحالة',r=>r.done?'منجزة':'غير منجزة']]);
+ setTimeout(()=>window.print(),100);
+}
+
+function tick(){
+ if(!unlocked)return;
+ let ch=0;const t=today();
+ // كل مهمة غير منجزة تنتقل لليوم الحالي دائماً حتى تُنجَز (أيام/أشهر/سنين)
+ D.tasks.forEach(k=>{
+   if(!k.done&&k.date!==t){
+     k.date=t;
+     k.roll=(k.roll||0)+1;
+     ch=1;
+   }
+ });
+ D.reminders.forEach(r=>{if(!r.done&&!r.n&&evt(r)-r.before*6e4<=Date.now()){r.n=1;ch=1;notifyUser('تذكير: '+r.title,fd(r.date)+' '+ft(r.time));}});
+ if(ch){save();if(!document.querySelector('.ov'))draw()}
+}
+setInterval(tick,3e4);
+document.addEventListener('visibilitychange',()=>{if(!document.hidden)tick()});
+
+if('serviceWorker' in navigator&&/^https?:$/.test(location.protocol)){addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}))}
+document.addEventListener('visibilitychange',()=>{if(document.hidden)stopVoice()});
+let lastAct=Date.now(),hiddenAt=0;
+['pointerdown','keydown','touchstart'].forEach(ev=>addEventListener(ev,()=>{lastAct=Date.now()},{passive:true}));
+function lockNow(){
+  if(!unlocked)return;
+  stopVoice();document.querySelectorAll('.ov,.scanner-ov,.pdfv').forEach(e=>e.remove());
+  D=BLANK();loadOk=false;showLock();
+}
+document.addEventListener('visibilitychange',()=>{
+  if(document.hidden)hiddenAt=Date.now();
+  else if(unlocked&&hiddenAt&&Date.now()-hiddenAt>120000)lockNow();
+});
+setInterval(()=>{if(unlocked&&Date.now()-lastAct>600000&&!document.querySelector('.scanner-ov'))lockNow()},30000);
+addEyes();
+showLock();
+</script>
+</body>
+</html>
