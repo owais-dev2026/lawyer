@@ -324,9 +324,8 @@ function killVoice(){
 }
 function stopVoice(){detachVoice();killVoice()}
 
-function micBtn(forId){
-  return`<button type="button" class="btn s mic" data-a="mic" data-for="${forId}" title="تحدث فيتحول الكلام إلى نص">${I('mic',18)}</button>`;
-}
+function micBtn(forId){return '';}
+
 
 /* ===== Whisper (Transformers.js): تعرف عربي بدون نت — تنزيل مرة واحدة ثم يُحفظ في المتصفح ===== */
 const WH_VER='2.17.2';
@@ -829,92 +828,7 @@ function kbdHint(inputEl){
   try{inputEl.focus()}catch(e){}
   toast('بدون إنترنت: اضغط أيقونة 🎤 على لوحة المفاتيح (Gboard) للإملاء الصوتي — شاهد الإعدادات لتفعيله بدون نت');
 }
-async function startVoice(inputEl,btn){
-  if(whRec&&whRec.inputEl===inputEl){finishWhisper();return}
-  if(recActive&&recTarget===inputEl){
-    stopVoice();
-    toast('تم إيقاف الإدخال الصوتي');
-    return;
-  }
-
-  // أولوية: Vosk المحلي (فحص فوري بدون تحميل)
-  const isMobile=/Android|iPhone|iPad|Mobile/i.test(navigator.userAgent);
-  if(!isMobile&&(whInstalled()||whReady)){
-    const okW=await startWhisperVoice(inputEl,btn);
-    if(okW)return;
-  }
-  let od={state:'unsupported'};
-  try{od=await odStatus()}catch(e){}
-  const useLocal=od.state==='available';
-  if(voskModel||(!useLocal&&!voskFailed()&&(voskLoading||await modelSource()))){
-    const ok=await startVoskVoice(inputEl,btn);
-    if(ok)return;
-  }
-
-  // إن لم يتوفر Vosk: استخدم Web Speech عند وجود نت
-  if(!SpeechRec&&isMobile){kbdHint(inputEl);return}
-  if(!SpeechRec){
-    toast('ثبّت نموذج Vosk من الإعدادات لتعمل بدون نت، أو استخدم Chrome مع إنترنت.');
-    return;
-  }
-  if(navigator.onLine===false&&!useLocal&&isMobile){kbdHint(inputEl);return}
-  if(navigator.onLine===false&&!useLocal){
-    toast('لا يوجد إنترنت. من الإعدادات اضغط «تنزيل وتفعيل» في بطاقة Whisper (مرة واحدة وأنت متصل).');
-    return;
-  }
-
-  stopVoice();
-  recTarget=inputEl;
-  recActive=true;
-  recBase=(inputEl&&inputEl.value)||'';
-  recCommit='';
-  if(btn)btn.classList.add('rec');
-
-  const r=new SpeechRec();
-  recognition=r;
-  try{r.processLocally=useLocal}catch(e){}
-  r.lang=useLocal?od.lang:'ar-SA';
-  r.continuous=true;
-  r.interimResults=true;
-  r.maxAlternatives=1;
-  let lastIdx=0;
-  const tried=['ar-SA','ar-EG','ar'];
-  let li=0;
-  const arm=()=>{
-    clearTimeout(recSilence);
-    recSilence=setTimeout(()=>{if(recognition===r){stopVoice();toast('تم إيقاف الإدخال بعد توقفك عن الكلام')}},8000);
-  };
-  r.onstart=()=>{arm();toast(useLocal?'تكلم الآن… (بدون إنترنت)':'تكلم الآن… (وضع الإنترنت — ثبّت Whisper من الإعدادات)')};
-  r.onresult=e=>{
-    arm();
-    let interim='';
-    for(let i=lastIdx;i<e.results.length;i++){
-      const x=e.results[i];
-      if(x.isFinal){
-        const t=x[0].transcript.trim();
-        if(t)recCommit+=(recCommit?' ':'')+t;
-        lastIdx=i+1;
-      }else interim+=x[0].transcript;
-    }
-    if(recTarget){
-      recTarget.value=(recBase?recBase+' ':'')+recCommit+(interim?(recCommit?' ':'')+interim:'');
-      recTarget.dispatchEvent(new Event('input',{bubbles:true}));
-    }
-  };
-  r.onerror=e=>{
-    if(e.error==='no-speech'||e.error==='aborted'){if(recognition===r)stopVoice();return}
-    if(e.error==='not-allowed'||e.error==='service-not-allowed'){
-      toast('الميكروفون محظور. من شريط العنوان: القفل ← الميكروفون ← سماح');
-    }else if(e.error==='language-not-supported'&&li<tried.length-1){
-      li++;try{r.lang=tried[li];r.start();return}catch(err){}
-    }else if(e.error==='network'){
-      toast('انقطع الإنترنت. ثبّت Whisper من الإعدادات للعمل بدون نت.');
-    }else toast('تعذّر التعرف: '+e.error);
-    if(recognition===r)stopVoice();
-  };
-  r.onend=()=>{if(recognition===r)stopVoice()};
-  try{r.start()}catch(e){stopVoice();toast('تعذّر تشغيل التعرف الصوتي')}
-}
+async function startVoice(inputEl,btn){toast("الإدخال الصوتي غير متاح");return}
 
 /* ---- نسخة احتياطية PDF + استعادة ---- */
 const BK_B='%%LAWYERBACKUP-BEGIN%%',BK_E='%%LAWYERBACKUP-END%%';
@@ -1010,57 +924,119 @@ async function openCamera(sec,itemId){
   if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia){fallbackFilePick(sec,itemId);return}
   const ov=document.createElement('div');
   ov.className='scanner-ov';
-  ov.innerHTML=`<p class="sc-hint">وجّه الكاميرا نحو المستند ثم اضغط «التقاط»</p>
+  ov.innerHTML=`<p class="sc-hint" id="scHint">جاري فتح الكاميرا…</p>
     <video id="scVid" autoplay playsinline muted></video>
     <canvas id="scCan"></canvas>
     <div class="sc-bar">
-      <button type="button" class="btn a" id="scSnap">التقاط المستند</button>
-      <button type="button" class="btn" id="scFile">من المعرض / الملفات</button>
+      <button type="button" class="btn a" id="scSnap" disabled style="min-width:140px;font-size:16px">التقاط</button>
+      <button type="button" class="btn" id="scTorch" style="display:none">🔦 فلاش</button>
+      <button type="button" class="btn" id="scFile">من المعرض</button>
       <button type="button" class="btn d" id="scClose">إغلاق</button>
-    </div>`;
+    </div>
+    <p class="sc-hint" id="scCount" style="padding-top:0"></p>`;
   document.body.appendChild(ov);
-  const vid=$('#scVid');
-  let stream=null,closed=false;
+  const vid=$('#scVid'),hint=$('#scHint'),snapBtn=$('#scSnap'),torchBtn=$('#scTorch'),countEl=$('#scCount');
+  let stream=null,closed=false,track=null,torchOn=false,snapCount=0,busy=false;
   const vis=()=>{if(document.hidden)stop()};
-  function stop(){ // يوقف الكاميرا نهائياً مهما كان سبب الإغلاق
+  function stop(){
     closed=true;
     try{stream&&stream.getTracks().forEach(t=>t.stop())}catch(e){}
-    stream=null;try{vid.srcObject=null}catch(e){}
+    stream=null;track=null;try{vid.srcObject=null}catch(e){}
     document.removeEventListener('visibilitychange',vis);
     ov.remove();
   }
   document.addEventListener('visibilitychange',vis);
   $('#scClose').onclick=stop;
   $('#scFile').onclick=()=>{stop();fallbackFilePick(sec,itemId)};
-  navigator.mediaDevices.getUserMedia({
-    audio:false,
-    video:{facingMode:{ideal:'environment'},width:{ideal:1920},height:{ideal:1080}}
-  }).then(st=>{
-    if(closed){st.getTracks().forEach(t=>t.stop());return} // أُغلقت النافذة قبل وصول الكاميرا: أوقفها فوراً
-    stream=st;vid.srcObject=st;
-  }).catch(()=>{
+
+  // فتح سريع: نبدأ بأقل قيود ثم نرفع الجودة
+  const tryConstraints=[
+    {audio:false,video:{facingMode:{ideal:'environment'},width:{ideal:3840},height:{ideal:2160}}},
+    {audio:false,video:{facingMode:{ideal:'environment'},width:{ideal:2560},height:{ideal:1440}}},
+    {audio:false,video:{facingMode:{ideal:'environment'},width:{ideal:1920},height:{ideal:1080}}},
+    {audio:false,video:{facingMode:'environment'}},
+    {audio:false,video:true}
+  ];
+  (async()=>{
+    let lastErr=null;
+    for(const c of tryConstraints){
+      if(closed)return;
+      try{
+        const st=await navigator.mediaDevices.getUserMedia(c);
+        if(closed){st.getTracks().forEach(t=>t.stop());return}
+        stream=st;
+        track=st.getVideoTracks()[0]||null;
+        vid.srcObject=st;
+        try{await vid.play()}catch(e){}
+        // انتظر أول إطار حقيقي بسرعة
+        await new Promise(r=>{
+          if(vid.videoWidth)return r();
+          const t=setTimeout(r,1200);
+          vid.onloadedmetadata=()=>{clearTimeout(t);r()};
+        });
+        if(closed)return;
+        snapBtn.disabled=false;
+        const w=vid.videoWidth||0,h=vid.videoHeight||0;
+        hint.textContent=w?`جاهز — ${w}×${h} · وجّه المستند ثم اضغط التقاط (يمكنك التقاط عدة صور)`:'جاهز — وجّه المستند ثم اضغط التقاط';
+        // فلاش إن وُجد
+        try{
+          const caps=track&&track.getCapabilities&&track.getCapabilities();
+          if(caps&&caps.torch){torchBtn.style.display='';torchBtn.onclick=async()=>{
+            torchOn=!torchOn;
+            try{await track.applyConstraints({advanced:[{torch:torchOn}]});torchBtn.textContent=torchOn?'🔦 إطفاء':'🔦 فلاش'}catch(e){}
+          }}
+        }catch(e){}
+        // حاول رفع الدقة بعد الفتح السريع
+        try{
+          if(track)await track.applyConstraints({width:{ideal:3840},height:{ideal:2160},advanced:[{focusMode:'continuous'}]});
+        }catch(e){}
+        return;
+      }catch(e){lastErr=e}
+    }
     if(closed)return;
     stop();toast('تعذّر فتح الكاميرا — اختر صورة من الملفات');
     fallbackFilePick(sec,itemId);
-  });
-  $('#scSnap').onclick=async()=>{
-    if(!stream)return;
+  })();
+
+  async function captureFrame(){
+    if(!stream||busy||closed)return;
+    busy=true;snapBtn.disabled=true;snapBtn.textContent='…';
     try{
-      const w=vid.videoWidth||1280,h=vid.videoHeight||720;
-      const c=$('#scCan');c.width=w;c.height=h;
-      c.getContext('2d').drawImage(vid,0,0,w,h);
-      let data=c.toDataURL('image/jpeg',0.82);
-      if(w>1600){
-        const c2=document.createElement('canvas');
-        const nw=1600,nh=Math.round(h*1600/w);
-        c2.width=nw;c2.height=nh;
-        c2.getContext('2d').drawImage(c,0,0,nw,nh);
-        data=c2.toDataURL('image/jpeg',0.78);
+      let blob=null;
+      // ImageCapture يعطي صورة ثابتة بجودة أعلى من إطار الفيديو
+      try{
+        if(track&&window.ImageCapture){
+          const ic=new ImageCapture(track);
+          blob=await ic.takePhoto();
+        }
+      }catch(e){}
+      let data;
+      if(blob){
+        data=await compressImage(blob,2800,0.92);
+      }else{
+        const w=vid.videoWidth||1920,h=vid.videoHeight||1080;
+        const c=$('#scCan');
+        let dw=w,dh=h;
+        if(w>2800){dw=2800;dh=Math.round(h*2800/w)}
+        c.width=dw;c.height=dh;
+        const ctx=c.getContext('2d');
+        ctx.imageSmoothingEnabled=true;ctx.imageSmoothingQuality='high';
+        ctx.drawImage(vid,0,0,dw,dh);
+        data=c.toDataURL('image/jpeg',0.92);
       }
-      stop();
       await addScanImage(sec,itemId,data);
-    }catch(e){stop();toast('تعذّر التقاط الصورة')}
-  };
+      snapCount++;
+      countEl.textContent='تم التقاط '+snapCount+(snapCount>1?' صور':' صورة')+' — يمكنك التقاط المزيد أو الإغلاق';
+      // وميض خفيف للتأكيد
+      ov.style.background='#fff';
+      setTimeout(()=>{if(!closed)ov.style.background='#111'},80);
+    }catch(e){toast('تعذّر التقاط الصورة')}
+    finally{
+      busy=false;
+      if(!closed){snapBtn.disabled=false;snapBtn.textContent='التقاط'}
+    }
+  }
+  snapBtn.onclick=captureFrame;
 }
 function fallbackFilePick(sec,itemId){
   const inp=$('#camInput');
@@ -1068,7 +1044,7 @@ function fallbackFilePick(sec,itemId){
   inp.onchange=async()=>{
     const f=inp.files&&inp.files[0];if(!f)return;
     try{
-      const data=await compressImage(f,1600,0.78);
+      const data=await compressImage(f,2800,0.92);
       await addScanImage(sec,itemId,data);
     }catch(e){toast('تعذّر قراءة الصورة')}
   };
@@ -1187,12 +1163,19 @@ function openCasePdf(itemId){
     v.querySelector('#pvX').onclick=()=>v.remove();
     v.querySelector('#pvDl').onclick=async()=>{
       try{
-        const blob=buildPdf(pages,'قضية');
-        const fname='قضية_'+label.replace(/[\\/:*?"<>|]+/g,'_').slice(0,40)+'.pdf';
-        // Chrome/Edge على الكمبيوتر: يحدّث نفس الملف في كل مرة؛ بقية المتصفحات تنزّل نسخة
-        const same=await writeCasePdf(key,blob,fname);
-        toast(same?'تم تحديث نفس ملف PDF':'تم تنزيل نسخة PDF (المتصفح لا يسمح بالكتابة فوق ملف قديم)',4500);
-      }catch(e){toast('تعذّر إنشاء PDF')}
+        if(!pages.length){toast('لا توجد صفحات للتنزيل');return}
+        toast('جارٍ إنشاء ملف PDF…');
+        const jpgs=[];
+        for(let i=0;i<pages.length;i++){
+          try{jpgs.push(await ensureJpeg(pages[i]))}catch(e){console.warn('skip page',i,e)}
+        }
+        if(!jpgs.length){toast('تعذّر تجهيز الصور للـ PDF');return}
+        const blob=buildPdf(jpgs,'قضية');
+        if(!blob||blob.size<200){toast('فشل إنشاء PDF — جرّب مرة أخرى');return}
+        const fname='قضية_'+label.replace(/[\\/:*?"<>|]+/g,'_').slice(0,40)+'_'+today()+'.pdf';
+        dlBlob(blob,fname);
+        toast('تم تنزيل: '+fname+' — راجع مجلد التنزيلات',5000);
+      }catch(e){console.error(e);toast('تعذّر إنشاء PDF: '+(e&&e.message||e))}
     };
     v.querySelectorAll('.pg').forEach(g=>g.onclick=e=>{
       if(e.target.tagName==='BUTTON')return;
@@ -1209,9 +1192,23 @@ function openCasePdf(itemId){
   draw();document.body.appendChild(v);
 }
 function compressImage(file,maxW,quality){
-
-
-  return new Promise((res,rej)=>{
+  maxW=maxW||2800;quality=quality==null?0.92:quality;
+  return new Promise(async(res,rej)=>{
+    try{
+      // createImageBitmap أسرع وأوضح من Image+FileReader
+      if(typeof createImageBitmap==='function'&&(file instanceof Blob)){
+        const bmp=await createImageBitmap(file);
+        let w=bmp.width,h=bmp.height;
+        if(w>maxW){h=Math.round(h*maxW/w);w=maxW}
+        const c=document.createElement('canvas');c.width=w;c.height=h;
+        const ctx=c.getContext('2d');
+        ctx.imageSmoothingEnabled=true;ctx.imageSmoothingQuality='high';
+        ctx.drawImage(bmp,0,0,w,h);
+        try{bmp.close&&bmp.close()}catch(e){}
+        res(c.toDataURL('image/jpeg',quality));
+        return;
+      }
+    }catch(e){}
     const r=new FileReader();
     r.onload=()=>{
       const img=new Image();
@@ -1219,7 +1216,9 @@ function compressImage(file,maxW,quality){
         let w=img.width,h=img.height;
         if(w>maxW){h=Math.round(h*maxW/w);w=maxW}
         const c=document.createElement('canvas');c.width=w;c.height=h;
-        c.getContext('2d').drawImage(img,0,0,w,h);
+        const ctx=c.getContext('2d');
+        ctx.imageSmoothingEnabled=true;ctx.imageSmoothingQuality='high';
+        ctx.drawImage(img,0,0,w,h);
         res(c.toDataURL('image/jpeg',quality));
       };
       img.onerror=rej;
@@ -1276,85 +1275,123 @@ function jpegToPdf(images,title){
   // rebuild properly
   return buildPdf(images,title);
 }
+
+async function ensureJpeg(dataUrl){
+  if(typeof dataUrl==='string'&&/^data:image\/(jpeg|jpg)/i.test(dataUrl))return dataUrl;
+  return await new Promise((res,rej)=>{
+    const img=new Image();
+    img.onload=()=>{
+      try{
+        const c=document.createElement('canvas');
+        c.width=img.naturalWidth||img.width;c.height=img.naturalHeight||img.height;
+        const ctx=c.getContext('2d');ctx.drawImage(img,0,0);
+        res(c.toDataURL('image/jpeg',0.92));
+      }catch(e){rej(e)}
+    };
+    img.onerror=()=>rej(new Error('صورة تالفة'));
+    img.src=dataUrl;
+  });
+}
+
 function buildPdf(images,title,extra){
-  // Cleaner single-pass PDF builder for JPEG pages
-  const parts=[];
-  const offsets=[0];
-  let pdf='%PDF-1.4\n';
-  function obj(n,content){
-    offsets[n]=pdf.length;
-    pdf+=`${n} 0 obj\n${content}\nendobj\n`;
-  }
-  const n=images.length;
-  // object 1: catalog
-  obj(1,'<< /Type /Catalog /Pages 2 0 R'+(extra?' /LawyerBackup '+(3+3*n)+' 0 R':'')+' >>');
-  // object 2: pages (kids filled later conceptually — we know ids)
-  // Images start at 3, each image uses 2 objs (image + content), page uses 1
-  // Layout: 1 catalog, 2 pages, then for each image: img, content, page
-  let next=3;
-  const pageRefs=[];
-  const imgBinaries=[];
-  for(let i=0;i<n;i++){
-    const src=images[i];
-    let b64s=src;
-    if(b64s.startsWith('data:'))b64s=b64s.split(',')[1];
-    const bin=atob(b64s);
+  const enc=str=>{const a=new Uint8Array(str.length);for(let i=0;i<str.length;i++)a[i]=str.charCodeAt(i)&0xff;return a};
+  const parts=[];let pos=0;const offsets={0:0};
+  const addBytes=u8=>{parts.push(u8);pos+=u8.length};
+  const addStr=str=>addBytes(enc(str));
+  const startObj=n=>{offsets[n]=pos;addStr(n+' 0 obj\n')};
+  const endObj=()=>{addStr('endobj\n')};
+
+  const imgs=[];
+  for(let i=0;i<images.length;i++){
+    let src=images[i];if(!src||typeof src!=='string')continue;
+    let b64=src;if(b64.indexOf(',')>=0)b64=b64.split(',')[1];
+    b64=b64.replace(/\s/g,'');
+    let u;try{const bin=atob(b64);u=new Uint8Array(bin.length);for(let j=0;j<bin.length;j++)u[j]=bin.charCodeAt(j)}catch(e){continue}
+    if(u.length<4||u[0]!==0xFF||u[1]!==0xD8)continue;
     let w=595,h=842;
-    try{
-      const u=new Uint8Array(bin.length);for(let j=0;j<bin.length;j++)u[j]=bin.charCodeAt(j);
-      for(let j=0;j<u.length-9;j++){
-        if(u[j]===0xFF&&(u[j+1]===0xC0||u[j+1]===0xC2)){h=(u[j+5]<<8)|u[j+6];w=(u[j+7]<<8)|u[j+8];break}
+    for(let j=0;j<Math.min(u.length-9,200000);j++){
+      if(u[j]===0xFF&&(u[j+1]===0xC0||u[j+1]===0xC1||u[j+1]===0xC2)){
+        h=(u[j+5]<<8)|u[j+6];w=(u[j+7]<<8)|u[j+8];break;
       }
-    }catch(e){}
-    const maxW=555,maxH=800;
-    const sc=Math.min(maxW/w,maxH/h,1);
-    const dw=Math.round(w*sc),dh=Math.round(h*sc);
-    const x=Math.round((595-dw)/2),y=Math.round((842-dh)/2);
+    }
+    if(!w||!h){w=595;h=842}
+    imgs.push({u,w,h});
+  }
+  if(!imgs.length)throw new Error('لا توجد صور JPEG صالحة');
+
+  addStr('%PDF-1.4\n');
+  startObj(1);addStr('<< /Type /Catalog /Pages 2 0 R >>\n');endObj();
+
+  let next=3;const pageIds=[];const prepared=[];
+  for(let i=0;i<imgs.length;i++){
     const imgId=next++,contId=next++,pageId=next++;
-    pageRefs.push(pageId);
-    imgBinaries.push({imgId,contId,pageId,bin,w,h,dw,dh,x,y});
+    pageIds.push(pageId);
+    const im=imgs[i];
+    const maxW=555,maxH=800;
+    const sc=Math.min(maxW/im.w,maxH/im.h,1);
+    const dw=Math.max(1,Math.round(im.w*sc)),dh=Math.max(1,Math.round(im.h*sc));
+    const x=Math.round((595-dw)/2),y=Math.round((842-dh)/2);
+    prepared.push({imgId,contId,pageId,u:im.u,w:im.w,h:im.h,dw,dh,x,y});
   }
-  obj(2,`<< /Type /Pages /Kids [${pageRefs.map(id=>id+' 0 R').join(' ')}] /Count ${n} >>`);
-  for(const im of imgBinaries){
-    offsets[im.imgId]=pdf.length;
-    pdf+=`${im.imgId} 0 obj\n<< /Type /XObject /Subtype /Image /Width ${im.w} /Height ${im.h} /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length ${im.bin.length} >>\nstream\n`;
-    pdf+=im.bin;
-    pdf+=`\nendstream\nendobj\n`;
-    const stream=`q ${im.dw} 0 0 ${im.dh} ${im.x} ${im.y} cm /Im0 Do Q`;
-    obj(im.contId,`<< /Length ${stream.length} >>\nstream\n${stream}\nendstream`);
-    obj(im.pageId,`<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Contents ${im.contId} 0 R /Resources << /XObject << /Im0 ${im.imgId} 0 R >> >> >>`);
+
+  startObj(2);
+  addStr('<< /Type /Pages /Kids ['+pageIds.map(id=>id+' 0 R').join(' ')+'] /Count '+pageIds.length+' >>\n');
+  endObj();
+
+  for(let i=0;i<prepared.length;i++){
+    const im=prepared[i];
+    startObj(im.imgId);
+    addStr('<< /Type /XObject /Subtype /Image /Width '+im.w+' /Height '+im.h+' /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length '+im.u.length+' >>\nstream\n');
+    addBytes(im.u);
+    addStr('\nendstream\n');
+    endObj();
+    const ops='q '+im.dw+' 0 0 '+im.dh+' '+im.x+' '+im.y+' cm /Im0 Do Q\n';
+    startObj(im.contId);
+    addStr('<< /Length '+ops.length+' >>\nstream\n'+ops+'endstream\n');
+    endObj();
+    startObj(im.pageId);
+    addStr('<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Contents '+im.contId+' 0 R /Resources << /XObject << /Im0 '+im.imgId+' 0 R >> >> >>\n');
+    endObj();
   }
-  if(extra){obj(next,`<< /Length ${extra.length} >>\nstream\n${extra}\nendstream`);next++}
-  const xrefStart=pdf.length;
-  pdf+='xref\n';
-  pdf+=`0 ${next}\n`;
-  pdf+='0000000000 65535 f \n';
+
+  if(extra){
+    const ex=enc(String(extra));
+    startObj(next);
+    addStr('<< /Length '+ex.length+' >>\nstream\n');
+    addBytes(ex);
+    addStr('\nendstream\n');
+    endObj();
+    next++;
+  }
+
+  const xrefStart=pos;
+  addStr('xref\n');
+  addStr('0 '+next+'\n');
+  addStr('0000000000 65535 f \n');
   for(let i=1;i<next;i++){
-    const off=String(offsets[i]||0).padStart(10,'0');
-    pdf+=`${off} 00000 n \n`;
+    addStr(String(offsets[i]||0).padStart(10,'0')+' 00000 n \n');
   }
-  pdf+=`trailer\n<< /Size ${next} /Root 1 0 R >>\nstartxref\n${xrefStart}\n%%EOF`;
-  // Convert to Blob — binary string to Uint8Array
-  const len=pdf.length;
-  const u8=new Uint8Array(len);
-  for(let i=0;i<len;i++)u8[i]=pdf.charCodeAt(i)&0xff;
-  return new Blob([u8],{type:'application/pdf'});
+  addStr('trailer\n<< /Size '+next+' /Root 1 0 R >>\nstartxref\n'+xrefStart+'\n%%EOF\n');
+
+  const total=parts.reduce((a,c)=>a+c.length,0);
+  const out=new Uint8Array(total);
+  let o=0;for(let i=0;i<parts.length;i++){out.set(parts[i],o);o+=parts[i].length}
+  return new Blob([out],{type:'application/pdf'});
 }
 async function exportScansPdf(sec){
   const list=scansFor(sec);
   if(!list.length){toast('لا توجد صور للتصدير');return}
   try{
-    const blob=buildPdf(list.map(s=>s.data),'مسح');
+    toast('جارٍ إنشاء ملف PDF…');
+    const jpgs=[];
+    for(const s of list){try{jpgs.push(await ensureJpeg(s.data))}catch(e){}}
+    if(!jpgs.length){toast('تعذّر تجهيز الصور');return}
+    const blob=buildPdf(jpgs,'مسح');
     const name=`مسح_${sec}_${today()}.pdf`;
-    const url=URL.createObjectURL(blob);
-    const a=document.createElement('a');
-    a.href=url;a.download=name;
-    document.body.appendChild(a);a.click();a.remove();
-    setTimeout(()=>URL.revokeObjectURL(url),2000);
-    toast('اختر مكان حفظ ملف PDF من نافذة التنزيل التي ظهرت: '+name,5000);
+    dlBlob(blob,name);
+    toast('تم تنزيل: '+name+' — راجع مجلد التنزيلات',5000);
   }catch(e){
     console.error(e);
-    // fallback: print
     $('#pr').innerHTML=`<h1>مسح مستندات — ${sec}</h1>`+list.map(s=>`<img src="${s.data}" style="max-width:100%;page-break-after:always">`).join('');
     toast('سيتم فتح الطباعة — اختر «حفظ كـ PDF» واختر المكان');
     setTimeout(()=>window.print(),300);
@@ -1457,7 +1494,6 @@ function setupPerms(){
     <h2 style="margin:0 0 8px">إعداد الصلاحيات (مرة واحدة فقط)</h2>
     <p class="m">اضغط «السماح الآن» ثم وافق على كل طلب يظهر من المتصفح:</p>
     <ul class="m" style="margin:8px 0 12px;padding-inline-start:20px;line-height:1.8">
-      <li>الميكروفون — للإدخال الصوتي</li>
       <li>الكاميرا — لماسح المستندات</li>
       <li>الإشعارات — لتذكير المواعيد</li>
       <li>التخزين الدائم — لحفظ بياناتك</li>
@@ -1477,8 +1513,7 @@ function setupPerms(){
     const r=[];
     const tm=async(c,l)=>{try{const st=await navigator.mediaDevices.getUserMedia(c);st.getTracks().forEach(t=>t.stop());r.push('✓ '+l)}catch(e){r.push('✗ '+l)}};
     if(navigator.mediaDevices&&navigator.mediaDevices.getUserMedia){
-      await tm({audio:true},'الميكروفون');
-      await tm({video:true},'الكاميرا');
+      await tm({video:{facingMode:'environment'}},'الكاميرا');
     }
     try{const p=await Notification.requestPermission();r.push((p==='granted'?'✓ ':'✗ ')+'الإشعارات');if(p==='granted')localStorage.setItem('lawyerNotif','1')}catch(e){}
     try{if(navigator.storage&&navigator.storage.persist){const ok=await navigator.storage.persist();r.push((ok?'✓ ':'✗ ')+'تخزين دائم')}}catch(e){}
@@ -1503,7 +1538,7 @@ function openForm(t,id){
   let c;
   const fid='f_'+k;
   if(ty==='area'){
-    c=`<div class="voice-bar"><textarea name="${k}" id="${fid}">${esc(v)}</textarea>${micBtn(fid)}</div>`;
+    c=`<textarea name="${k}" id="${fid}">${esc(v)}</textarea>`;
     if(allowCam&&k==='notes'){
       const existing=(D.scans||[]).filter(s=>s.itemId===formScanId||(id&&s.itemId===id));
       c+=`<div class="notes-cam" style="margin-top:10px">
@@ -1518,11 +1553,11 @@ function openForm(t,id){
     }
   }
   else if(ty==='sel')c=`<select name="${k}" id="${fid}">${op.map(x=>{const val=Array.isArray(x)?x[0]:x,lb=Array.isArray(x)?x[1]:x;return`<option value="${val}"${String(val)===String(v)?' selected':''}>${lb}</option>`}).join('')}</select>`;
-  else if(ty==='text')c=`<div class="voice-bar"><input name="${k}" id="${fid}"${k==='client'?' list="cl"':''} type="text" value="${esc(v)}">${micBtn(fid)}</div>`;
+  else if(ty==='text')c=`<input name="${k}" id="${fid}"${k==='client'?' list="cl"':''} type="text" value="${esc(v)}">`;
   else c=`<input name="${k}" id="${fid}" type="${ty==='num'?'number':ty}" value="${esc(v)}"${ty==='num'?' min="0" inputmode="numeric"':''}>`;
   return`<div><label>${l}</label>${c}</div>`}).join('');
  const ov=document.createElement('div');ov.className='ov';
- ov.innerHTML=`<form class="mod" novalidate><h2 style="margin-top:0">${id?'تعديل':'إضافة'}</h2>${html}<datalist id="cl">${D.clients.map(c=>`<option value="${esc(c.name)}">`).join('')}</datalist><p class="m" id="er" role="alert" style="color:var(--red)"></p>${t==='deadlines'?'<p class="m">يُحسب آخر موعد من بداية المدة + عدد الأيام.</p>':''}<p class="voice-hint">🎤 اضغط الميكروفون وتكلم — يتحول الكلام فوراً إلى نص. (بعد تثبيت نموذج Vosk يعمل بدون نت). اضغط مرة أخرى للإيقاف.</p><div class="row" style="margin-top:12px"><button class="btn p" style="flex:1">حفظ</button><button type="button" class="btn" data-x>إلغاء</button></div></form>`;
+ ov.innerHTML=`<form class="mod" novalidate><h2 style="margin-top:0">${id?'تعديل':'إضافة'}</h2>${html}<datalist id="cl">${D.clients.map(c=>`<option value="${esc(c.name)}">`).join('')}</datalist><p class="m" id="er" role="alert" style="color:var(--red)"></p>${t==='deadlines'?'<p class="m">يُحسب آخر موعد من بداية المدة + عدد الأيام.</p>':''}<div class="row" style="margin-top:12px"><button class="btn p" style="flex:1">حفظ</button><button type="button" class="btn" data-x>إلغاء</button></div></form>`;
  document.body.appendChild(ov);
  const fm=ov.firstChild,close=()=>{stopVoice();ov.remove()};
  ov.onclick=e=>{if(e.target===ov||e.target.dataset.x!==undefined)close()};
@@ -1572,9 +1607,9 @@ const V={
   }).sort((a,b)=>a.done-b.done||a.date.localeCompare(b.date));
   const pend=D.tasks.filter(x=>!x.done&&x.date<=tdy);
   const dn=L.filter(x=>x.done).length,pc=L.length?Math.round(dn/L.length*100):0;
-  return`<h1>الأعمال الإدارية</h1><p class="sub">✓ عند الإنجاز. غير المنجز يُرحَّل لليوم التالي. ميكروفون للإدخال الصوتي.</p>
+  return`<h1>الأعمال الإدارية</h1><p class="sub">✓ عند الإنجاز. غير المنجز يُرحَّل لليوم التالي.</p>
   <div class="row sp"><button class="btn" data-a="day" data-n="-1" aria-label="اليوم السابق">›</button><div style="text-align:center"><b>${cur===today()?'اليوم · ':''}${fd(cur)}</b>${cur!==today()?'<br><a href="#" data-a="day" data-n="0">العودة إلى اليوم</a>':''}</div><button class="btn" data-a="day" data-n="1" aria-label="اليوم التالي">‹</button></div>
-  <form id="qa" class="row" style="margin:14px 0 8px"><input id="qt" placeholder="أضف مهمة... أو اضغط الميكروفون" aria-label="مهمة جديدة" style="flex:1"><button type="button" class="btn s mic" data-a="mic" data-for="qt" title="تحدث وسيظهر الكلام كنص مباشرة">${I('mic',18)}</button><button class="btn p">إضافة</button></form>
+  <form id="qa" class="row" style="margin:14px 0 8px"><input id="qt" placeholder="أضف مهمة..." aria-label="مهمة جديدة" style="flex:1"><button class="btn p">إضافة</button></form>
   ${L.length?`<div class="m">أُنجز ${dn} من ${L.length}</div><div class="bar"><i style="width:${pc}%"></i></div>`:'<p class="m">لا توجد مهام في هذا اليوم.</p>'}
   ${L.map(x=>`<div class="card ${x.done?'ok':'acc'}"><div class="row"><button class="chk${x.done?' on':''}" role="checkbox" aria-checked="${x.done}" aria-label="${esc(x.title)}" data-a="tg" data-t="tasks" data-id="${x.id}">${x.done?'✓':''}</button><div style="flex:1"><h3>${esc(x.title)}</h3>${x.roll?`<span class="tag amb">مرحّلة ${x.roll} ${x.roll>1?'مرات':'مرة'}</span>`:''}${line(esc(x.notes))}</div><button class="btn s" data-a="ed" data-t="tasks" data-id="${x.id}">تعديل</button><button class="btn s d" data-a="dl" data-t="tasks" data-id="${x.id}">حذف</button></div></div>`).join('')}
   ${!L.length&&cur>tdy&&pend.length?`<p class="m">المهام غير المنجزة تظهر تلقائياً في كل يوم حتى تُنجَز.</p>`:''}
@@ -1594,30 +1629,6 @@ const V={
   ${L.map(x=>{const due=!x.done&&evt(x)-x.before*6e4<=Date.now();return`<div class="card ${x.done?'ok':due?'red':'acc'}"><div class="row sp"><h3>${esc(x.title)}</h3>${due?'<span class="tag red">حان وقته</span>':''}</div>${line(fd(x.date)+(x.time?' · '+ft(x.time):''))}${line('التنبيه: '+(BEFORE.find(b=>b[0]===x.before)||[0,''])[1])}${line(esc(x.notes))}${act('reminders',x)}</div>`}).join('')}`},
  backup(){
   return`<h1>الإعدادات والنسخ الاحتياطي</h1><p class="sub">بياناتك مشفّرة محلياً بـ AES-256 مشتقة من كلمة مرورك، ولا تُرسل لأي خادم.</p>
-  <div class="card acc" id="kbCard">
-    <h3>الإملاء الصوتي الفوري على الجوال (يعمل بدون نت)</h3>
-    <p class="m">مع الإنترنت: ميكروفون الأجندة يكتب كلامك فوراً أثناء الحديث. بدون إنترنت على أندرويد: استخدم ميكروفون لوحة المفاتيح <b>Gboard</b> (تنزيله من Play Store مجاني):</p>
-    <ol class="m" style="line-height:1.9;padding-inline-start:22px">
-      <li>ثبّت Gboard واجعله لوحة المفاتيح الافتراضية.</li>
-      <li>افتح أي خانة، اضغط ⚙ على الكيبورد ← <b>الكتابة الصوتية</b> ← <b>التعرف على الكلام بدون اتصال</b>.</li>
-      <li>نزّل <b>العربية</b> مرة واحدة. بعدها أي خانة بالأجندة: اضغط 🎤 الكيبورد وتكلم، والنص يظهر فوراً.</li>
-    </ol>
-  </div>
-  <div class="card acc" id="whCard">
-    <h3>للكمبيوتر فقط: Whisper بدون إنترنت (يحوّل بعد إيقاف التسجيل)</h3>
-    <p class="m">نموذج عربي خفيف (~80 ميجا) يُنزَّل مرة واحدة ويُحفظ داخل المتصفح، ثم يعمل بدون نت. اضغط الميكروفون وتكلم، ثم اضغطه مرة أخرى للإيقاف فيتحول الكلام إلى نص خلال ثوانٍ.</p>
-    <p class="m" id="whStatus">${esc(whLastMsg||'جاري الفحص…')}</p>
-    <div class="row wrap" style="margin-top:8px;gap:8px">
-      <button type="button" class="btn p" data-a="whinstall">تنزيل وتفعيل (مرة واحدة)</button>
-    </div>
-  </div>
-  <div class="card acc" id="odCard">
-    <h3>بديل: التعرف المدمج بالمتصفح (إن توفرت العربية)</h3>
-    <p class="m" id="odStatus">جاري الفحص…</p>
-    <div class="row wrap" style="margin-top:8px;gap:8px">
-      <button type="button" class="btn" data-a="odenable">فحص / تفعيل</button>
-    </div>
-  </div>
   <div class="card acc"><h3>تغيير كلمة المرور</h3>
     <label>الحالية</label><input type="password" id="cpw">
     <label>الجديدة (8 أحرف على الأقل)</label><input type="password" id="npw">
@@ -1670,11 +1681,7 @@ function draw(){
  if(tab!=='reminders')b+=dr.slice(0,3).map(r=>`<div class="alert amb" role="alert"><div class="row sp"><span>🔔 ${esc(r.title)} · ${ft(r.time)}</span><button class="btn s" data-a="tg" data-t="reminders" data-id="${r.id}">تم</button></div></div>`).join('');
  const keep=document.activeElement&&document.activeElement.id==='qt'?$('#qt').value:null;
  $('#app').innerHTML=b+V[tab]();
- preloadVosk();preloadWhisper();
  if(keep!==null)$('#qt').value=keep;
- if(tab==='backup'){
-   whStatusRefresh();odRefresh();
- }
 }
 
 document.addEventListener('click',async e=>{
@@ -1696,7 +1703,6 @@ document.addEventListener('click',async e=>{
    inp.onchange=async()=>{const f=inp.files&&inp.files[0];if(f)await restoreFile(f)};
    inp.click();
  }
- else if(a==='mic'){const inp=document.getElementById(el.dataset.for);if(inp)startVoice(inp,el)}
  else if(a==='scan')openCamera(el.dataset.sec);
  else if(a==='scanpdf')exportScansPdf(el.dataset.sec);
  else if(a==='formscan')openCamera(el.dataset.sec,el.dataset.item);
@@ -1705,32 +1711,6 @@ document.addEventListener('click',async e=>{
  else if(a==='scandel'){
    D.scans=(D.scans||[]).filter(s=>s.id!==id);await save();
    const th=el.closest('.th');if(th)th.remove();else draw();
- }
- else if(a==='whinstall'){whInstall()}
- else if(a==='odenable'){odEnable()}
- else if(a==='voskcheck'){voskCheck(false)}
- else if(a==='voskpick'){voskCheck(true)}
- else if(a==='voskhelp'){
-   const ov=document.createElement('div');ov.className='ov';
-   ov.innerHTML=`<div class="mod" style="max-height:90%;overflow:auto"><h2 style="margin-top:0">تثبيت التعرف العربي بدون نت</h2>
-   <ol class="m" style="line-height:1.9;padding-inline-start:22px">
-     <li>حمّل النموذج من:<br><span dir="ltr" style="font-size:12px;word-break:break-all">https://alphacephei.com/vosk/models/vosk-model-ar-mgb2-0.4.zip</span></li>
-     <li>فُك الضغط عن الملف zip.</li>
-     <li>ادخل المجلد <b>vosk-model-ar-mgb2-0.4</b> وتأكد أنه يحتوي مجلدات: am و conf و graph.</li>
-     <li>من داخل هذا المجلد أنشئ أرشيفاً بالأمر (على ويندوز استخدم 7-Zip):<br>
-       <code dir="ltr" style="display:block;background:#eee;padding:8px;border-radius:8px;margin:6px 0;font-size:12px">tar -czf vosk-ar.tar.gz am conf graph ivector</code>
-       أو بـ 7-Zip: حدد المجلدات am conf graph (و ivector إن وُجد) ← إضافة إلى أرشيف ← صيغة tar ثم اضغط gzip، أو استخدم أداة تحول zip إلى tar.gz.
-     </li>
-     <li>احتفظ بالملف الناتج باسم <b>vosk-ar.tar.gz</b> (يُفضّل داخل مجلد <b>models</b>) وبجانب index.html ملف <b>vosk.js</b>.</li>
-     <li>افتح التطبيق ← الإعدادات ← <b>اختيار ملف النموذج</b> وحدد vosk-ar.tar.gz (مرة واحدة فقط، يُحفظ في المتصفح).</li>
-     <li>بعدها كل ما فتحت التطبيق يُجهَّز النموذج تلقائياً في الخلفية، فيعمل الميكروفون فوراً.</li>
-   </ol>
-   <p class="m">بعد نجاح الفحص يعمل الميكروفون بدون إنترنت ويحوّل كلامك إلى نص مباشرة.</p>
-   <p class="m" style="color:var(--red)">ملاحظة: حجم النموذج حوالي 300 ميجا. يُنزَّل مرة واحدة فقط على جهازك ولا يُرفع لأي خادم.</p>
-   <button type="button" class="btn p" style="width:100%;margin-top:10px" data-x>حسناً</button>
-   </div>`;
-   ov.onclick=e=>{if(e.target===ov||e.target.dataset.x!==undefined)ov.remove()};
-   document.body.appendChild(ov);
  }
  else if(a==='chpass'){
    const cur=$('#cpw').value,n=$('#npw').value,n2=$('#npw2').value;
