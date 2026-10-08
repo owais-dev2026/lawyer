@@ -825,6 +825,10 @@ async function startVoskVoice(inputEl,btn){
   }
 }
 
+function kbdHint(inputEl){
+  try{inputEl.focus()}catch(e){}
+  toast('بدون إنترنت: اضغط أيقونة 🎤 على لوحة المفاتيح (Gboard) للإملاء الصوتي — شاهد الإعدادات لتفعيله بدون نت');
+}
 async function startVoice(inputEl,btn){
   if(whRec&&whRec.inputEl===inputEl){finishWhisper();return}
   if(recActive&&recTarget===inputEl){
@@ -834,7 +838,8 @@ async function startVoice(inputEl,btn){
   }
 
   // أولوية: Vosk المحلي (فحص فوري بدون تحميل)
-  if(whInstalled()||whReady){
+  const isMobile=/Android|iPhone|iPad|Mobile/i.test(navigator.userAgent);
+  if(!isMobile&&(whInstalled()||whReady)){
     const okW=await startWhisperVoice(inputEl,btn);
     if(okW)return;
   }
@@ -847,10 +852,12 @@ async function startVoice(inputEl,btn){
   }
 
   // إن لم يتوفر Vosk: استخدم Web Speech عند وجود نت
+  if(!SpeechRec&&isMobile){kbdHint(inputEl);return}
   if(!SpeechRec){
     toast('ثبّت نموذج Vosk من الإعدادات لتعمل بدون نت، أو استخدم Chrome مع إنترنت.');
     return;
   }
+  if(navigator.onLine===false&&!useLocal&&isMobile){kbdHint(inputEl);return}
   if(navigator.onLine===false&&!useLocal){
     toast('لا يوجد إنترنت. من الإعدادات اضغط «تنزيل وتفعيل» في بطاقة Whisper (مرة واحدة وأنت متصل).');
     return;
@@ -1587,8 +1594,17 @@ const V={
   ${L.map(x=>{const due=!x.done&&evt(x)-x.before*6e4<=Date.now();return`<div class="card ${x.done?'ok':due?'red':'acc'}"><div class="row sp"><h3>${esc(x.title)}</h3>${due?'<span class="tag red">حان وقته</span>':''}</div>${line(fd(x.date)+(x.time?' · '+ft(x.time):''))}${line('التنبيه: '+(BEFORE.find(b=>b[0]===x.before)||[0,''])[1])}${line(esc(x.notes))}${act('reminders',x)}</div>`}).join('')}`},
  backup(){
   return`<h1>الإعدادات والنسخ الاحتياطي</h1><p class="sub">بياناتك مشفّرة محلياً بـ AES-256 مشتقة من كلمة مرورك، ولا تُرسل لأي خادم.</p>
+  <div class="card acc" id="kbCard">
+    <h3>الإملاء الصوتي الفوري على الجوال (يعمل بدون نت)</h3>
+    <p class="m">مع الإنترنت: ميكروفون الأجندة يكتب كلامك فوراً أثناء الحديث. بدون إنترنت على أندرويد: استخدم ميكروفون لوحة المفاتيح <b>Gboard</b> (تنزيله من Play Store مجاني):</p>
+    <ol class="m" style="line-height:1.9;padding-inline-start:22px">
+      <li>ثبّت Gboard واجعله لوحة المفاتيح الافتراضية.</li>
+      <li>افتح أي خانة، اضغط ⚙ على الكيبورد ← <b>الكتابة الصوتية</b> ← <b>التعرف على الكلام بدون اتصال</b>.</li>
+      <li>نزّل <b>العربية</b> مرة واحدة. بعدها أي خانة بالأجندة: اضغط 🎤 الكيبورد وتكلم، والنص يظهر فوراً.</li>
+    </ol>
+  </div>
   <div class="card acc" id="whCard">
-    <h3>التعرف الصوتي بدون إنترنت (Whisper) — موصى به</h3>
+    <h3>للكمبيوتر فقط: Whisper بدون إنترنت (يحوّل بعد إيقاف التسجيل)</h3>
     <p class="m">نموذج عربي خفيف (~80 ميجا) يُنزَّل مرة واحدة ويُحفظ داخل المتصفح، ثم يعمل بدون نت. اضغط الميكروفون وتكلم، ثم اضغطه مرة أخرى للإيقاف فيتحول الكلام إلى نص خلال ثوانٍ.</p>
     <p class="m" id="whStatus">${esc(whLastMsg||'جاري الفحص…')}</p>
     <div class="row wrap" style="margin-top:8px;gap:8px">
