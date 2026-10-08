@@ -344,16 +344,20 @@ function whStatusRefresh(){
   else whMsg('✗ غير مثبت — اضغط «تنزيل وتفعيل» وأنت متصل بالإنترنت (مرة واحدة، ~80 ميجا)');
 }
 const WH_WORKER_SRC=`
-import {pipeline,env} from '${WH_LIB}';
-env.allowLocalModels=false;env.allowRemoteModels=true;env.useBrowserCache=true;
-env.backends.onnx.wasm.wasmPaths='${WH_BASE}';
-env.backends.onnx.wasm.numThreads=1;
 let asr=null;
 self.onmessage=async e=>{
   const m=e.data;
   try{
     if(m.type==='load'){
-      asr=await pipeline('automatic-speech-recognition','${WH_MODEL}',{quantized:true,progress_callback:p=>self.postMessage({type:'progress',p})});
+      let T;
+      try{T=await import(m.lib)}catch(err){self.postMessage({type:'error',phase:'import',message:'تعذّر تحميل المكتبة: '+((err&&err.message)||err)});return}
+      const env=T.env;
+      env.useBrowserCache=true;
+      if(m.localModel){env.allowLocalModels=true;env.allowRemoteModels=false;env.localModelPath=m.modelPath}
+      else{env.allowLocalModels=false;env.allowRemoteModels=true}
+      env.backends.onnx.wasm.wasmPaths=m.wasm;
+      env.backends.onnx.wasm.numThreads=1;
+      asr=await T.pipeline('automatic-speech-recognition',m.model,{quantized:true,progress_callback:p=>self.postMessage({type:'progress',p})});
       self.postMessage({type:'ready'});
     }else if(m.type==='run'){
       if(!asr)throw new Error('المحرك غير جاهز');
@@ -362,6 +366,7 @@ self.onmessage=async e=>{
     }
   }catch(err){self.postMessage({type:'error',id:m.id,message:String((err&&err.message)||err)})}
 };`;
+let whMode='worker',whAsr=null;
 async function whPrefetch(){ // يحفظ المكتبة وملفات wasm ليعمل المحرك بدون نت
   if(!window.caches)return;
   const c=await caches.open('lawyer-whisper-v1');
@@ -371,39 +376,81 @@ async function whPrefetch(){ // يحفظ المكتبة وملفات wasm ليع
     if(r.ok)await c.put(u,r);
   }));
 }
+/* هل وضعت ملفات المكتبة/النموذج بجانب التطبيق (مجلد whisper)؟ وإلا نستخدم الإنترنت */
+async function whResolve(){
+  const root=new URL('whisper/',location.href).href;
+  const has=async u=>{try{const r=await fetch(u,{cache:'no-cache'});return r.ok&&!/html/i.test(r.headers.get('content-type')||'')}catch(e){return false}};
+  const localLib=await has(root+'lib/transformers.min.js');
+  const localModel=await has(root+'models/'+WH_MODEL+'/config.json');
+  return{lib:localLib?root+'lib/transformers.min.js':WH_LIB,wasm:localLib?root+'lib/':WH_BASE,localModel,modelPath:root+'models/',localLib};
+}
+async function whDiag(cfg){
+  const t=async u=>{try{const c=new AbortController();const id=setTimeout(()=>c.abort(),8000);const r=await fetch(u,{mode:'cors',cache:'no-store',signal:c.signal});clearTimeout(id);return r.ok?'✓':'✗ ('+r.status+')'}catch(e){return '✗ لا يصل'}};
+  const a=cfg.localLib?'محلية ✓':await t(WH_BASE+'ort-wasm-simd.wasm');
+  const b=cfg.localModel?'محلي ✓':await t('https://huggingface.co/'+WH_MODEL+'/resolve/main/config.json');
+  return 'المكتبة (jsdelivr): '+a+' | النموذج (huggingface): '+b;
+}
+function whOnProgress(files){
+  return p=>{
+    p=p||{};
+    if(p.status==='progress'&&p.file){
+      files[p.file]={l:p.loaded||0,t:p.total||0};
+      let L=0,T=0;for(const k in files){L+=files[k].l;T+=files[k].t}
+      if(T)whMsg('جاري تنزيل النموذج… '+Math.round(L/T*100)+'% ('+Math.round(L/1048576)+' / '+Math.round(T/1048576)+' ميجا)');
+    }else if(p.status==='ready'||p.status==='done'){whMsg('جاري تهيئة المحرك…')}
+  };
+}
+function whLoadWorker(cfg){
+  return new Promise((resolve,reject)=>{
+    const url=URL.createObjectURL(new Blob([WH_WORKER_SRC],{type:'text/javascript'}));
+    let w;
+    try{w=new Worker(url)}catch(e){const er=new Error('تعذّر إنشاء العامل: '+(e&&e.message||e));er.boot=true;reject(er);return}
+    whWorker=w;
+    const prog=whOnProgress({});
+    w.onmessage=e=>{
+      const m=e.data;
+      if(m.type==='progress')prog(m.p);
+      else if(m.type==='ready')resolve();
+      else if(m.type==='result'||m.type==='error'){
+        const p=whPending.get(m.id);
+        if(p){whPending.delete(m.id);m.type==='result'?p.res(m.text):p.rej(new Error(m.message))}
+        else if(m.type==='error'){const er=new Error(m.message);er.boot=(m.phase==='import');reject(er)}
+      }
+    };
+    w.onerror=ev=>{const er=new Error('تعذّر تشغيل العامل'+(ev&&ev.message?': '+ev.message:''));er.boot=true;reject(er)};
+    w.postMessage({type:'load',lib:cfg.lib,wasm:cfg.wasm,model:WH_MODEL,localModel:cfg.localModel,modelPath:cfg.modelPath});
+  });
+}
+async function whLoadMain(cfg){ // بديل: تشغيل المحرك في الصفحة نفسها (قد يجمّد الواجهة لثوانٍ أثناء التحويل)
+  const T=await import(cfg.lib);
+  const env=T.env;
+  env.useBrowserCache=true;
+  if(cfg.localModel){env.allowLocalModels=true;env.allowRemoteModels=false;env.localModelPath=cfg.modelPath}
+  else{env.allowLocalModels=false;env.allowRemoteModels=true}
+  env.backends.onnx.wasm.wasmPaths=cfg.wasm;
+  env.backends.onnx.wasm.numThreads=1;
+  whAsr=await T.pipeline('automatic-speech-recognition',WH_MODEL,{quantized:true,progress_callback:whOnProgress({})});
+}
 function whEnsure(){
   if(whReady)return Promise.resolve();
   if(whLoading)return whLoading;
-  whLoading=new Promise((resolve,reject)=>{
-    const url=URL.createObjectURL(new Blob([WH_WORKER_SRC],{type:'text/javascript'}));
-    const w=new Worker(url,{type:'module'});
-    whWorker=w;
-    const files={};
-    w.onmessage=e=>{
-      const m=e.data;
-      if(m.type==='progress'){
-        const p=m.p||{};
-        if(p.status==='progress'&&p.file){
-          files[p.file]={l:p.loaded||0,t:p.total||0};
-          let L=0,T=0;for(const k in files){L+=files[k].l;T+=files[k].t}
-          if(T)whMsg('جاري تنزيل النموذج… '+Math.round(L/T*100)+'% ('+Math.round(L/1048576)+' / '+Math.round(T/1048576)+' ميجا)');
-        }else if(p.status==='ready'||p.status==='done'){whMsg('جاري تهيئة المحرك…')}
-      }else if(m.type==='ready'){
-        whReady=true;try{localStorage.setItem('lawyerWhisperOK','1')}catch(e){}
-        whMsg('✓ جاهز — التعرف العربي يعمل بدون إنترنت. اضغط الميكروفون وتكلم ثم اضغطه مرة أخرى للإيقاف');
-        resolve();
-      }else if(m.type==='result'||m.type==='error'){
-        const p=whPending.get(m.id);
-        if(p){whPending.delete(m.id);m.type==='result'?p.res(m.text):p.rej(new Error(m.message))}
-        else if(m.type==='error')reject(new Error(m.message));
-      }
-    };
-    w.onerror=ev=>reject(new Error('تعذّر تشغيل المحرك'+(ev&&ev.message?': '+ev.message:'')));
+  whLoading=(async()=>{
     whMsg('جاري تجهيز المحرك…');
-    w.postMessage({type:'load'});
-  }).catch(err=>{
+    const cfg=await whResolve();
+    try{
+      await whLoadWorker(cfg);whMode='worker';
+    }catch(e1){
+      if(!e1.boot)throw e1;
+      try{if(whWorker)whWorker.terminate()}catch(x){}whWorker=null;
+      whMsg('جاري المحاولة بطريقة بديلة…');
+      await whLoadMain(cfg);whMode='main';
+    }
+    whReady=true;try{localStorage.setItem('lawyerWhisperOK','1')}catch(e){}
+    whMsg('✓ جاهز — التعرف العربي يعمل بدون إنترنت. اضغط الميكروفون وتكلم ثم اضغطه مرة أخرى للإيقاف');
+  })().catch(async err=>{
     whLoading=null;try{whWorker&&whWorker.terminate()}catch(e){}whWorker=null;
-    whMsg('✗ فشل: '+(err&&err.message||err)+(navigator.onLine?'':' — لا يوجد إنترنت'));
+    let d='';try{d=await whDiag(await whResolve())}catch(e){}
+    whMsg('✗ فشل: '+(err&&err.message||err)+(d?' — '+d:'')+(navigator.onLine?'':' — لا يوجد إنترنت'));
     throw err;
   });
   return whLoading;
@@ -415,7 +462,11 @@ async function whInstall(){
   whMsg('جاري تجهيز المكتبة…');
   try{await whPrefetch();await whEnsure();toast('جاهز — جرّب الميكروفون، وبعدها افصل النت وجرّب')}catch(e){}
 }
-function whRun(audio){
+async function whRun(audio){
+  if(whMode==='main'){
+    const out=await whAsr(audio,{language:'arabic',task:'transcribe',chunk_length_s:30,stride_length_s:5});
+    return ((out&&out.text)||'').trim();
+  }
   return new Promise((res,rej)=>{
     const id=++whSeq;whPending.set(id,{res,rej});
     whWorker.postMessage({type:'run',id,audio},[audio.buffer]);
