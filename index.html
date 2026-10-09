@@ -953,8 +953,6 @@ async function openCamera(sec,itemId){
 
   // فتح سريع: نبدأ بأقل قيود ثم نرفع الجودة
   const tryConstraints=[
-    {audio:false,video:{facingMode:{ideal:'environment'},width:{ideal:3840},height:{ideal:2160}}},
-    {audio:false,video:{facingMode:{ideal:'environment'},width:{ideal:2560},height:{ideal:1440}}},
     {audio:false,video:{facingMode:{ideal:'environment'},width:{ideal:1920},height:{ideal:1080}}},
     {audio:false,video:{facingMode:'environment'}},
     {audio:false,video:true}
@@ -990,7 +988,7 @@ async function openCamera(sec,itemId){
         }catch(e){}
         // حاول رفع الدقة بعد الفتح السريع
         try{
-          if(track)await track.applyConstraints({width:{ideal:3840},height:{ideal:2160},advanced:[{focusMode:'continuous'}]});
+          if(track)await track.applyConstraints({advanced:[{focusMode:'continuous'}]});
         }catch(e){}
         return;
       }catch(e){lastErr=e}
@@ -1004,28 +1002,15 @@ async function openCamera(sec,itemId){
     if(!stream||busy||closed)return;
     busy=true;snapBtn.disabled=true;snapBtn.textContent='…';
     try{
-      let blob=null;
-      // ImageCapture يعطي صورة ثابتة بجودة أعلى من إطار الفيديو
-      try{
-        if(track&&window.ImageCapture){
-          const ic=new ImageCapture(track);
-          blob=await ic.takePhoto();
-        }
-      }catch(e){}
-      let data;
-      if(blob){
-        data=await compressImage(blob,2800,0.92);
-      }else{
-        const w=vid.videoWidth||1920,h=vid.videoHeight||1080;
-        const c=$('#scCan');
-        let dw=w,dh=h;
-        if(w>2800){dw=2800;dh=Math.round(h*2800/w)}
-        c.width=dw;c.height=dh;
-        const ctx=c.getContext('2d');
-        ctx.imageSmoothingEnabled=true;ctx.imageSmoothingQuality='high';
-        ctx.drawImage(vid,0,0,dw,dh);
-        data=c.toDataURL('image/jpeg',0.92);
-      }
+      const w=vid.videoWidth||1920,h=vid.videoHeight||1080;
+      const c=$('#scCan');
+      let dw=w,dh=h;
+      if(w>2000){dw=2000;dh=Math.round(h*2000/w)}
+      c.width=dw;c.height=dh;
+      const ctx=c.getContext('2d');
+      ctx.drawImage(vid,0,0,dw,dh);
+      const data=c.toDataURL('image/jpeg',0.82);
+      c.width=1;c.height=1; // تحرير الذاكرة
       await addScanImage(sec,itemId,data);
       snapCount++;
       countEl.textContent='تم التقاط '+snapCount+(snapCount>1?' صور':' صورة')+' — يمكنك التقاط المزيد أو الإغلاق';
@@ -1046,7 +1031,7 @@ function fallbackFilePick(sec,itemId){
   inp.onchange=async()=>{
     const f=inp.files&&inp.files[0];if(!f)return;
     try{
-      const data=await compressImage(f,2800,0.92);
+      const data=await compressImage(f,2000,0.82);
       await addScanImage(sec,itemId,data);
     }catch(e){toast('تعذّر قراءة الصورة')}
   };
