@@ -168,11 +168,14 @@ async function decryptData(pack,key){
 }
 async function save(){
   try{
-    if(!cryptoKey){if(Auth.pass)return;localStorage.setItem(K,JSON.stringify({plain:1,data:D}));return}
-    if(!loadOk)return; // لا نكتب فوق بيانات لم تُقرأ بنجاح
+    // حماية من أي مسار يحاول حفظ بيانات القضايا كنص واضح.
+    // لا نحفظ شيئاً قبل إنشاء/التحقق من مفتاح التشفير ونجاح تحميل البيانات.
+    if(!cryptoKey || !unlocked) { toast('لم يتم الحفظ: افتح القفل أولاً'); return false; }
+    if(!loadOk){toast('لم يتم الحفظ لأن قراءة البيانات لم تكتمل');return false;}
     const pack=await encryptData(D,cryptoKey);
     localStorage.setItem(K,JSON.stringify(pack));
-  }catch(e){toast('تعذّر حفظ البيانات المشفّرة')}
+    return true;
+  }catch(e){toast('تعذّر حفظ البيانات المشفّرة');return false}
 }
 const saveAuth=()=>{try{localStorage.setItem(AUTH,JSON.stringify(Auth))}catch(e){}};
 const mkChk=key=>encryptData({ok:1},key);
@@ -189,7 +192,7 @@ async function loadData(){
   try{
     const raw=localStorage.getItem(K);if(!raw){D=BLANK();loadOk=true;return}
     const pack=JSON.parse(raw);
-    if(pack.plain){D=normalizeData(pack.data);loadOk=true;return}
+    if(pack.plain){D=BLANK();loadOk=false;toast('تم حظر بيانات قديمة غير مشفّرة. لا تحفظ فوقها؛ صدّر/استعد نسخة آمنة بعد مراجعة البيانات.');return}
     if(cryptoKey&&pack.ct){D=normalizeData(await decryptData(pack,cryptoKey));loadOk=true}
   }catch(e){console.warn(e)}
 }
@@ -871,6 +874,7 @@ function renderReport(readable){
 }
 async function backupPdf(readable){
   try{
+    if(readable){toast('تم تعطيل التقرير المقروء لتقليل كشف بيانات القضايا');return}
     if(!cryptoKey||!unlocked){toast('افتح التطبيق أولاً');return}
     toast('جارٍ إنشاء ملف PDF…');
     const pack=await encryptData(D,cryptoKey);
@@ -898,7 +902,7 @@ async function restoreFile(f){
       if(pw===null)return;
       const{key}=await deriveKey(pw,j.salt,+j.iter||120000);
       try{data=await decryptData(j.pack,key)}catch(e){say('كلمة المرور غير صحيحة أو الملف تالف');return}
-    }else if(j&&j.plain&&j.data)data=j.data;
+    }else if(j&&j.plain&&j.data){say('تم رفض النسخة لأنها غير مشفّرة. لن يتم تحميل بيانات حساسة من ملف مكشوف.');return}
     else if(j&&j.ct&&j.iv){
       try{data=await decryptData(j,cryptoKey)}catch(e){say('هذه نسخة JSON قديمة ولا تُفتح إلا على نفس الجهاز بنفس كلمة المرور. أنشئ نسخة PDF جديدة.');return}
     }else{say('ملف غير صالح');return}
@@ -1462,7 +1466,7 @@ function showLock(mode){
       cryptoKey=key;plainPass=p;
       await loadData();
       if(!loadOk){cryptoKey=null;$('#le').textContent='تعذّر قراءة البيانات المحفوظة (قد تكون تالفة). يمكنك الاستعادة من نسخة PDF عبر «نسيت كلمة المرور».';return}
-      try{const raw=localStorage.getItem(K);if(raw&&JSON.parse(raw).plain)await save()}catch(e){}
+      
       if((Auth.iter||120000)<ITER){try{await rekey(p)}catch(e){}}
       enterApp();
     };
@@ -1615,7 +1619,7 @@ const V={
   ${L.length?'':'<p class="m">لا توجد مواعيد بعد.</p>'}
   ${L.map(x=>{const due=!x.done&&evt(x)-x.before*6e4<=Date.now();return`<div class="card ${x.done?'ok':due?'red':'acc'}"><div class="row sp"><h3>${esc(x.title)}</h3>${due?'<span class="tag red">حان وقته</span>':''}</div>${line(fd(x.date)+(x.time?' · '+ft(x.time):''))}${line('التنبيه: '+(BEFORE.find(b=>b[0]===x.before)||[0,''])[1])}${line(esc(x.notes))}${act('reminders',x)}</div>`}).join('')}`},
  backup(){
-  return`<h1>الإعدادات والنسخ الاحتياطي</h1><p class="sub">بياناتك مشفّرة محلياً بـ AES-256 مشتقة من كلمة مرورك، ولا تُرسل لأي خادم.</p>
+  return`<h1>الإعدادات والنسخ الاحتياطي</h1><p class="sub">تُحفظ البيانات على هذا المتصفح وتُشفّر محلياً عند تفعيل كلمة المرور. لا يوجد تزامن سحابي؛ خذ نسخة احتياطية مشفّرة بانتظام واحفظها في مكان آمن.</p>
   <div class="card acc"><h3>تغيير كلمة المرور</h3>
     <label>الحالية</label><input type="password" id="cpw">
     <label>الجديدة (8 أحرف على الأقل)</label><input type="password" id="npw">
@@ -1624,8 +1628,8 @@ const V={
     <button class="btn p" data-a="chpass" style="margin-top:8px">تغيير وإعادة التشفير</button>
   </div>
   <div class="card"><h3>نسخة احتياطية PDF</h3>
-    <p class="m">ملف PDF واحد يُنزَّل عند طلبك فقط. «مشفّرة»: صفحة غلاف وبياناتك مشفّرة داخل الملف (لا تُقرأ بدون كلمة المرور). «مع تقرير مقروء»: يضيف جداول غير مشفّرة، فاحفظه في مكان آمن. كلاهما يمكن استعادته من التطبيق.</p>
-    <div class="row wrap" style="margin-top:8px"><button class="btn p" data-a="bkpdf">نسخة PDF مشفّرة</button><button class="btn" data-a="bkpdfr">PDF مع تقرير مقروء</button></div>
+    <p class="m">تنشئ نسخة احتياطية تحتوي على بيانات مشفّرة ويمكن استعادتها بكلمة المرور المستخدمة وقت النسخ. لا يوجد تزامن سحابي تلقائي. بعد تنزيل النسخة، لا ترفع إلا هذا الملف المشفّر إلى مساحة سحابية خاصة، واحتفظ بكلمة المرور خارج الملف. اختبر الاستعادة ببيانات تجريبية أولاً.</p>
+    <div class="row wrap" style="margin-top:8px"><button class="btn p" data-a="bkpdf">نسخة احتياطية مشفّرة</button></div>
     <div class="row wrap" style="margin-top:8px"><button class="btn" data-a="impfile">استعادة من ملف (PDF أو JSON)</button></div>
     <input type="file" id="impFile" accept=".pdf,.json,.txt,application/pdf,application/json,text/plain" style="display:none">
     <p class="m" id="im" role="status"></p>
