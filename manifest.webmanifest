@@ -1,37 +1,40 @@
 {
-  "host": "localhost",
+  "id": "./",
   "name": "أجندة المحامي",
   "short_name": "أجندة المحامي",
-  "start_url": "/index.html",
+  "description": "أجندة المحامي لتنظيم المواعيد والمهام القانونية.",
+  "lang": "ar",
+  "dir": "rtl",
+  "start_url": "./index.html",
+  "scope": "./",
   "display": "standalone",
-  "themeColor": "#3d2e1f",
-  "backgroundColor": "#3d2e1f",
-  "navigationColor": "#3d2e1f",
-  "navigationColorDark": "#3d2e1f",
-  "navigationDividerColor": "#3d2e1f",
-  "navigationDividerColorDark": "#3d2e1f",
-  "iconUrl": "https://example.com/icon-512.png",
-  "maskableIconUrl": "https://example.com/icon-512.png",
-  "splashScreenFadeOutDuration": 300,
-  "generatorApp": "bubblewrap-cli",
-  "signingKey": {
-    "path": "android.keystore",
-    "alias": "android"
-  },
-  "appPackageName": "com.owais.lawyeragenda",
-  "launcherName": "أجندة المحامي",
-  "appVersionCode": 1,
-  "appVersionName": "1.0",
-  "fullScopeUrl": "http://localhost/",
-  "shortcuts": [],
-  "minSdkVersion": 21,
-  "targetSdkVersion": 33,
-  "useBrowserFallback": false,
-  "allowToAllDomains": false,
-  "features": {},
-  "alphaDependencies": {
-    "enabled": false
-  },
-  "enableNotifications": true,
-  "webManifestUrl": "manifest.webmanifest"
+  "orientation": "any",
+  "theme_color": "#010f40",
+  "background_color": "#010f40",
+  "icons": [
+    {
+      "src": "./icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "./icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "./icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "./icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
 }
