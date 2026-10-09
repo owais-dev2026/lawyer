@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#010f40">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline' 'wasm-unsafe-eval' 'self' blob: https://cdn.jsdelivr.net; style-src 'unsafe-inline'; img-src 'self' data: blob:; media-src 'self' blob:; connect-src 'self' blob: data: https://alphacephei.com https://*.alphacephei.com https://cdn.jsdelivr.net https://huggingface.co https://*.huggingface.co https://*.hf.co; manifest-src 'self'; worker-src 'self' blob:; child-src 'self' blob:; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline' 'wasm-unsafe-eval' 'self' blob: https://cdn.jsdelivr.net https://www.gstatic.com; style-src 'unsafe-inline'; img-src 'self' data: blob:; media-src 'self' blob:; connect-src 'self' blob: data: https://alphacephei.com https://*.alphacephei.com https://cdn.jsdelivr.net https://huggingface.co https://*.huggingface.co https://*.hf.co https://*.googleapis.com https://*.firebaseio.com https://*.firebaseapp.com https://firestore.googleapis.com https://firebase.googleapis.com https://www.google-analytics.com https://*.google-analytics.com https://*.analytics.google.com https://*.g.doubleclick.net; manifest-src 'self'; worker-src 'self' blob:; child-src 'self' blob:; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="no-referrer">
 <link rel="manifest" href="manifest.webmanifest">
 <title>أجندة المحامي المتكاملة</title>
@@ -108,8 +108,86 @@ input,select,textarea{font-size:16px}
 <div id="toast" class="toast" role="status"></div>
 <div id="pr"></div>
 <input type="file" id="camInput" accept="image/*" capture="environment" style="display:none">
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-analytics-compat.js"></script>
 <script>
 const K='lawyerAgendaEnc',AUTH='lawyerAuth',$=s=>document.querySelector(s);
+
+/* ===== Firebase (Firestore + Analytics) ===== */
+const firebaseConfig={
+  apiKey:"AIzaSyDO3dR51eDn-saTkTCLy80DE47pOa7SRkU",
+  authDomain:"lawyer-agenda-c9e3a.firebaseapp.com",
+  projectId:"lawyer-agenda-c9e3a",
+  storageBucket:"lawyer-agenda-c9e3a.firebasestorage.app",
+  messagingSenderId:"226460474723",
+  appId:"1:226460474723:web:4c825826d1bc22ab7b8756",
+  measurementId:"G-ZKWNSPKHE1"
+};
+let fbApp=null, fbDb=null, fbAnalytics=null, cloudSyncEnabled=true, lastCloudSync=0;
+try{
+  if(typeof firebase!=='undefined'){
+    fbApp=firebase.initializeApp(firebaseConfig);
+    fbDb=firebase.firestore();
+    try{fbAnalytics=firebase.analytics()}catch(e){}
+  }
+}catch(e){console.warn('Firebase init failed',e)}
+
+/** معرّف ثابت للجهاز/المستخدم مبني على salt كلمة المرور — لا يُرسل نص البيانات أبداً */
+function cloudDocId(){
+  try{
+    const s=(Auth&&Auth.salt)||'anon';
+    let h=0;for(let i=0;i<s.length;i++){h=((h<<5)-h)+s.charCodeAt(i);h|=0}
+    return 'u_'+Math.abs(h).toString(36)+'_'+s.slice(0,12).replace(/[^a-zA-Z0-9]/g,'');
+  }catch(e){return 'u_anon'}
+}
+
+async function cloudPush(pack,showMsg){
+  if(!fbDb){if(showMsg)toast('Firebase غير محمّل — افتح التطبيق عبر http وليس كملف');return false;}
+  if(!cloudSyncEnabled){if(showMsg)toast('المزامنة السحابية معطّلة');return false;}
+  if(!unlocked||!cryptoKey){if(showMsg)toast('افتح القفل أولاً');return false;}
+  try{
+    const id=cloudDocId();
+    await fbDb.collection('agendas').doc(id).set({
+      pack,
+      updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+      v:2,
+      app:'lawyer-agenda'
+    },{merge:true});
+    lastCloudSync=Date.now();
+    if(showMsg)toast('✓ تمت المزامنة السحابية');
+    return true;
+  }catch(e){
+    console.warn('cloudPush',e);
+    const msg=(e&&(e.code||e.message))||String(e);
+    if(showMsg||true)toast('فشل السحابة: '+msg);
+    return false;
+  }
+}
+
+/** مزامنة يدوية: تشفير ثم رفع */
+async function syncNow(){
+  if(!cryptoKey||!unlocked){toast('افتح القفل أولاً');return;}
+  if(!loadOk){toast('البيانات لم تُحمَّل بعد');return;}
+  if(!fbDb){toast('Firebase غير متصل — تأكد من الإنترنت وقواعد Firestore');return;}
+  try{
+    const pack=await encryptData(D,cryptoKey);
+    localStorage.setItem(K,JSON.stringify(pack));
+    const ok=await cloudPush(pack,true);
+    if(!ok)return;
+  }catch(e){toast('فشل المزامنة: '+(e&&e.message||e))}
+}
+
+async function cloudPull(){
+  if(!fbDb||!cloudSyncEnabled||!cryptoKey)return null;
+  try{
+    const id=cloudDocId();
+    const snap=await fbDb.collection('agendas').doc(id).get();
+    if(snap.exists){const d=snap.data();if(d&&d.pack&&d.pack.ct)return d.pack}
+  }catch(e){console.warn('cloudPull',e)}
+  return null;
+}
+
 let D={tasks:[],deadlines:[],reminders:[],sessions:[],clients:[],scans:[],casePdfs:{},casePages:{}};
 let Auth={};try{Auth=JSON.parse(localStorage.getItem(AUTH))||{}}catch(e){}
 let cryptoKey=null,unlocked=false,plainPass='',loadOk=false;
@@ -174,6 +252,8 @@ async function save(){
     if(!loadOk){toast('لم يتم الحفظ لأن قراءة البيانات لم تكتمل');return false;}
     const pack=await encryptData(D,cryptoKey);
     localStorage.setItem(K,JSON.stringify(pack));
+    // مزامنة سحابية للنسخة المشفّرة فقط (لا تُرسل بيانات واضحة)
+    cloudPush(pack).catch(()=>{});
     return true;
   }catch(e){toast('تعذّر حفظ البيانات المشفّرة');return false}
 }
@@ -190,9 +270,21 @@ async function verifyPass(p){
 async function loadData(){
   loadOk=false;
   try{
-    const raw=localStorage.getItem(K);if(!raw){D=BLANK();loadOk=true;return}
-    const pack=JSON.parse(raw);
-    if(pack.plain){D=BLANK();loadOk=false;toast('تم حظر بيانات قديمة غير مشفّرة. لا تحفظ فوقها؛ صدّر/استعد نسخة آمنة بعد مراجعة البيانات.');return}
+    let pack=null;
+    const raw=localStorage.getItem(K);
+    if(raw){
+      try{pack=JSON.parse(raw)}catch(e){pack=null}
+    }
+    if(pack&&pack.plain){D=BLANK();loadOk=false;toast('تم حظر بيانات قديمة غير مشفّرة. لا تحفظ فوقها؛ صدّر/استعد نسخة آمنة بعد مراجعة البيانات.');return}
+    // إن لم توجد بيانات محلية: حاول السحب من السحابة
+    if((!pack||!pack.ct)&&cryptoKey){
+      const remote=await cloudPull();
+      if(remote&&remote.ct){
+        pack=remote;
+        try{localStorage.setItem(K,JSON.stringify(pack))}catch(e){}
+      }
+    }
+    if(!pack||!pack.ct){D=BLANK();loadOk=true;return}
     if(cryptoKey&&pack.ct){D=normalizeData(await decryptData(pack,cryptoKey));loadOk=true}
   }catch(e){console.warn(e)}
 }
@@ -202,6 +294,7 @@ async function rekey(p){ // تغيير المفتاح بشكل متزامن: ل�
   localStorage.setItem(K,JSON.stringify(pack));
   Auth.salt=saltB64;Auth.iter=ITER;Auth.pass='1';Auth.chk=chk;saveAuth();
   cryptoKey=key;plainPass=p;
+  cloudPush(pack).catch(()=>{});
 }
 
 function notifyUser(title,body){
@@ -1619,7 +1712,13 @@ const V={
   ${L.length?'':'<p class="m">لا توجد مواعيد بعد.</p>'}
   ${L.map(x=>{const due=!x.done&&evt(x)-x.before*6e4<=Date.now();return`<div class="card ${x.done?'ok':due?'red':'acc'}"><div class="row sp"><h3>${esc(x.title)}</h3>${due?'<span class="tag red">حان وقته</span>':''}</div>${line(fd(x.date)+(x.time?' · '+ft(x.time):''))}${line('التنبيه: '+(BEFORE.find(b=>b[0]===x.before)||[0,''])[1])}${line(esc(x.notes))}${act('reminders',x)}</div>`}).join('')}`},
  backup(){
-  return`<h1>الإعدادات والنسخ الاحتياطي</h1><p class="sub">تُحفظ البيانات على هذا المتصفح وتُشفّر محلياً عند تفعيل كلمة المرور. لا يوجد تزامن سحابي؛ خذ نسخة احتياطية مشفّرة بانتظام واحفظها في مكان آمن.</p>
+  const fbOk=!!fbDb;
+  const syncInfo=fbOk?('Firebase متصل'+(lastCloudSync?' · آخر مزامنة: '+new Date(lastCloudSync).toLocaleString('ar-u-nu-latn'):' · لم تتم مزامنة بعد')):'Firebase غير متصل';
+  return`<h1>الإعدادات والنسخ الاحتياطي</h1><p class="sub">البيانات مشفّرة محلياً. المزامنة السحابية ترفع النسخة المشفّرة فقط إلى Firestore.</p>
+  <div class="card"><h3>المزامنة السحابية (Firebase)</h3>
+    <p class="m">${syncInfo}. إن ظهرت قاعدة البيانات فارغة في Console، اضبط قواعد Firestore للسماح بالكتابة ثم اضغط «مزامنة الآن».</p>
+    <div class="row wrap" style="margin-top:8px"><button class="btn p" data-a="syncnow">مزامنة الآن</button></div>
+  </div>
   <div class="card acc"><h3>تغيير كلمة المرور</h3>
     <label>الحالية</label><input type="password" id="cpw">
     <label>الجديدة (8 أحرف على الأقل)</label><input type="password" id="npw">
@@ -1628,7 +1727,7 @@ const V={
     <button class="btn p" data-a="chpass" style="margin-top:8px">تغيير وإعادة التشفير</button>
   </div>
   <div class="card"><h3>نسخة احتياطية PDF</h3>
-    <p class="m">تنشئ نسخة احتياطية تحتوي على بيانات مشفّرة ويمكن استعادتها بكلمة المرور المستخدمة وقت النسخ. لا يوجد تزامن سحابي تلقائي. بعد تنزيل النسخة، لا ترفع إلا هذا الملف المشفّر إلى مساحة سحابية خاصة، واحتفظ بكلمة المرور خارج الملف. اختبر الاستعادة ببيانات تجريبية أولاً.</p>
+    <p class="m">تنشئ نسخة احتياطية تحتوي على بيانات مشفّرة ويمكن استعادتها بكلمة المرور المستخدمة وقت النسخ. بعد تنزيل النسخة، لا ترفع إلا هذا الملف المشفّر إلى مساحة سحابية خاصة، واحتفظ بكلمة المرور خارج الملف. اختبر الاستعادة ببيانات تجريبية أولاً.</p>
     <div class="row wrap" style="margin-top:8px"><button class="btn p" data-a="bkpdf">نسخة احتياطية مشفّرة</button></div>
     <div class="row wrap" style="margin-top:8px"><button class="btn" data-a="impfile">استعادة من ملف (PDF أو JSON)</button></div>
     <input type="file" id="impFile" accept=".pdf,.json,.txt,application/pdf,application/json,text/plain" style="display:none">
@@ -1687,6 +1786,7 @@ document.addEventListener('click',async e=>{
  else if(a==='day'){cur=+el.dataset.n?add(cur,+el.dataset.n):today();draw()}
  else if(a==='notif'){Notification.requestPermission().then(p=>{try{if(p==='granted')localStorage.setItem('lawyerNotif','1')}catch(e){}draw()})}
  else if(a==='pdf')printAll();
+ else if(a==='syncnow')await syncNow();
  else if(a==='bkpdf'||a==='bkpdfr')await backupPdf(a==='bkpdfr');
  else if(a==='imp'||a==='impfile'){
    const inp=$('#impFile');if(!inp){toast('أعد فتح الإعدادات');return}
